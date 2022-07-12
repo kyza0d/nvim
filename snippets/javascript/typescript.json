@@ -1,0 +1,37 @@
+{
+  "For-Each Loop": {
+    "prefix": "foreach",
+    "body": ["${1:array}.forEach(${2:element} => {", "\t$0", "});"],
+    "description": "For-Each Loop"
+  },
+  "Function statment": {
+    "prefix": "func",
+    "body": ["function ${1:name}(${2:params}:${3:type}) {", "\t${4}", "}$0"]
+  },
+  "console.log": {
+    "prefix": "cl",
+    "body": "console.log(${0})"
+  },
+  "arrow function with body": {
+    "prefix": "f",
+    "body": "(${1:arguments}) => {\n\t${0}\n}"
+  },
+  "async function": {
+    "prefix": "asf",
+    "body": "async function (${1:arguments}) {\n\t${0}\n}"
+  },
+  "async arrow function": {
+    "prefix": "aa",
+    "body": "async (${1:arguments}) => {\n\t${0}\n}"
+  },
+  "For Loop": {
+    "prefix": "for",
+    "body": [
+      "for (let ${1:index} = 0; ${1:index} < ${2:array}.length; ${1:index}++) {",
+      "\tconst ${3:element} = ${2:array}[${1:index}];",
+      "\t$0",
+      "}"
+    ],
+    "description": "For Loop"
+  }
+}
