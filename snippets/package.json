@@ -8,32 +8,33 @@
     "snippets": [
       {
         "language": [
+          "global",
+          "all"
+        ],
+        "path": "./global.json"
+      },
+      {
+        "language": [
           "markdown",
           "txt"
         ],
         "path": "./markdown.json"
       },
       {
-        "language": [
-          "typescript",
-          "typescriptreact"
-        ],
-        "path": "./javascript/react-ts.json"
+        "language": "html",
+        "path": "./html.json"
       },
       {
         "language": "typescript",
-        "path": "./javascript/typescript.json"
-      },
-      {
-        "language": [
-          "javascript",
-          "javascriptreact"
-        ],
-        "path": "./javascript/react-js.json"
+        "path": "./typescript.json"
       },
       {
         "language": "javascript",
-        "path": "./javascript/javascript.json"
+        "path": "./javascript.json"
+      },
+      {
+        "language": "lua",
+        "path": "./lua.json"
       }
     ]
   }
