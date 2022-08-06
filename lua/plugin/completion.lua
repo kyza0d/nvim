@@ -93,7 +93,7 @@ require("cmp").setup({
 
   window = {
     documentation = {
-      max_width = 60,
+      max_width = 50,
       max_height = 15,
       border = border,
     },

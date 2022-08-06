@@ -1,4 +1,7 @@
 vim.opt.background = "dark"
+vim.cmd([[
+  hi clear Normal
+]])
 
 local status_ok, palette = pcall(require, "palette")
 
@@ -7,12 +10,13 @@ if not status_ok then
 end
 
 local colors = palette.colors
+local blend = require("palette.utils").blend
 
 -- stylua: ignore
 palette.setup({
   on_change = function()
-    vim.cmd([[source ~/.config/nvim/lua/plugin-config/statusline.lua]])
-    vim.cmd([[source ~/.config/nvim/lua/plugin-config/bufferline.lua]])
+    vim.cmd([[source ~/.config/nvim/lua/statusline.lua]])
+    vim.cmd([[source ~/.config/nvim/lua/plugin/bufferline.lua]])
   end,
 
   prefer = "dark",
@@ -29,8 +33,6 @@ palette.setup({
       accent     = { "#61AFEF", "#0184BC" },
 
       highlights = {
-        MacroEnter = {fg = "#6B8E23"},
-        CursorLine = { bg = "none" },
         CursorLineNr = { bg = "none" },
         FoldColumn = {fg = "none"},
       },
@@ -67,6 +69,7 @@ palette.setup({
       blue         = { "#61AFEF", "#61AFEF" },
       purple       = { "#c792ea", "#A626A4" },
       accent       = { "#61AFEF", "#61AFEF" },
+
       lightness    = -0.4,
     },
 
@@ -99,5 +102,4 @@ palette.setup({
   },
 })
 
--- vim.cmd([[colorscheme dark-pines]])
--- vim.cmd([[colorscheme summer-night]])
+vim.cmd([[colorscheme summer-time]])

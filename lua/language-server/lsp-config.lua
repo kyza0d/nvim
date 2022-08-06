@@ -1,4 +1,8 @@
-local lspconfig = require("lspconfig")
+local status_ok, lspconfig = pcall(require, "lspconfig")
+
+if not status_ok then
+  return
+end
 
 local icons = require("utils").getvar("icons")
 
@@ -35,7 +39,7 @@ local orig_util_open_floating_preview = vim.lsp.util.open_floating_preview
 
 function vim.lsp.util.open_floating_preview(contents, syntax, opts, ...)
   opts = opts or {}
-  opts.max_width = 100
+  opts.max_width = 60
   opts.max_height = 10
   return orig_util_open_floating_preview(contents, syntax, opts, ...)
 end

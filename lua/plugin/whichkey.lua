@@ -138,6 +138,7 @@ local space_mappings = {
     p = { "<cmd>colorscheme paper<cr>", "papercolors" },
     h = { "<cmd>colorscheme hybrid<cr>", "hybrid" },
     u = { "<cmd>colorscheme urara<cr>", "urara" },
+    j = { "<cmd>colorscheme j_blow<cr>", "j_blow" },
     m = { "<cmd>colorscheme  menguless<cr>", "menguless" },
     i = { "<cmd>colorscheme iceberg<cr>", "iceberg" },
     r = { "<cmd>colorscheme rasmus<cr>", "rasmus" },

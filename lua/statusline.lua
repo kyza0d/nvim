@@ -6,50 +6,27 @@ local colors = require("palette").colors
 local darken_float = require("palette.utils").darken_float
 
 local modes = {
-  ["n"] = "▋",
-  ["no"] = "▋",
-  ["v"] = "▋",
-  ["V"] = "▋",
-  [""] = "▋",
-  ["s"] = "▋",
-  ["S"] = "▋",
-  [""] = "▋",
-  ["i"] = "▋",
-  ["ic"] = "▋",
-  ["R"] = "▋",
-  ["Rv"] = "▋",
-  ["c"] = "▋",
-  ["cv"] = "▋",
-  ["ce"] = "▋",
-  ["r"] = "▋",
-  ["rm"] = "▋",
-  ["r?"] = "▋",
-  ["!"] = "▋",
-  ["t"] = "▋",
+  ["n"] = "NORMAL",
+  ["no"] = "NORMAL",
+  ["v"] = "VISUAL",
+  ["V"] = "VISUAL LINE",
+  [""] = "VISUAL BLOCK",
+  ["s"] = "SELECT",
+  ["S"] = "SELECT LINE",
+  [""] = "SELECT BLOCK",
+  ["i"] = "INSERT",
+  ["ic"] = "INSERT",
+  ["R"] = "REPLACE",
+  ["Rv"] = "VISUAL REPLACE",
+  ["c"] = "COMMAND",
+  ["cv"] = "VIM EX",
+  ["ce"] = "EX",
+  ["r"] = "PROMPT",
+  ["rm"] = "MOAR",
+  ["r?"] = "CONFIRM",
+  ["!"] = "SHELL",
+  ["t"] = "TERMINAL",
 }
-
--- local modes = {
---   ["n"] = "NORMAL",
---   ["no"] = "NORMAL",
---   ["v"] = "VISUAL",
---   ["V"] = "VISUAL LINE",
---   [""] = "VISUAL BLOCK",
---   ["s"] = "SELECT",
---   ["S"] = "SELECT LINE",
---   [""] = "SELECT BLOCK",
---   ["i"] = "INSERT",
---   ["ic"] = "INSERT",
---   ["R"] = "REPLACE",
---   ["Rv"] = "VISUAL REPLACE",
---   ["c"] = "COMMAND",
---   ["cv"] = "VIM EX",
---   ["ce"] = "EX",
---   ["r"] = "PROMPT",
---   ["rm"] = "MOAR",
---   ["r?"] = "CONFIRM",
---   ["!"] = "SHELL",
---   ["t"] = "TERMINAL",
--- }
 
 local function filepath()
   local fpath = vim.fn.fnamemodify(vim.fn.expand("%"), ":~:.:h")
@@ -65,32 +42,6 @@ local function mode()
   -- return string.format(" %s ", modes[current_mode]):upper()
   return string.format("%s", modes[current_mode]):upper()
 end
-
-local function update_mode_colors()
-  local current_mode = vim.api.nvim_get_mode().mode
-  local mode_color = "%#StatusLineAccent#"
-  if current_mode == "n" then
-    mode_color = "%#StatuslineAccent#"
-  elseif current_mode == "i" or current_mode == "ic" then
-    mode_color = "%#StatuslineInsertAccent#"
-  elseif current_mode == "v" or current_mode == "V" or current_mode == "" then
-    mode_color = "%#StatuslineVisualAccent#"
-  elseif current_mode == "R" then
-    mode_color = "%#StatuslineReplaceAccent#"
-  elseif current_mode == "c" then
-    mode_color = "%#StatuslineCmdLineAccent#"
-  elseif current_mode == "t" then
-    mode_color = "%#StatuslineTerminalAccent#"
-  end
-  return mode_color
-end
-
-vim.cmd("hi StatuslineAccent guifg=" .. colors.green .. " guibg=" .. darken_float(colors.background_0, 0.3))
-vim.cmd("hi StatuslineInsertAccent guifg=" .. colors.yellow .. " guibg=" .. darken_float(colors.background_0, 0.3))
-vim.cmd("hi StatuslineVisualAccent guifg=" .. colors.purple .. " guibg=" .. darken_float(colors.background_0, 0.3))
-vim.cmd("hi StatuslineReplaceAccent guifg=" .. colors.blue .. " guibg=" .. darken_float(colors.background_0, 0.3))
-vim.cmd("hi StatuslineCmdLineAccent guifg=" .. colors.red .. " guibg=" .. darken_float(colors.background_0, 0.3))
-vim.cmd("hi StatuslineTerminalAccent guifg=" .. colors.red .. " guibg=" .. darken_float(colors.background_0, 0.3))
 
 local workspace_root = function()
   local root = vim.fn.getcwd()
@@ -118,11 +69,11 @@ end
 
 local function modified()
   if vim.bo.modified then
-    return "  "
+    return "  "
   elseif vim.bo.modifiable == false or vim.bo.readonly == true then
     return "   "
   end
-  return " "
+  return ""
 end
 
 local function filename()
@@ -202,7 +153,7 @@ Statusline = {}
 
 local function reg_recording()
   if vim.fn.reg_recording() ~= "" then
-    return " 綠"
+    return " "
   else
     return ""
   end
@@ -217,6 +168,7 @@ vim.api.nvim_create_autocmd("RecordingEnter", {
 Statusline.active = function()
   return table.concat({
     "%#StatuslineNC#",
+    -- mode(),
     reg_recording(),
     modified(),
     filepath(),

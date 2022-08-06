@@ -29,7 +29,7 @@ telescope.setup({
   },
 })
 
-require("plugin-config.telescope_layouts").setup()
+require("plugin.telescope_layouts").setup()
 
 PREVIEW = function()
   return require("telescope.themes").get_ivy({

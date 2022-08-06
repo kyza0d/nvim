@@ -1,19 +1,14 @@
-local status_ok, bufferline = pcall(require, "bufferline")
-
-if not status_ok then
-  return
-end
-
 local darken = require("palette.utils").darken_float
 local colors = require("palette").colors
 
 local workspace_root = require("utils").workspace_root
 local icons = require("utils").getvar("icons")
 
-bufferline.setup({
+require("bufferline").setup({
   options = {
     indicator_icon = " ",
     separator_style = { "", "" },
+    -- separator_style = "slant",
     right_mouse_command = "Bdelete! %d",
     show_buffer_close_icons = false,
     enforce_regular_tabs = false,

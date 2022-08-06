@@ -27,9 +27,6 @@ keymap("n", "<A-]>", ":Gitsigns next_hunk")
 keymap("i", "<C-l>", "<Right>")
 keymap("i", "<C-h>", "<Left>")
 
--- Hop Char
-keymap("n", "s", ":HopChar1")
-
 -- Zenmode
 keymap("n", "<F11>", ":ZenMode")
 

@@ -9,6 +9,7 @@ vim.cmd([[syntax enable]])
 local config = {
   relativenumber = false,
   cmdheight = 0,
+  cursorline = false,
   number = true,
   laststatus = 2,
   pumheight = 10,
@@ -21,6 +22,37 @@ local config = {
     telescope = "single",
     completion = "none",
   },
+
+  scrolloff = 8,
+  signcolumn = "yes",
+  numberwidth = 3,
+  termguicolors = true,
+  showmode = false,
+
+  -- Wrapping
+  wrap = true,
+  textwidth = 80,
+  linebreak = true,
+
+  -- Indentation
+  tabstop = 2,
+  softtabstop = 2,
+  shiftwidth = 2,
+  expandtab = true,
+  autoindent = true,
+  breakindent = true,
+  breakindentopt = "shift:4",
+
+  -- Behavior
+  hidden = true,
+  timeoutlen = 300,
+  updatetime = 300,
+  ignorecase = true,
+  lazyredraw = true,
+  swapfile = false,
+  smartcase = true,
+  backup = false,
+  mouse = "a",
 
   show_icons = true,
 
@@ -70,37 +102,6 @@ local config = {
     { " ", "Operator" },
     { " ", "TypeParameter" },
   },
-
-  scrolloff = 8,
-  signcolumn = "yes",
-  numberwidth = 3,
-  termguicolors = true,
-  showmode = false,
-
-  -- Wrapping
-  wrap = true,
-  textwidth = 80,
-  linebreak = true,
-
-  -- Indentation
-  tabstop = 2,
-  softtabstop = 2,
-  shiftwidth = 2,
-  expandtab = true,
-  autoindent = true,
-  breakindent = true,
-  breakindentopt = "shift:4",
-
-  -- Behavior
-  hidden = true,
-  timeoutlen = 300,
-  updatetime = 300,
-  ignorecase = true,
-  lazyredraw = true,
-  swapfile = false,
-  smartcase = true,
-  backup = false,
-  mouse = "a",
 }
 
 vim.cmd([[
@@ -127,7 +128,7 @@ vim.opt.fillchars:append({
   foldsep = " ",
   vertleft = "▕",
   eob = " ",
-  -- horiz = "🮀",
+  horiz = " ",
 })
 
 vim.wo.foldlevel = 90 -- feel free to decrease the value

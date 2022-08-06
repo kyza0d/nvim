@@ -3,7 +3,7 @@ local highlights = require("neo-tree.ui.highlights")
 require("neo-tree").setup({
 
   enable_diagnostics = false,
-  enable_git_status = true,
+  enable_git_status = false,
 
   default_component_configs = {
     name = {
@@ -84,7 +84,7 @@ require("neo-tree").setup({
       {
         "container",
         width = "100%",
-        right_padding = 1,
+        right_padding = 3,
         content = {
           {
             "name",
