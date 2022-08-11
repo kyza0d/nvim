@@ -1,4 +1,5 @@
-vim.opt.background = "dark"
+-- vim.opt.background = "light"
+
 vim.cmd([[
   hi clear Normal
 ]])
@@ -36,7 +37,6 @@ palette.setup({
         CursorLineNr = { bg = "none" },
         FoldColumn = {fg = "none"},
       },
-
     },
 
     ["plastic"] = {
@@ -59,6 +59,11 @@ palette.setup({
       foreground = {"#ABB2BF", "#606571"},
       lightness = -0.4,
   },
+
+    ["gruvbox"] = {
+      background = {"#282828", "#ffffff"},
+      foreground = {"#f4dbc1", "#606571"},
+    },
 
     ["solarized8"] = {
       background   = { "#002B36", "#FDF6E3" },
@@ -96,10 +101,8 @@ palette.setup({
 
       highlights = {
         TSConstructor = { gui = "none", fg = "#EFDCBC" },
-        TSTag = { gui = "none", fg = "#EFDCBC" }
+        TSTag = { gui = "none", fg = "#EFDCBC" },
       }
     },
   },
 })
-
-vim.cmd([[colorscheme summer-time]])

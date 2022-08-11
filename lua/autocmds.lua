@@ -45,11 +45,6 @@ vim.api.nvim_create_autocmd("BufEnter", {
 })
 
 vim.api.nvim_create_autocmd("Filetype", {
-  command = "setlocal laststatus=0",
-  pattern = { "qf", "Trouble" },
-})
-
-vim.api.nvim_create_autocmd("Filetype", {
   command = "nnoremap <silent> <buffer> q :close<cr>",
   pattern = { "Trouble", "neo-tree", "help" },
 })

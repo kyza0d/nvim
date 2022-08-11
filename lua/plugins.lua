@@ -1,3 +1,5 @@
+vim.g.copilot_node_command = "~/.nvm/versions/node/v16.16.0/bin/node"
+
 vim.cmd([[
   imap <silent><script><expr> <C-J> copilot#Accept("\<CR>")
   let g:copilot_no_tab_map = v:true
@@ -21,18 +23,15 @@ local plugins = {
     end,
   },
 
-  -- Pretty diagnostics
-  ["folke/trouble.nvim"] = {
-    requires = "kyazdani42/nvim-web-devicons",
-    config = function()
-      require("trouble").setup({})
-    end,
-  },
-
   -- Inject LSP actions
   ["jose-elias-alvarez/null-ls.nvim"] = {
     config = "language-server.null-ls",
     requires = "jose-elias-alvarez/nvim-lsp-ts-utils",
+  },
+
+  -- Display LSP actions in a pretty window
+  ["folke/trouble.nvim"] = {
+    config = "plugin.trouble",
   },
 
   -- Surround motions
@@ -60,9 +59,9 @@ local plugins = {
     },
   },
 
-  "~/github/dark-pines/",
   "~/github/summer-time/",
-  "~/github/summer-night/",
+  "Mofiqul/vscode.nvim",
+
   ["~/github/aura/"] = {
     config = "plugin.aura",
   },
@@ -119,6 +118,7 @@ local plugins = {
 
   -- Integrated terminal
   ["akinsho/toggleterm.nvim"] = {
+    tag = "v2.1.0",
     config = "plugin.terminal",
   },
 
@@ -178,21 +178,16 @@ if status_ok then
   packer.startup({
     function(use)
       for key, plugin in pairs(plugins) do
-        -- Don't throw an error if the plugin is not found
-        pcall(function()
-          plugin[1] = key
-          -- if the plugin has config values
-          if type(plugin) == "table" then
-            if type(plugin.config) == "string" then
-              -- require config path
-              plugin.config = require(plugin.config)
+        pcall(function() -- Don't throw an error if the plugin is not found
+          plugin[1] = key -- Use key as plugin name
+          if type(plugin) == "table" then -- if the plugin has config values
+            if type(plugin.config) == "string" then -- if only a name is provied
+              plugin.config = require(plugin.config) -- require config path
             elseif type(plugin.config) == "function" then
-              -- or call the config function
-              plugin.config = plugin.config()
+              plugin.config = plugin.config() -- or call config function
             end
           end
         end, key, plugin)
-
         use(plugin)
       end
     end,

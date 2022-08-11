@@ -135,7 +135,7 @@ local space_mappings = {
       t = { "<cmd>colorscheme torte<cr>", "torte" },
       i = { "<cmd>colorscheme industry<cr>", "industry" },
     },
-    p = { "<cmd>colorscheme paper<cr>", "papercolors" },
+    p = { "<cmd>colorscheme papercolors<cr>", "papercolors" },
     h = { "<cmd>colorscheme hybrid<cr>", "hybrid" },
     u = { "<cmd>colorscheme urara<cr>", "urara" },
     j = { "<cmd>colorscheme j_blow<cr>", "j_blow" },
@@ -219,7 +219,7 @@ which_key.setup({
 
   icons = {
     breadcrumb = "",
-    separator = "",
+    separator = "->",
     group = "",
   },
 

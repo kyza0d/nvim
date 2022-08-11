@@ -15,7 +15,8 @@ local select_next_item = function(fallback)
 end
 
 local cmp_autopairs = require("nvim-autopairs.completion.cmp")
-cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done({ map_char = { tex = "" } }))
+local cmp = require("cmp")
+cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
 
 local keymaps = {
   ["<Tab>"] = cmp.mapping({
@@ -107,8 +108,8 @@ require("cmp").setup({
   mapping = cmp.mapping.preset.insert(keymaps),
 
   formatting = {
-    fields = { "kind", "abbr", "menu" },
-    -- fields = { "abbr", "menu" },
+    -- fields = { "kind", "abbr", "menu" },
+    fields = { "abbr", "menu" },
     format = function(entry, vim_item)
       vim_item.kind = string.format("%s", kind_icons[vim_item.kind])
       vim_item.menu = ({

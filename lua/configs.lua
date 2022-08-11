@@ -1,9 +1,6 @@
 vim.g.vitex_view_method = "zathura"
 vim.g.vimtex_view_forward_search_on_start = false
 
--- vim.cmd[[au VimEnter * hi! Normal guibg=none]]
--- vim.cmd[[au VimEnter * hi! EndOfBuffer guibg=none]]
-
 vim.cmd([[syntax enable]])
 
 local config = {
@@ -11,21 +8,17 @@ local config = {
   cmdheight = 0,
   cursorline = false,
   number = true,
-  laststatus = 2,
+  linespace = 3,
+  numberwidth = 0,
+  laststatus = 3,
   pumheight = 10,
   foldcolumn = "0",
   splitright = true,
   foldcolumndigits = false,
   foldmethod = "manual",
 
-  borders = {
-    telescope = "single",
-    completion = "none",
-  },
-
   scrolloff = 8,
   signcolumn = "yes",
-  numberwidth = 3,
   termguicolors = true,
   showmode = false,
 
@@ -102,21 +95,12 @@ local config = {
     { " ", "Operator" },
     { " ", "TypeParameter" },
   },
+
+  borders = {
+    telescope = "single",
+    completion = "none",
+  },
 }
-
-vim.cmd([[
-" hi Cursor guibg=#268BD2
-" hi CursorIM guibg=#268BD2
-" hi lCursor guibg=#268BD2
-" hi rCursor guibg=#268BD2
-
-set guicursor=n-c:block-Cursor
-  \,v:block-CursorIM
-  \,i-ci-ve:ver25-lCursor
-  \,r-cr:hor20-rCursor
-  \,o:hor50
-  \,sm:block-blinkwait175-blinkoff150-blinkon175
-]])
 
 vim.opt.fillchars:append({
   -- vert = "▏",

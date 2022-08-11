@@ -1,9 +1,9 @@
 local create_autocmd = vim.api.nvim_create_autocmd
 
 local get_buf_info = require("utils").get_buf_info
+local devicons = require("nvim-web-devicons")
 
 local colors = require("palette").colors
-local darken_float = require("palette.utils").darken_float
 
 local modes = {
   ["n"] = "NORMAL",
@@ -28,19 +28,9 @@ local modes = {
   ["t"] = "TERMINAL",
 }
 
-local function filepath()
-  local fpath = vim.fn.fnamemodify(vim.fn.expand("%"), ":~:.:h")
-  if fpath == "" or fpath == "." then
-    return " "
-  end
-
-  return string.format(" %%<%s/", fpath)
-end
-
 local function mode()
   local current_mode = vim.api.nvim_get_mode().mode
-  -- return string.format(" %s ", modes[current_mode]):upper()
-  return string.format("%s", modes[current_mode]):upper()
+  return string.format(" %s ", modes[current_mode]):upper()
 end
 
 local workspace_root = function()
@@ -76,12 +66,17 @@ local function modified()
   return ""
 end
 
-local function filename()
-  local fname = vim.fn.expand("%:t")
-  if fname == "" then
-    return ""
+local filename = function()
+  local filename = vim.fn.expand("%:t")
+  local extension = vim.fn.expand("%:e")
+  local file_path = '%{expand("%:p:h:t")}/%{expand("%:p:t")}'
+
+  local icon, highlight = require("nvim-web-devicons").get_icon(filename, extension)
+
+  if icon == nil then
+    icon = " "
   end
-  return fname .. " "
+  return " " .. icon .. " " .. file_path .. " "
 end
 
 local navic = function()
@@ -143,6 +138,7 @@ require("nvim-navic").setup({
     Operator = "  ",
     TypeParameter = "  ",
   },
+
   highlight = false,
   separator = "  ",
   depth_limit = 0,
@@ -153,7 +149,7 @@ Statusline = {}
 
 local function reg_recording()
   if vim.fn.reg_recording() ~= "" then
-    return " "
+    return "  "
   else
     return ""
   end
@@ -165,18 +161,19 @@ vim.api.nvim_create_autocmd("RecordingEnter", {
   end,
 })
 
+vim.cmd([[hi Mode guibg=#313335 guifg=#ABB2BF]])
 Statusline.active = function()
   return table.concat({
+    "%#Mode#",
+    mode(),
     "%#StatuslineNC#",
-    -- mode(),
     reg_recording(),
     modified(),
-    filepath(),
     filename(),
     navic(),
-    "%=%#StatusLineExtra#",
+    "%=%#StatusLineExtra# ",
     search_result(),
-    "%l:%c ",
+    " %l:%c ",
     "  ",
     workspace_root(),
     " ",

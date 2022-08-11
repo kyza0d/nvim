@@ -37,9 +37,12 @@ M.on_attach = function(cilent, bufnr)
 
   M.lsp_document_highlight(cilent, bufnr)
 
-  client.server_capabilities.documentFormattingProvider = false
+  -- client.server_capabilities.documentFormattingProvider = false
 
   -- Avoid formatting confict with null-ls
+  -- client.server_capabilities.document_formatting = false -- 0.7 and earlier
+  client.server_capabilities.document_formatting = false -- 0.7 and earlier
+  client.server_capabilities.documentFormattingProvider = false -- 0.8 and later
 
   vim.api.nvim_create_autocmd("CursorHold", {
     buffer = bufnr,

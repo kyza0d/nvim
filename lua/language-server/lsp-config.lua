@@ -14,10 +14,10 @@ local on_attach = require("language-server.handlers").on_attach
 local servers = {
   "sumneko_lua",
   "bashls",
-  "cssls",
   "vimls",
   "texlab",
   "jsonls",
+  "cssls",
   "tsserver",
   "clangd",
   "jedi_language_server",
