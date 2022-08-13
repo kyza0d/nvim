@@ -84,6 +84,21 @@ local border = {
   { b.v, "FloatBorder" },
 }
 
+-- vim.cmd([[hi Completion guifg=#666666]])
+-- vim.cmd([[hi CompletionTop guifg=#666666 gui=underline guisp=#ffffff]])
+-- vim.cmd([[hi CompletionBottom guifg=#666666 gui=strikethrough]])
+--
+-- local border = {
+--   { "", "Completion" },
+--   { "", "CompletionTop" },
+--   { "", "Completion" },
+--   { "▏", "Completion" },
+--   { "", "Completion" },
+--   { "", "CompletionBottom" },
+--   { "", "Completion" },
+--   { "▕", "Completion" },
+-- }
+
 require("cmp").setup({
 
   snippet = {
@@ -108,8 +123,7 @@ require("cmp").setup({
   mapping = cmp.mapping.preset.insert(keymaps),
 
   formatting = {
-    -- fields = { "kind", "abbr", "menu" },
-    fields = { "abbr", "menu" },
+    fields = { "kind", "abbr", "menu" },
     format = function(entry, vim_item)
       vim_item.kind = string.format("%s", kind_icons[vim_item.kind])
       vim_item.menu = ({
@@ -136,9 +150,9 @@ require("cmp").setup({
     { name = "buffer" },
     { name = "path", trigger_characters = { "/", "." } },
   }),
-  -- experimental = {
-  --   ghost_text = false,
-  -- },
+  experimental = {
+    ghost_text = true,
+  },
 })
 
 require("cmp").setup.cmdline(":", {

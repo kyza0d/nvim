@@ -16,7 +16,7 @@ local blend = require("palette.utils").blend
 -- stylua: ignore
 palette.setup({
   on_change = function()
-    vim.cmd([[source ~/.config/nvim/lua/statusline.lua]])
+    vim.cmd([[source ~/.config/nvim/lua/plugin/lualine.lua]])
     vim.cmd([[source ~/.config/nvim/lua/plugin/bufferline.lua]])
   end,
 
@@ -53,12 +53,6 @@ palette.setup({
       lightness = -0.2,
     },
 
-
-    ["onedark"] =  {
-      background = {"#24272d", "#eeeeee"},
-      foreground = {"#ABB2BF", "#606571"},
-      lightness = -0.4,
-  },
 
     ["gruvbox"] = {
       background = {"#282828", "#ffffff"},

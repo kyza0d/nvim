@@ -14,6 +14,21 @@ local plugins = {
     config = "plugin.telescope",
   },
 
+  -- Statusline
+  ["nvim-lualine/lualine.nvim"] = {
+    config = function()
+      require("plugin.lualine")
+    end,
+  },
+
+  ["SmiteshP/nvim-navic"] = {
+    config = function()
+      require("nvim-navic").setup({
+        separator = "  ",
+      })
+    end,
+  },
+
   -- Pair completion
   ["windwp/nvim-autopairs"] = {
     config = function()
@@ -60,7 +75,8 @@ local plugins = {
   },
 
   "~/github/summer-time/",
-  "Mofiqul/vscode.nvim",
+
+  "navarasu/onedark.nvim",
 
   ["~/github/aura/"] = {
     config = "plugin.aura",
@@ -122,9 +138,6 @@ local plugins = {
     config = "plugin.terminal",
   },
 
-  -- Code depth indication
-  "SmiteshP/nvim-navic",
-
   -- Commenting
   ["numToStr/Comment.nvim"] = {
     tag = "v0.6.1",
@@ -178,11 +191,16 @@ if status_ok then
   packer.startup({
     function(use)
       for key, plugin in pairs(plugins) do
-        pcall(function() -- Don't throw an error if the plugin is not found
-          plugin[1] = key -- Use key as plugin name
-          if type(plugin) == "table" then -- if the plugin has config values
-            if type(plugin.config) == "string" then -- if only a name is provied
-              plugin.config = require(plugin.config) -- require config path
+        -- Don't throw an error if the plugin is not found
+        pcall(function()
+          -- set key plugin name
+          plugin[1] = key
+          -- if the `plugin` has config values
+          if type(plugin) == "table" then
+            -- if only a name is provied
+            if type(plugin.config) == "string" then
+              -- require config path
+              plugin.config = require(plugin.config)
             elseif type(plugin.config) == "function" then
               plugin.config = plugin.config() -- or call config function
             end

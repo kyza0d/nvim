@@ -6,7 +6,7 @@ local icons = require("utils").getvar("icons")
 
 require("bufferline").setup({
   options = {
-    indicator_icon = " ",
+    indicator_icon = "▎",
     separator_style = { "", "" },
     -- separator_style = "slant",
     right_mouse_command = "Bdelete! %d",

@@ -19,6 +19,7 @@ local servers = {
   "jsonls",
   "cssls",
   "tsserver",
+  "svelte",
   "clangd",
   "jedi_language_server",
 }
