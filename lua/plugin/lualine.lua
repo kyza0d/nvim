@@ -28,28 +28,28 @@ local background_0 = darken(colors.background_0, 9)
 
 local theme = {
   normal = {
-    c = { bg = background_0, fg = colors.foreground_3, gui = "italic" },
-    x = { bg = background_0, fg = colors.foreground_3, gui = "italic" },
+    c = { bg = background_0, fg = colors.foreground_3 },
+    x = { bg = background_0, fg = colors.foreground_3 },
   },
   insert = {
-    c = { bg = background_0, fg = colors.foreground_3, gui = "italic" },
-    x = { bg = background_0, fg = colors.foreground_3, gui = "italic" },
+    c = { bg = background_0, fg = colors.foreground_3 },
+    x = { bg = background_0, fg = colors.foreground_3 },
   },
   visual = {
-    c = { bg = background_0, fg = colors.foreground_3, gui = "italic" },
-    x = { bg = background_0, fg = colors.foreground_3, gui = "italic" },
+    c = { bg = background_0, fg = colors.foreground_3 },
+    x = { bg = background_0, fg = colors.foreground_3 },
   },
   replace = {
-    c = { bg = background_0, fg = colors.foreground_3, gui = "italic" },
-    x = { bg = background_0, fg = colors.foreground_3, gui = "italic" },
+    c = { bg = background_0, fg = colors.foreground_3 },
+    x = { bg = background_0, fg = colors.foreground_3 },
   },
   command = {
-    c = { bg = background_0, fg = colors.foreground_3, gui = "italic" },
-    x = { bg = background_0, fg = colors.foreground_3, gui = "italic" },
+    c = { bg = background_0, fg = colors.foreground_3 },
+    x = { bg = background_0, fg = colors.foreground_3 },
   },
   inactive = {
-    c = { bg = background_0, fg = colors.foreground_3, gui = "italic" },
-    x = { bg = background_0, fg = colors.foreground_3, gui = "italic" },
+    c = { bg = background_0, fg = colors.foreground_3 },
+    x = { bg = background_0, fg = colors.foreground_3 },
   },
 }
 
@@ -94,25 +94,16 @@ end
 
 ins_left({
   function()
-    return "▌"
+    return "▎"
   end,
-  color = { fg = colors.blue }, -- Sets highlighting of component
+  color = { fg = colors.accent }, -- Sets highlighting of component
   padding = { left = 0, right = 0 }, -- We don't need space before this
 })
 
 ins_left({
-  -- filesize component
-  "filesize",
-  cond = conditions.buffer_not_empty,
-})
-
-ins_left({ "location" })
-
-ins_left({ "progress" })
-
-ins_left({
-  "filename",
-  show_filename_only = false,
+  function()
+    return '%{expand("%:p:h:t")}/%{expand("%:p:t")}'
+  end,
   cond = conditions.buffer_not_empty,
 })
 
@@ -160,21 +151,20 @@ ins_left({
   cond = require("nvim-navic").is_available,
 })
 
--- Add components to right sections
-ins_right({
-  "o:encoding", -- option component same as &encoding in viml
-  fmt = string.upper, -- I'm not sure why it's upper case either ;)
-  cond = conditions.hide_in_width,
-})
-
 ins_right({
   function()
-    local root = vim.fn.getcwd()
-    local workspace = root:sub(root:find("[^/]*$"))
-    if workspace == "evan" then
-      workspace = "~"
+    if vim.v.hlsearch == 0 then
+      return ""
     end
-    return workspace
+
+    local last_search = vim.fn.getreg("/")
+
+    if not last_search or last_search == "" then
+      return ""
+    end
+
+    local searchcount = vim.fn.searchcount({ maxcount = 9999 })
+    return "/" .. last_search .. "[" .. searchcount.current .. "/" .. searchcount.total .. "]"
   end,
 })
 
@@ -192,6 +182,17 @@ ins_right({
     removed = { fg = colors.foreground_3 },
   },
   cond = conditions.hide_in_width,
+})
+
+ins_right({
+  function()
+    local root = vim.fn.getcwd()
+    local workspace = root:sub(root:find("[^/]*$"))
+    if workspace == "evan" then
+      workspace = "~"
+    end
+    return "  " .. workspace
+  end,
 })
 
 -- Now don't forget to initialize lualine

@@ -6,8 +6,8 @@ local keymap = require("utils").keymap
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
-keymap("n", "<F2>", "<cmd>lua _lazygit:toggle()<CR>", { noremap = true, silent = true })
-keymap("n", "<F3>", "<cmd>lua _spotify:toggle()<CR>", { noremap = true, silent = true })
+keymap("n", "<F2>", ":lua _lazygit:toggle()")
+keymap("n", "<F3>", ":lua _spotify:toggle()")
 
 -- Bufferline
 keymap("n", "<S-l>", "<cmd>BufferLineCycleNext<cr>")
@@ -29,19 +29,19 @@ keymap("i", "<C-h>", "<Left>")
 -- LSP
 keymap("n", "[d", ":lua vim.diagnostic.goto_prev()")
 keymap("n", "]d", ":lua vim.diagnostic.goto_next()")
-
 keymap("n", "gR", ":lua vim.lsp.buf.rename()")
 keymap("n", ">", ":lua vim.lsp.buf.code_action()")
 keymap("n", "K", ":lua vim.lsp.buf.hover()")
+keymap("n", "gd", ":lua vim.lsp.buf.definition()")
 
 -- Trouble lsp
 keymap("n", "gr", ":Trouble lsp_references")
-keymap("n", "gd", ":Trouble lsp_definitions")
 keymap("n", "gD", ":Trouble workspace_diagnostics")
 
 -- Telescope
 keymap({ "n", "v" }, "<C-p>", ':lua require("telescope.builtin").find_files(PREVIEW())')
 keymap({ "n", "v" }, "?", ':lua require("telescope.builtin").live_grep(PREVIEW())')
+-- keymap({ "n", "v" }, "/", ':lua require("telescope.builtin").current_buffer_fuzzy_find(DROPDOWN())')
 
 -- Commenting
 keymap("i", "<C-/>", "<esc>:norm gcA<cr>a")
@@ -53,8 +53,10 @@ keymap("t", "<C-\\>", "<cmd>ToggleTerm<cr>", { noremap = true })
 keymap("n", "<C-\\>", ":ToggleTerm")
 
 -- Toggle filetree
+-- keymap("n", "<C-n>", ":Neotree float focus toggle")
 keymap("n", "<C-n>", ":Neotree focus toggle")
 
+-- Folds
 keymap("n", "<C-S-h>", ":foldclose")
 keymap("n", "<C-S-l>", ":foldopen")
 
@@ -74,8 +76,6 @@ keymap("n", "<C-CR>", "<C-^>", { silent = false })
 -- New lines
 keymap("i", "<C-CR>", "<C-o>o")
 keymap("i", "<C-S-CR>", "<C-o>O")
-
--- keymap("n", "gr", ":Trouble lsp_references")
 
 -- Copy to system clipboard
 keymap({ "n", "v" }, "<C-c>", '"+y')
@@ -98,8 +98,11 @@ keymap({ "n", "v" }, "gg", ":1")
 keymap({ "n", "v" }, "<C-b>", "<C-v>")
 
 -- Vertical movement
-keymap("n", "<C-u>", "1<C-y>")
-keymap("n", "<C-d>", "1<C-e>")
+keymap("n", "<C-u>", "2<C-y>")
+keymap("n", "<C-d>", "2<C-e>")
 
 -- For ":norm" commands
 keymap("c", "<C-l>", "$", { silent = false })
+
+-- Repeat from insert mode
+keymap("n", "<C-.>", "<Esc>.", { silent = false })

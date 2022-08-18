@@ -13,6 +13,8 @@ end
 local colors = palette.colors
 local blend = require("palette.utils").blend
 
+-- vim.cmd([[colorscheme morning]])
+
 -- stylua: ignore
 palette.setup({
   on_change = function()
@@ -24,7 +26,7 @@ palette.setup({
 
   colors = {
     ["*"] = {
-      background = { "#181A1B", "#efefef" },
+      background = { "#1d2023", "#efefef" },
       foreground = { "#ced2da", "#383A42" },
       red        = { "#E86671", "#E45649" },
       green      = { "#6B8E23", "#50A14F" },
@@ -43,16 +45,19 @@ palette.setup({
       background = {"#13171C", "#ffffff"},
     },
 
+    ["vscode"] = {
+      background = {"#1E1E1E", "#ffffff"},
+      foreground = {"#bbbbbb", "#000000"},
+    },
+
+    ["onedark"] = {
+      background = {"#202226", "#ffffff"},
+      foreground = {"#c9cfdb", "#000000"}
+    },
+
     ["dark-pines"] = {
       lightness = -0.2,
     },
-
-    ["iceberg"] = {
-      background = {"#161820", "#eeeeee"},
-      foreground = {"#ABB2BF", "#606571"},
-      lightness = -0.2,
-    },
-
 
     ["gruvbox"] = {
       background = {"#282828", "#ffffff"},

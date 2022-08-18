@@ -21,6 +21,7 @@ local plugins = {
     end,
   },
 
+  -- Statusline code depth indicator
   ["SmiteshP/nvim-navic"] = {
     config = function()
       require("nvim-navic").setup({
@@ -75,6 +76,8 @@ local plugins = {
   },
 
   "~/github/summer-time/",
+  "~/github/summer-night/",
+  "Mofiqul/vscode.nvim",
 
   "navarasu/onedark.nvim",
 
@@ -166,6 +169,7 @@ local plugins = {
       vim.cmd([[
         let g:copilot_filetypes = {
           \ '*': v:true,
+          \ 'TelescopePrompt': v:false,
           \ }
       ]])
     end,

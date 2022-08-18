@@ -6,14 +6,12 @@ require("neo-tree").setup({
   enable_git_status = false,
 
   default_component_configs = {
-    name = {
-      use_git_status_colors = true,
-    },
-
     indent = {
-      indent_marker = "▕",
-      last_indent_marker = "▕",
+      with_markers = true,
+      indent_marker = "🭵 ",
+      last_indent_marker = "🭵	",
       expander_highlight = "NeoTreeExpander",
+      with_expanders = false,
     },
 
     icon = {
@@ -24,10 +22,6 @@ require("neo-tree").setup({
 
     modified = {
       symbol = "",
-    },
-
-    git_status = {
-      symbols = false,
     },
   },
 
@@ -70,7 +64,6 @@ require("neo-tree").setup({
         "container",
         width = "100%",
         right_padding = 1,
-        --max_width = 60,
         content = {
           { "name", zindex = 10 },
           { "clipboard", zindex = 10 },
@@ -88,7 +81,7 @@ require("neo-tree").setup({
         content = {
           {
             "name",
-            use_git_status_colors = true,
+            -- use_git_status_colors = true,
             zindex = 10,
           },
           { "clipboard", zindex = 10 },

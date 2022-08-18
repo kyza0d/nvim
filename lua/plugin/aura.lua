@@ -27,8 +27,9 @@ local horizon = {
 local dark = {
   primary = { "#eeeeee", "#ffffff" },
   secondary = { "#666666", "#ffffff" },
-  background = { "#111111", "#ffffff" },
+  background = { "#0a0a0a", "#ffffff" },
   foreground = { "#8c8c8c", "#ffffff" },
+  accent = { "#666666", "#ffffff" },
   comment = { "#444444", "#ffffff" },
 }
 

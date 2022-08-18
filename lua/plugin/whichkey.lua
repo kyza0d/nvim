@@ -4,6 +4,8 @@ if not status_ok then
   return
 end
 
+local send_command = require("functions").send_command
+
 local diagnostics_active = true
 
 local b = require("utils").getvar("borders").telescope
@@ -39,7 +41,8 @@ local space_mappings = {
 
   a = {
     name = "Actions",
-    r = { ":lua reload_nvim()<cr>", "Reload neovim" },
+    r = { ":lua reload_nvim()<cr>", "Start Server" },
+    -- r = { ":lua reload_nvim()<cr>", "Reload neovim" },
   },
 
   l = {
@@ -56,7 +59,6 @@ local space_mappings = {
     b = { ":Telescope git_branches<cr>", "Checkout branch" },
     c = { ":Telescope colorscheme<cr>", "Colorscheme" },
     r = { ":Telescope registers<cr>", "Registers" },
-    w = { ':lua require("telescope.builtin").live_grep(PREVIEW())<cr>', "Workspace" },
     p = { ":Telescope projects<cr>", "Projects" },
     k = { ":Telescope keymaps<cr>", "Keymaps" },
     h = { ":Telescope highlights<cr>", "Highlights" },
@@ -66,6 +68,7 @@ local space_mappings = {
     name = "Toggle",
     c = { ":ColorizerToggle", "Toggle Colorizer" },
     i = { ":IndentBlanklineToggle<cr>", "Toggle IndentBlankLine" },
+    s = { ":set invspell<cr>", "Spell" },
     l = {
       function()
         diagnostics_active = not diagnostics_active
@@ -85,6 +88,23 @@ local space_mappings = {
       function()
         require("telescope.builtin").find_files({
           cwd = "~/.config/nvim",
+          layout_strategy = "bottom_borders",
+          borderchars = {
+            prompt = { b.h, b.v, b.h, b.v, b.t_l, b.t_r, b.b_r, b.b_l },
+            preview = { b.h, b.v, b.h, b.v, b.h_b, b.t_r, b.b_r, b.b_l },
+            results = { b.h, b.v, b.h, b.v, b.v_r, b.v_l, b.h_t, b.b_l },
+          },
+          preview_title = "",
+          prompt_title = "",
+          results_title = "",
+        })
+      end,
+      ".neovim",
+    },
+    e = {
+      function()
+        require("telescope.builtin").find_files({
+          cwd = "~/.config/emacs/",
           layout_strategy = "bottom_borders",
           borderchars = {
             prompt = { b.h, b.v, b.h, b.v, b.t_l, b.t_r, b.b_r, b.b_l },
@@ -122,7 +142,8 @@ local space_mappings = {
     o = { "<cmd>colorscheme onedark<cr>", "onedark" },
     D = { "<cmd>colorscheme dark-pines<cr>", "dark-pines" },
     -- s = { "<cmd>colorscheme solarized<cr>", "solarized" },
-    s = { "<cmd>colorscheme summer-night<cr>", "summer-night" },
+    s = { "<cmd>colorscheme summer-time<cr>", "summer-time" },
+    S = { "<cmd>colorscheme summer-night<cr>", "summer_time" },
     g = { "<cmd>colorscheme gruvbox<cr>", "gruvbox" },
     v = { "<cmd>colorscheme vscode<cr>", "vscode" },
     t = { "<cmd>colorscheme tokyonight<cr>", "tokyonight" },
@@ -162,7 +183,6 @@ local cr_mappings = {
   q = { ":Bdelete!<cr>", "Close buffer" },
   d = { ":WhichKey \\<leader>d<cr>", "Dotfiles" },
   f = { ':lua require("telescope.builtin").live_grep(PREVIEW())<cr>', "Find" },
-  s = { ":set invspell<cr>", "Spell" },
   w = { ":w!<cr>", "Write buffer" },
   a = { ":norm @a<CR>", "Preform 'a' macro", silent = false },
   c = { ":PickColor<cr>", "Open colorpicker", silent = false },
@@ -174,8 +194,26 @@ local cr_mappings = {
     u = { ":Gitsigns undo_stage_hunk<cr>", "Undo stage" },
     c = { ':!git commit -m ""<Left>', "Git commit", silent = false },
   },
-  ["?"] = { ":Telescope man_pages<cr>", "Man pages" },
-  ["/"] = { ':lua require("telescope.builtin").help_tags(PREVIEW())<cr>', "Help" },
+  ["/"] = { ":lua require('telescope.builtin').help_tags(PREVIEW())<cr>", "Man pages" },
+  ["s"] = {
+    name = "Search",
+    ["s"] = {
+      function()
+        send_command("Search Google", function(value)
+          vim.cmd("silent :!xdg-open 'https://duckduckgo.com/?q=" .. value .. "&ia=definition'")
+        end)
+      end,
+      "Google",
+    },
+    ["g"] = {
+      function()
+        send_command("Search Github", function(value)
+          vim.cmd("silent :!xdg-open 'https://github.com/search?q=" .. value .. "&type=code'")
+        end)
+      end,
+      "Github",
+    },
+  },
 }
 
 local cr_mappings_visual = {

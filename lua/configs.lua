@@ -4,28 +4,26 @@ vim.g.vimtex_view_forward_search_on_start = false
 vim.cmd([[syntax enable]])
 
 local config = {
-  relativenumber = false,
+  -- Appearance
   cmdheight = 0,
-  cursorline = false,
   number = true,
   linespace = 3,
   numberwidth = 0,
   laststatus = 3,
-  pumheight = 10,
-  foldcolumn = "0",
+  pumheight = 13,
   splitright = true,
-  foldcolumndigits = false,
-  foldmethod = "manual",
 
   scrolloff = 8,
   signcolumn = "yes",
   termguicolors = true,
+  -- colorcolumn = "80",
   showmode = false,
 
   -- Wrapping
   wrap = true,
   textwidth = 80,
   linebreak = true,
+  foldcolumn = "0",
 
   -- Indentation
   tabstop = 2,
@@ -103,8 +101,7 @@ local config = {
 }
 
 vim.opt.fillchars:append({
-  -- vert = "▏",
-  vert = " ",
+  vert = "▏",
   vertright = "▏",
   fold = "🭳",
   foldclose = "",
@@ -112,10 +109,10 @@ vim.opt.fillchars:append({
   foldsep = " ",
   vertleft = "▕",
   eob = " ",
-  horiz = " ",
+  horiz = "▁",
 })
 
-vim.wo.foldlevel = 90 -- feel free to decrease the value
+vim.wo.foldlevel = 20
 vim.wo.foldenable = true
 
 for k, v in pairs(config) do
