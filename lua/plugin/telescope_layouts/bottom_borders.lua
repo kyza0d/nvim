@@ -54,8 +54,6 @@ function tc_utils.bottom_borders()
     local height_opt = layout_config.height
     local height = resolve.resolve_height(height_opt)(self, max_columns, max_lines)
 
-    prompt.border = results.border
-
     local bs = get_border_size(self)
 
     -- Cap over/undersized height
@@ -64,7 +62,7 @@ function tc_utils.bottom_borders()
     -- Height
     prompt.height = 1
     results.height = height - prompt.height
-    preview.height = results.height + prompt.height
+    preview.height = results.height + prompt.height + 1
 
     -- Width
     local w_space
@@ -75,22 +73,24 @@ function tc_utils.bottom_borders()
 
       preview.width = resolve.resolve_width(if_nil(layout_config.preview_width, 0.6))(self, width, max_lines)
       results.width = width - preview.width - w_space
-      prompt.width = results.width + 1
-      results.width = results.width + 1
+      prompt.width = results.width + 3
+      results.width = results.width + 3
     else
       width, w_space = calc_size_and_spacing(width, max_columns, bs, 1, 2, 0)
       preview.width = 0
-      results.width = width
+      results.width = width + 1
       prompt.width = results.width
     end
 
     -- Line
-    prompt.line = max_lines - results.height - (1 + bs) + 1
+    prompt.line = max_lines - results.height - (1 + bs) + 2
     results.line = prompt.line
-    preview.line = prompt.line
-    if results.border == true then
-      results.border = { 1, 1, 1, 1 }
-    end
+    preview.line = prompt.line + 1
+
+    results.border = { 1, 1, 0, 0 }
+    prompt.border = { 1, 0, 1, 0 }
+    preview.border = { 1, 1, 0, 1 }
+
     local width_padding = math.floor((max_columns - width) / 2)
 
     -- Col
@@ -108,19 +108,19 @@ function tc_utils.bottom_borders()
     if tbln then
       -- prompt.line = prompt.line + 1
       results.line = results.line + 1
-      preview.line = preview.line
+      preview.line = preview.line - 2
       prompt.line = prompt.line
     else
       results.line = results.line + 1
     end
-    prompt.line = prompt.line
-    results.line = results.line + 1
+    prompt.line = prompt.line - 1
+    results.line = results.line
 
-    preview.col = preview.col + 1
-    prompt.col = 2
-    results.col = 2
+    preview.col = preview.col
+    prompt.col = 1
+    results.col = 1
 
-    results.height = results.height - 1
+    results.height = results.height
 
     return {
       preview = self.previewer and preview.width > 0 and preview,

@@ -8,8 +8,8 @@ require("neo-tree").setup({
   default_component_configs = {
     indent = {
       with_markers = true,
-      indent_marker = "🭵 ",
-      last_indent_marker = "🭵	",
+      indent_marker = "│",
+      last_indent_marker = "╰",
       expander_highlight = "NeoTreeExpander",
       with_expanders = false,
     },

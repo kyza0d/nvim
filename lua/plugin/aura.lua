@@ -3,7 +3,7 @@
 local midnight = {
   primary = { "#5a7199", "#ffffff" },
   secondary = { "#00ACCE", "#ffffff" },
-  background = { "#101416", "#ffffff" },
+  background = { "#161b1e", "#ffffff" },
   foreground = { "#c1d3f2", "#ffffff" },
   comment = { "#3c4b66", "#ffffff" },
 }
@@ -33,4 +33,4 @@ local dark = {
   comment = { "#444444", "#ffffff" },
 }
 
-vim.g.aura = midnight
+vim.g.aura = dark

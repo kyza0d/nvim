@@ -1,9 +1,5 @@
 -- vim.opt.background = "light"
 
-vim.cmd([[
-  hi clear Normal
-]])
-
 local status_ok, palette = pcall(require, "palette")
 
 if not status_ok then
@@ -15,18 +11,20 @@ local blend = require("palette.utils").blend
 
 -- vim.cmd([[colorscheme morning]])
 
+
 -- stylua: ignore
 palette.setup({
   on_change = function()
     vim.cmd([[source ~/.config/nvim/lua/plugin/lualine.lua]])
-    vim.cmd([[source ~/.config/nvim/lua/plugin/bufferline.lua]])
+    -- vim.cmd([[source ~/.config/nvim/lua/plugin/bufferline.lua]])
   end,
 
   prefer = "dark",
 
   colors = {
     ["*"] = {
-      background = { "#1d2023", "#efefef" },
+      -- background = { "#212121", "#efefef" },
+      background = { "#1a1c1e", "#efefef" },
       foreground = { "#ced2da", "#383A42" },
       red        = { "#E86671", "#E45649" },
       green      = { "#6B8E23", "#50A14F" },
@@ -36,13 +34,18 @@ palette.setup({
       accent     = { "#61AFEF", "#0184BC" },
 
       highlights = {
-        CursorLineNr = { bg = "none" },
         FoldColumn = {fg = "none"},
       },
     },
 
     ["plastic"] = {
       background = {"#13171C", "#ffffff"},
+    },
+
+    ["everforest"] = {
+      background = {"#212121", "#ffffff"},
+      foreground = {"#d8d1c3", "#000000"},
+      accent = {"#83C092", "#ffffff"}
     },
 
     ["vscode"] = {
@@ -105,3 +108,6 @@ palette.setup({
     },
   },
 })
+
+vim.cmd([[colorscheme zenburn]])
+vim.cmd([[ hi! clear Normal ]])

@@ -1,14 +1,16 @@
 vim.g.vitex_view_method = "zathura"
 vim.g.vimtex_view_forward_search_on_start = false
 
+vim.g.traces_normal_preview = true
+
 vim.cmd([[syntax enable]])
 
 local config = {
   -- Appearance
-  cmdheight = 0,
+  cmdheight = 1,
   number = true,
   linespace = 3,
-  numberwidth = 0,
+  numberwidth = 1,
   laststatus = 3,
   pumheight = 13,
   splitright = true,
@@ -33,6 +35,7 @@ local config = {
   autoindent = true,
   breakindent = true,
   breakindentopt = "shift:4",
+  list = true,
 
   -- Behavior
   hidden = true,
@@ -55,10 +58,10 @@ local config = {
     { "~", "changed" },
     { "-", "removed" },
     { "", "modified" },
-    { " ", "error" },
-    { " !", "warning" },
-    { " ", "info" },
-    { "", "readonly" },
+    { "*", "error" },
+    { "*", "warning" },
+    { "*", "info" },
+    { "*", "readonly" },
     { " ", "folder" },
     { " ", "folder_open" },
     { " ", "chevron_r" },
@@ -100,6 +103,8 @@ local config = {
   },
 }
 
+-- vim.opt.listchars:append("lead:•")
+
 vim.opt.fillchars:append({
   vert = "▏",
   vertright = "▏",
@@ -109,7 +114,7 @@ vim.opt.fillchars:append({
   foldsep = " ",
   vertleft = "▕",
   eob = " ",
-  horiz = "▁",
+  horiz = "─",
 })
 
 vim.wo.foldlevel = 20

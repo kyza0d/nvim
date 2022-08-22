@@ -12,7 +12,7 @@ local b = require("utils").getvar("borders").telescope
 
 local space_mappings = {
   o = {
-    r = { ':lua require("telescope.builtin").oldfiles(PREVIEW())<cr>', "Recent files" },
+    r = { ':lua require("telescope.builtin").oldfiles(_preview())<cr>', "Recent files" },
     p = { ":Telescope project<cr>", "Project" },
   },
 
@@ -182,7 +182,7 @@ local cr_mappings = {
   t = { ":ToggleAlternate<cr>", "Toggle Alternate" },
   q = { ":Bdelete!<cr>", "Close buffer" },
   d = { ":WhichKey \\<leader>d<cr>", "Dotfiles" },
-  f = { ':lua require("telescope.builtin").live_grep(PREVIEW())<cr>', "Find" },
+  f = { ':lua require("telescope.builtin").live_grep(_preview())<cr>', "Find" },
   w = { ":w!<cr>", "Write buffer" },
   a = { ":norm @a<CR>", "Preform 'a' macro", silent = false },
   c = { ":PickColor<cr>", "Open colorpicker", silent = false },
@@ -194,14 +194,14 @@ local cr_mappings = {
     u = { ":Gitsigns undo_stage_hunk<cr>", "Undo stage" },
     c = { ':!git commit -m ""<Left>', "Git commit", silent = false },
   },
-  ["/"] = { ":lua require('telescope.builtin').help_tags(PREVIEW())<cr>", "Man pages" },
+  ["/"] = { ":lua require('telescope.builtin').help_tags(_preview())<cr>", "Man pages" },
   ["s"] = {
     name = "Search",
     ["s"] = {
       function()
         send_command("Search Google", function(value)
           vim.cmd("silent :!xdg-open 'https://duckduckgo.com/?q=" .. value .. "&ia=definition'")
-        end)
+        end, "   ")
       end,
       "Google",
     },
@@ -209,7 +209,7 @@ local cr_mappings = {
       function()
         send_command("Search Github", function(value)
           vim.cmd("silent :!xdg-open 'https://github.com/search?q=" .. value .. "&type=code'")
-        end)
+        end, "   ")
       end,
       "Github",
     },

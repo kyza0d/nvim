@@ -15,7 +15,6 @@ local select_next_item = function(fallback)
 end
 
 -- local cmp_autopairs = require("nvim-autopairs.completion.cmp")
--- local cmp = require("cmp")
 -- cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
 
 local keymaps = {
@@ -33,11 +32,12 @@ local keymaps = {
     end
   end, { "i", "s" }),
 
+  ["<C-Space>"] = cmp.mapping(cmp.mapping.complete(), { "i", "c" }),
+
   ["<C-n>"] = cmp.mapping(cmp.mapping.select_next_item(), { "i", "c" }),
   ["<C-p>"] = cmp.mapping(cmp.mapping.select_prev_item(), { "i", "c" }),
   ["<C-u>"] = cmp.mapping.scroll_docs(-1),
   ["<C-d>"] = cmp.mapping.scroll_docs(1),
-  ["<C-Space>"] = cmp.mapping(cmp.mapping.complete(), { "i", "c" }),
   ["<CR>"] = cmp.mapping.confirm({ select = false, behavior = cmp.ConfirmBehavior.Insert }),
 }
 
@@ -84,23 +84,9 @@ local border = {
   { b.v, "FloatBorder" },
 }
 
--- vim.cmd([[hi Completion guifg=#666666]])
--- vim.cmd([[hi CompletionTop guifg=#666666 gui=underline guisp=#ffffff]])
--- vim.cmd([[hi CompletionBottom guifg=#666666 gui=strikethrough]])
---
--- local border = {
---   { "", "Completion" },
---   { "", "CompletionTop" },
---   { "", "Completion" },
---   { "▏", "Completion" },
---   { "", "Completion" },
---   { "", "CompletionBottom" },
---   { "", "Completion" },
---   { "▕", "Completion" },
--- }
+local show_docs = false
 
 require("cmp").setup({
-
   snippet = {
     expand = function(args)
       require("luasnip").lsp_expand(args.body)
@@ -108,11 +94,6 @@ require("cmp").setup({
   },
 
   window = {
-    documentation = {
-      max_width = 50,
-      max_height = 15,
-      border = border,
-    },
     completion = {
       border = border,
       col_offset = 0,

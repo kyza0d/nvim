@@ -9,47 +9,50 @@ local lualine = require("lualine")
 local colors = require("palette").colors
 
 local conditions = {
-  buffer_not_empty = function()
+  buffer_not_empt = function()
     return vim.fn.empty(vim.fn.expand("%:t")) ~= 1
   end,
   hide_in_width = function()
     return vim.fn.winwidth(0) > 80
   end,
+
   check_git_workspace = function()
-    local filepath = vim.fn.expand("%:p:h")
+    local filepath = vim.fn.expand("%:p:h:t")
     local gitdir = vim.fn.finddir(".git", filepath .. ";")
+
     return gitdir and #gitdir > 0 and #gitdir < #filepath
   end,
 }
 
-local darken = require("palette.utils").darken
+-- local background_0 = darken(colors.background_0, 9)
+-- local background_0 = colors.contrast
 
-local background_0 = darken(colors.background_0, 9)
+local background = colors.background_darken
 
 local theme = {
   normal = {
-    c = { bg = background_0, fg = colors.foreground_3 },
-    x = { bg = background_0, fg = colors.foreground_3 },
+    c = { bg = background, fg = colors.foreground_3 },
+    x = { bg = background, fg = colors.foreground_3 },
   },
   insert = {
-    c = { bg = background_0, fg = colors.foreground_3 },
-    x = { bg = background_0, fg = colors.foreground_3 },
+    m = { bg = background, fg = colors.foreground_3 },
+    x = { bg = background, fg = colors.foreground_3 },
   },
   visual = {
-    c = { bg = background_0, fg = colors.foreground_3 },
-    x = { bg = background_0, fg = colors.foreground_3 },
+    c = { bg = background, fg = colors.foreground_3 },
+    x = { bg = background, fg = colors.foreground_3 },
   },
   replace = {
-    c = { bg = background_0, fg = colors.foreground_3 },
-    x = { bg = background_0, fg = colors.foreground_3 },
+    c = { bg = background, fg = colors.foreground_3 },
+    x = { bg = background, fg = colors.foreground_3 },
   },
   command = {
-    c = { bg = background_0, fg = colors.foreground_3 },
-    x = { bg = background_0, fg = colors.foreground_3 },
+    c = { bg = background, fg = colors.foreground_3 },
+    x = { bg = background, fg = colors.foreground_3 },
   },
   inactive = {
-    c = { bg = background_0, fg = colors.foreground_3 },
-    x = { bg = background_0, fg = colors.foreground_3 },
+    c = { bg = background, fg = colors.foreground_3 },
+    x = { bg = background, fg = colors.foreground_3 },
   },
 }
 
@@ -101,14 +104,16 @@ ins_left({
 })
 
 ins_left({
-  function()
-    return '%{expand("%:p:h:t")}/%{expand("%:p:t")}'
-  end,
-  cond = conditions.buffer_not_empty,
+  "mode",
+  color = { fg = colors.accent }, -- Sets highlighting of component
+  padding = { left = 1, right = 1 }, -- We don't need space before this
 })
 
-require("nvim-navic").setup({
-  highlight = true,
+ins_left({
+  function()
+    return '%{expand("%:p:h:t")}  %{expand("%:p:t")}'
+  end,
+  cond = conditions.buffer_not_empty,
 })
 
 require("nvim-navic").setup({
@@ -146,10 +151,20 @@ require("nvim-navic").setup({
   depth_limit_indicator = "..",
 })
 
-ins_left({
-  require("nvim-navic").get_location,
-  cond = require("nvim-navic").is_available,
-})
+vim.opt.winbar = " "
+vim.opt.winbar:append("  %{expand('%:p:h:t')}")
+vim.opt.winbar:append(" ")
+vim.opt.winbar:append("%{%v:lua.require'nvim-navic'.get_location()%}")
+vim.opt.winbar:append("%=")
+vim.opt.winbar:append(" %y")
+vim.opt.winbar:append(" %3*")
+
+vim.cmd("hi WinBar gui=strikethrough guifg=" .. colors.foreground_3)
+
+-- ins_left({
+--   require("nvim-navic").get_location,
+--   cond = require("nvim-navic").is_available,
+-- })
 
 ins_right({
   function()

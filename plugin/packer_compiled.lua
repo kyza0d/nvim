@@ -69,61 +69,14 @@ end
 time([[try_loadstring definition]], false)
 time([[Defining packer_plugins]], true)
 _G.packer_plugins = {
-  ["bufferline.nvim"] = {
-    config = {
-      config = true,
-      requires = { "moll/vim-bbye" },
-      tag = "v2.4.0"
-    },
+  ["coc.nvim"] = {
     loaded = true,
-    path = "/home/evan/.local/share/nvim/site/pack/goneovim/start/bufferline.nvim",
-    url = "https://github.com/akinsho/bufferline.nvim"
-  },
-  ["neo-tree.nvim"] = {
-    config = {
-      config = true,
-      requires = { "MunifTanjim/nui.nvim", "mrbjarksen/neo-tree-diagnostics.nvim" },
-      tag = "v2.33"
-    },
-    loaded = true,
-    path = "/home/evan/.local/share/nvim/site/pack/goneovim/start/neo-tree.nvim",
-    url = "https://github.com/nvim-neo-tree/neo-tree.nvim"
-  },
-  ["nvim-treesitter"] = {
-    loaded = true,
-    path = "/home/evan/.local/share/nvim/site/pack/goneovim/start/nvim-treesitter",
-    url = "https://github.com/nvim-treesitter/nvim-treesitter"
-  },
-  ["onedark.nvim"] = {
-    loaded = true,
-    path = "/home/evan/.local/share/nvim/site/pack/goneovim/start/onedark.nvim",
-    url = "https://github.com/navarasu/onedark.nvim"
-  },
-  ["telescope.nvim"] = {
-    loaded = true,
-    path = "/home/evan/.local/share/nvim/site/pack/goneovim/start/telescope.nvim",
-    url = "https://github.com/nvim-telescope/telescope.nvim"
-  },
-  ["which-key.nvim"] = {
-    config = {
-      config = true
-    },
-    loaded = true,
-    path = "/home/evan/.local/share/nvim/site/pack/goneovim/start/which-key.nvim",
-    url = "https://github.com/folke/which-key.nvim"
+    path = "/home/evan/.local/share/nvim/site/pack/godot/start/coc.nvim",
+    url = "https://github.com/neoclide/coc.nvim"
   }
 }
 
 time([[Defining packer_plugins]], false)
--- Config for: bufferline.nvim
-time([[Config for bufferline.nvim]], true)
-time([[Config for bufferline.nvim]], false)
--- Config for: which-key.nvim
-time([[Config for which-key.nvim]], true)
-time([[Config for which-key.nvim]], false)
--- Config for: neo-tree.nvim
-time([[Config for neo-tree.nvim]], true)
-time([[Config for neo-tree.nvim]], false)
 if should_profile then save_profiles() end
 
 end)

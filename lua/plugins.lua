@@ -1,5 +1,3 @@
-vim.g.copilot_node_command = "~/.nvm/versions/node/v16.16.0/bin/node"
-
 vim.cmd([[
   imap <silent><script><expr> <C-J> copilot#Accept("\<CR>")
   let g:copilot_no_tab_map = v:true
@@ -21,6 +19,8 @@ local plugins = {
     end,
   },
 
+  "markonm/traces.vim",
+
   -- Statusline code depth indicator
   ["SmiteshP/nvim-navic"] = {
     config = function()
@@ -36,6 +36,12 @@ local plugins = {
       require("nvim-autopairs").setup({
         disable_filetype = { "TelescopePrompt", "vim", "markdown" },
       })
+    end,
+  },
+
+  ["windwp/nvim-ts-autotag"] = {
+    config = function()
+      require("nvim-ts-autotag").setup()
     end,
   },
 
@@ -59,27 +65,24 @@ local plugins = {
 
   -- Git integration
   ["lewis6991/gitsigns.nvim"] = {
-    config = function()
-      require("gitsigns").setup({
-        signcolumn = false,
-      })
-    end,
+    config = "plugin.gitsigns",
   },
 
   -- Bufferline
   ["akinsho/bufferline.nvim"] = {
     tag = "v2.4.0",
     config = "plugin.bufferline",
+    -- disable = true,
     requires = {
       "moll/vim-bbye",
     },
   },
 
   "~/github/summer-time/",
-  "~/github/summer-night/",
   "Mofiqul/vscode.nvim",
 
   "navarasu/onedark.nvim",
+  "sainnhe/everforest",
 
   ["~/github/aura/"] = {
     config = "plugin.aura",
@@ -91,7 +94,8 @@ local plugins = {
   },
 
   -- Completion engine
-  ["hrsh7th/nvim-cmp"] = {
+  ["~/github/open-source/nvim-cmp"] = {
+    -- ["hrsh7th/nvim-cmp"] = {
     config = "plugin.completion",
     requires = {
       -- Snippet completion

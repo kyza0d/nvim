@@ -5,7 +5,7 @@ local event = require("nui.utils.autocmd").event
 
 local keymap = require("utils").keymap
 
-M.send_command = function(top, command)
+M.send_command = function(top, command, icon)
   local input = Input({
     position = "50%",
     size = {
@@ -22,7 +22,7 @@ M.send_command = function(top, command)
       winhighlight = "Normal:Normal,FloatBorder:Normal",
     },
   }, {
-    prompt = " > ",
+    prompt = icon,
     default_value = "",
     on_submit = command,
   })

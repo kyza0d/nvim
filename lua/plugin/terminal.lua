@@ -17,9 +17,14 @@ end
 toggleterm.setup({
   open_mapping = "<F1>",
   direction = "horizontal",
+  shade_terminals = false,
   shell = "zsh",
   -- on_close = restore_ui,
   on_open = function()
+    vim.cmd("set laststatus=0")
+    vim.cmd("startinsert!")
+  end,
+  on_close = function()
     vim.cmd("set laststatus=3")
     vim.cmd("startinsert!")
   end,

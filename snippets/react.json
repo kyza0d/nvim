@@ -1,0 +1,7 @@
+{
+  "React: useEffect": {
+    "prefix": "ue",
+    "body": ["useEffect(() => {", "\t$0", "});"],
+    "description": "Element inside useEffect"
+  }
+}

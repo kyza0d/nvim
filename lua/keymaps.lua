@@ -39,8 +39,8 @@ keymap("n", "gr", ":Trouble lsp_references")
 keymap("n", "gD", ":Trouble workspace_diagnostics")
 
 -- Telescope
-keymap({ "n", "v" }, "<C-p>", ':lua require("telescope.builtin").find_files(PREVIEW())')
-keymap({ "n", "v" }, "?", ':lua require("telescope.builtin").live_grep(PREVIEW())')
+keymap({ "n", "v" }, "<C-p>", ':lua require("telescope.builtin").find_files(_preview())')
+keymap({ "n", "v" }, "?", ':lua require("telescope.builtin").live_grep(_preview())')
 -- keymap({ "n", "v" }, "/", ':lua require("telescope.builtin").current_buffer_fuzzy_find(DROPDOWN())')
 
 -- Commenting
