@@ -16,6 +16,9 @@ keymap({ "n", "v" }, "<C-v>", '"+p')
 -- Previous buffer
 keymap("n", "<C-CR>", "<C-^>", { silent = false })
 
+-- Other pair
+keymap({ "n", "v" }, "<C-j>", "%")
+
 -- Vertical movement
 keymap("n", "<C-u>", "2<C-y>")
 keymap("n", "<C-d>", "2<C-e>")

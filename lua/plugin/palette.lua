@@ -1,7 +1,7 @@
 local status_ok, palette = pcall(require, "palette")
 
 if not status_ok then
-	return
+  return
 end
 
 palette.setup({
