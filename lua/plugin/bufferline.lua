@@ -1,32 +1,46 @@
-local darken = require("palette.utils").darken_float
-local colors = require("palette").colors
+local status_ok, bufferline = pcall(require, "bufferline")
 
-local workspace_root = require("utils").workspace_root
-local icons = require("utils").getvar("icons")
+if not status_ok then
+	return
+end
 
-require("bufferline").setup({
-  options = {
-    indicator_icon = "▎",
-    separator_style = { "", "" },
-    -- separator_style = "slant",
-    right_mouse_command = "Bdelete! %d",
-    show_buffer_close_icons = true,
-    enforce_regular_tabs = false,
-    show_buffer_icons = false,
-    buffer_close_icon = " ",
-    show_close_icon = false,
-    themeable = true,
-    tab_size = 24,
-    modified_icon = "ﱣ",
-    left_trunc_marker = "",
-    right_trunc_marker = "",
-    offsets = {
-      {
-        filetype = "neo-tree",
-        text_align = "left",
-        padding = 0,
-        text = "  " .. workspace_root(),
-      },
-    },
-  },
+keymap("n", "<S-l>", "<cmd>BufferLineCycleNext<cr>")
+keymap("n", "<S-h>", "<cmd>BufferLineCyclePrev<cr>")
+keymap("n", "<S-d>", "<cmd>Bdelete<cr>")
+
+local workspace_root = function()
+	local workspace_root = vim.fn.getcwd()
+	local workspace = workspace_root:sub(workspace_root:find("[^/]*$"))
+	if workspace == "evan" then
+		workspace = "~"
+	end
+	return workspace
+end
+
+bufferline.setup({
+	options = {
+		indicator = {
+			style = "icon",
+		},
+		separator_style = { "", "" },
+		right_mouse_command = "Bdelete! %d",
+		show_buffer_close_icons = true,
+		enforce_regular_tabs = false,
+		show_buffer_icons = false,
+		buffer_close_icon = " ",
+		show_close_icon = false,
+		themeable = true,
+		tab_size = 24,
+		modified_icon = "ﱣ",
+		left_trunc_marker = "",
+		right_trunc_marker = "",
+		offsets = {
+			{
+				filetype = "neo-tree",
+				text_align = "left",
+				padding = 0,
+				text = "  " .. workspace_root(),
+			},
+		},
+	},
 })
