@@ -70,7 +70,8 @@ require("packer").startup({
         require("plugin.telescope")
       end,
 
-      keymap("n", "<C-p>", ":Telescope find_files<cr>"),
+      -- keymap("n", "<C-p>", ":Telescope find_files<cr>"),
+      keymap("n", "<C-p>", ':lua require("telescope.builtin").find_files(_pager())<cr>'),
       keymap("n", "?", ":Telescope live_grep<cr>"),
 
       requires = {

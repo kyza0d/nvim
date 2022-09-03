@@ -33,6 +33,108 @@ local calc_size_and_spacing = function(cur_size, max_size, bs, w_num, b_num, s_n
   return cur_size, spacing
 end
 
+M.pager = function()
+  require("telescope.pickers.layout_strategies").pager = function(self, max_columns, max_lines, layout_config)
+    local initial_options = p_window.get_initial_window_options(self)
+
+    local results = initial_options.results
+    local prompt = initial_options.prompt
+    local preview = initial_options.preview
+
+    layout_config = {
+      anchor = "S",
+      width = 0.35,
+      preview_width = 0,
+      height = 0.3,
+      preview_cutoff = 0,
+      prompt_position = "top",
+    }
+
+    prompt.border = { 1, 1, 1, 1 }
+    results.border = { 1, 1, 1, 1 }
+    preview.border = { 1, 1, 1, 0 }
+
+    local width_opt = layout_config.width
+    local width = resolve.resolve_width(width_opt)(self, max_columns, max_lines)
+
+    local height_opt = layout_config.height
+    local height = resolve.resolve_height(height_opt)(self, max_columns, max_lines)
+
+    local bs = get_border_size(self)
+    local w_space
+    if self.previewer and max_columns >= layout_config.preview_cutoff then
+      -- Cap over/undersized width (with previewer)
+      width, w_space = calc_size_and_spacing(width, max_columns, bs, 2, 4, 1)
+
+      preview.width = 0
+      results.width = width - preview.width - w_space + 3
+      prompt.width = results.width
+    else
+      -- Cap over/undersized width (without previewer)
+      width, w_space = calc_size_and_spacing(width, max_columns, bs, 1, 2, 0)
+
+      preview.width = 0
+      results.width = width - preview.width - w_space
+      prompt.width = results.width
+    end
+
+    local h_space
+    -- Cap over/undersized height
+    height, h_space = calc_size_and_spacing(height, max_lines, bs, 2, 4, 1)
+
+    prompt.height = 1
+    results.height = height - prompt.height - h_space + bs
+
+    if self.previewer then
+      preview.height = 0
+    else
+      preview.height = 0
+    end
+
+    local width_padding = math.floor((max_columns - width) / 2)
+
+    -- Default value is false, to use the normal horizontal layout
+    if not layout_config.mirror then
+      results.col = width_padding + 1
+      results.col = max_columns - width
+      prompt.col = results.col
+      preview.col = results.col + results.width + bs
+    else
+      -- preview.col = width_padding + bs
+      -- prompt.col = preview.col + preview.width + 1 + bs
+      prompt.col = max_columns
+      -- results.col = preview.col + preview.width + 1 + bs
+      results.col = max_columns
+    end
+
+    preview.line = math.floor((max_lines - height) / 2) + bs + 2
+
+    if layout_config.prompt_position == "top" then
+      prompt.line = preview.line
+      results.line = prompt.line + prompt.height + bs
+    elseif layout_config.prompt_position == "bottom" then
+      results.line = preview.line
+      prompt.line = results.line + results.height
+    else
+      error(string.format("Unknown prompt_position: %s\n%s", self.window.prompt_position, vim.inspect(layout_config)))
+    end
+
+    local anchor_pos = resolve.resolve_anchor_pos(layout_config.anchor or "", width, height, max_columns, max_lines)
+    adjust_pos(anchor_pos, prompt, results, preview)
+
+    if tbln then
+      prompt.line = prompt.line + 1
+      results.line = results.line + 1
+      preview.line = preview.line + 1
+    end
+
+    return {
+      preview = self.previewer and preview.width > 0 and preview,
+      results = results,
+      prompt = prompt,
+    }
+  end
+end
 M.bottom_borders = function()
   require("telescope.pickers.layout_strategies").bottom_borders = function(self, max_columns, max_lines, layout_config)
     local initial_options = p_window.get_initial_window_options(self)
@@ -50,9 +152,9 @@ M.bottom_borders = function()
       prompt_position = "top",
     }
 
-    prompt.border = { 1, 1, 0, 0 }
-    results.border = { 1, 1, 0, 0 }
-    preview.border = { 1, 0, 0, 0 }
+    prompt.border = { 1, 1, 1, 1 }
+    results.border = { 1, 1, 1, 1 }
+    preview.border = { 1, 1, 1, 0 }
 
     local width_opt = layout_config.width
     local width = resolve.resolve_width(width_opt)(self, max_columns, max_lines)
@@ -75,7 +177,7 @@ M.bottom_borders = function()
           return 120
         end
       end))(self, width, max_lines)
-      results.width = width - preview.width - w_space + 5
+      results.width = width - preview.width - w_space + 3
       prompt.width = results.width
     else
       -- Cap over/undersized width (without previewer)
@@ -103,16 +205,16 @@ M.bottom_borders = function()
 
     -- Default value is false, to use the normal horizontal layout
     if not layout_config.mirror then
-      results.col = width_padding + 0
+      results.col = width_padding + 1
       prompt.col = results.col
       preview.col = results.col + results.width + bs
     else
-      preview.col = width_padding + bs + 1
+      preview.col = width_padding + bs
       prompt.col = preview.col + preview.width + 1 + bs
       results.col = preview.col + preview.width + 1 + bs
     end
 
-    preview.line = math.floor((max_lines - height) / 2) + bs + 3
+    preview.line = math.floor((max_lines - height) / 2) + bs + 2
 
     if layout_config.prompt_position == "top" then
       prompt.line = preview.line

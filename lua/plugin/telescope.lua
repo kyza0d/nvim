@@ -44,6 +44,26 @@ _bottom_borders = function()
   })
 end
 
+require("utils.layout").pager()
+
+_pager = function()
+  return require("telescope.themes").get_ivy({
+    layout_config = {
+      width = 0.3,
+      height = 0.4,
+    },
+
+    borderchars = {
+      prompt = { "─", "│", "─", "│", "╭", "╮", "┘", "└" },
+      results = { "─", "│", "─", "│", "├", "┤", "╯", "╰" },
+      preview = { "─", "│", "─", "│", "┤", "┤", "┘", "╰" },
+    },
+
+    layout_strategy = "pager",
+    preview = false,
+  })
+end
+
 telescope.setup({
   defaults = {
     sorting_strategy = "ascending",
@@ -60,9 +80,9 @@ telescope.setup({
     layout_strategy = "bottom_borders",
 
     borderchars = {
-      prompt = { "─", "│", "─", "│", "┬", "┬", "┘", "└" },
-      results = { "─", "│", "─", "│", "├", "┤", "┘", "└" },
-      preview = { "─", "│", "─", "│", "┤", "┤", "┘", "└" },
+      prompt = { "─", "│", "─", "│", "┌", "┬", "┘", "└" },
+      results = { "─", "│", "─", "│", "├", "┤", "┴", "└" },
+      preview = { "─", "│", "─", "│", "┤", "┐", "┘", "└" },
     },
 
     preview_title = "",
