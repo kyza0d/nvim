@@ -4,36 +4,41 @@ if not status_ok then
   return
 end
 
-
 require("utils.layout").dropdown()
 
-_dropdown = function ()
-    return require("telescope.themes").get_ivy({
-      layout_config = {
-        width = 0.5,
-        height = 0.4,
-      },
-      
-      borderchars = {
-        prompt = {"─", "│", "─", "│", "┌", "┐", "┘", "└"} ,
-        results = {"─", "│", "─", "│", "├", "┤", "┘", "└"} ,
-        preview = {"─", "│", "─", "│", "┌", "┐", "┘", "└"} ,
-      },
-
-      layout_strategy = "dropdown",
-      preview = false,
-    })
-end
-
-require("utils.layout").bottom_borders()
-
-_bottom_borders = function ()
-
-    return require("telescope.themes").get_ivy({
+_dropdown = function()
+  return require("telescope.themes").get_ivy({
     layout_config = {
       width = 0.5,
       height = 0.4,
     },
+
+    borderchars = {
+      prompt = { "─", "│", "─", "│", "┌", "┐", "┘", "└" },
+      results = { "─", "│", "─", "│", "├", "┤", "┘", "└" },
+      preview = { "─", "│", "─", "│", "┌", "┐", "┘", "└" },
+    },
+
+    layout_strategy = "dropdown",
+    preview = false,
+  })
+end
+
+require("utils.layout").bottom_borders()
+
+_bottom_borders = function()
+  return require("telescope.themes").get_ivy({
+    layout_config = {
+      width = 0.3,
+      height = 0.4,
+    },
+
+    borderchars = {
+      prompt = { "─", "│", "─", "│", "┤", "┤", "┘", "└" },
+      results = { "─", "│", "─", "│", "├", "┤", "┘", "└" },
+      preview = { "─", "│", "─", "│", "┤", "┤", "┘", "└" },
+    },
+
     layout_strategy = "bottom_borders",
     preview = false,
   })
@@ -48,13 +53,17 @@ telescope.setup({
     path_display = { "smart" },
 
     layout_config = {
-      width = 0.5,
+      width = 0.4,
       height = 0.4,
     },
 
-    borderchars = { "─", "│", "─", "│", "┌", "┐", "┘", "└" },
-
     layout_strategy = "bottom_borders",
+
+    borderchars = {
+      prompt = { "─", "│", "─", "│", "┬", "┬", "┘", "└" },
+      results = { "─", "│", "─", "│", "├", "┤", "┘", "└" },
+      preview = { "─", "│", "─", "│", "┤", "┤", "┘", "└" },
+    },
 
     preview_title = "",
     prompt_title = "",

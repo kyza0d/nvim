@@ -12,11 +12,11 @@ local get_border_size = function(opts)
 end
 
 local calc_tabline = function(max_lines)
-local tbln = (vim.o.showtabline == 2) or (vim.o.showtabline == 1 and #vim.api.nvim_list_tabpages() > 1)
-if tbln then
-  max_lines = max_lines - 1
-end
-return max_lines, tbln
+  local tbln = (vim.o.showtabline == 2) or (vim.o.showtabline == 1 and #vim.api.nvim_list_tabpages() > 1)
+  if tbln then
+    max_lines = max_lines - 1
+  end
+  return max_lines, tbln
 end
 
 local adjust_pos = function(pos, ...)
@@ -44,15 +44,15 @@ M.bottom_borders = function()
     layout_config = {
       anchor = "S",
       width = 0.99,
+      preview_width = 0.65,
       height = 0.4,
-      preview_cutoff = 20,
+      preview_cutoff = 0,
       prompt_position = "top",
     }
 
-    prompt.border = {1, 0, 0, 0}
-    results.border = {1, 0, 0, 0}
-    preview.border = {1, 0, 0, 1}
-
+    prompt.border = { 1, 1, 0, 0 }
+    results.border = { 1, 1, 0, 0 }
+    preview.border = { 1, 0, 0, 0 }
 
     local width_opt = layout_config.width
     local width = resolve.resolve_width(width_opt)(self, max_columns, max_lines)
@@ -105,7 +105,7 @@ M.bottom_borders = function()
     if not layout_config.mirror then
       results.col = width_padding + 0
       prompt.col = results.col
-      preview.col = results.col + results.width + 1 + bs
+      preview.col = results.col + results.width + bs
     else
       preview.col = width_padding + bs + 1
       prompt.col = preview.col + preview.width + 1 + bs

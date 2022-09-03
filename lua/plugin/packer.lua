@@ -1,17 +1,39 @@
-local use = require("packer").use
-
 require("packer").startup({
   function(use)
     use("wbthomason/packer.nvim")
 
-    use("neovim/nvim-lspconfig")
+    use({
+      config = function()
+        require("plugin.lsp-config.servers")
+        require("plugin.lsp-config.settings")
+        require("plugin.lsp-config.handlers")
+      end,
+      "neovim/nvim-lspconfig",
+    })
 
     use("sainnhe/sonokai")
 
+    use("Mofiqul/vscode.nvim")
+
+    use("shaunsingh/nord.nvim")
+
+    use("NTBBloodbath/doom-one.nvim")
+
     use({
       "nvim-treesitter/nvim-treesitter",
+      -- commit = "65d0818fede50cb92697701a6afb1c77c7c33ae8",
       config = function()
         require("plugin.treesitter")
+      end,
+    })
+
+    use("nvim-treesitter/playground")
+
+    use({
+      "lukas-reineke/indent-blankline.nvim",
+      disable = true,
+      config = function()
+        require("plugin.indent-blankline")
       end,
     })
 
@@ -27,7 +49,12 @@ require("packer").startup({
       end,
     })
 
-    use({ "jose-elias-alvarez/null-ls.nvim", disable = true })
+    use({
+      "jose-elias-alvarez/null-ls.nvim",
+      config = function()
+        require("plugin.null-ls")
+      end,
+    })
 
     use({
       "jose-elias-alvarez/typescript.nvim",
@@ -38,18 +65,38 @@ require("packer").startup({
 
     use({
       "nvim-telescope/telescope.nvim",
+      tag = "0.1.0",
+      config = function()
+        require("plugin.telescope")
+      end,
 
       keymap("n", "<C-p>", ":Telescope find_files<cr>"),
       keymap("n", "?", ":Telescope live_grep<cr>"),
 
-      tag = "0.1.0",
-      requires = { "nvim-lua/plenary.nvim", "kyazdani42/nvim-web-devicons" },
+      requires = {
+        "nvim-lua/plenary.nvim",
+        "kyazdani42/nvim-web-devicons",
+      },
+    })
+
+    use({
+      "kyazdani42/nvim-web-devicons",
+      config = function()
+        require("plugin.devicons")
+      end,
     })
 
     use({
       "folke/which-key.nvim",
       config = function()
         require("plugin.whichkey")
+      end,
+    })
+
+    use({
+      "folke/trouble.nvim",
+      config = function()
+        require("plugin.trouble")
       end,
     })
 
@@ -129,6 +176,9 @@ require("packer").startup({
 
     use({
       "hrsh7th/nvim-cmp",
+      config = function()
+        require("plugin.nvim-cmp")
+      end,
       requires = {
         "saadparwaiz1/cmp_luasnip",
         "hrsh7th/cmp-cmdline",
@@ -142,7 +192,14 @@ require("packer").startup({
 
     use({
       "nvim-lualine/lualine.nvim",
-      requires = "SmiteshP/nvim-navic",
+      requires = {
+        {
+          "SmiteshP/nvim-navic",
+          config = function()
+            require("plugin.nvim-navic")
+          end,
+        },
+      },
       config = function()
         require("plugin.lualine")
       end,
@@ -163,7 +220,12 @@ require("packer").startup({
       },
     })
 
-    use("~/github/palette.lua")
+    use({
+      "~/github/palette.lua",
+      config = function()
+        require("plugin.palette")
+      end,
+    })
   end,
   config = {
     display = {

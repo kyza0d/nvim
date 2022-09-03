@@ -26,10 +26,11 @@ local leader = {
     a = { "<cmd>colorscheme aura<cr>", "aura" },
     o = { "<cmd>colorscheme onedark<cr>", "onedark" },
     D = { "<cmd>colorscheme dark-pines<cr>", "dark-pines" },
-    -- s = { "<cmd>colorscheme solarized<cr>", "solarized" },
+    d = { "<cmd>colorscheme doom-one<cr>", "doom-one" },
+    n = { "<cmd>colorscheme nord<cr>", "nord" },
     s = { "<cmd>colorscheme summer-time<cr>", "summer-time" },
-    S = { "<cmd>colorscheme summer-night<cr>", "summer_time" },
     g = { "<cmd>colorscheme gruvbox<cr>", "gruvbox" },
+    z = { "<cmd>colorscheme zenburn<cr>", "zenburn" },
     v = { "<cmd>colorscheme vscode<cr>", "vscode" },
     t = { "<cmd>colorscheme tokyonight<cr>", "tokyonight" },
   },
@@ -60,14 +61,25 @@ local cr_mappings = {
   ["/"] = { ":Telescope help_tags<cr>", "Man pages" },
 }
 
+local cr_mappings_visual = {
+  a = { ":norm @a<CR>", "Preform 'a' macro", silent = false },
+  s = { ":s/", "Substitute command ", silent = false, noremap = false },
+  n = { ":norm ", "Normal command", silent = false },
+}
+
+which_key.register(leader, {
+  mode = "n",
+  prefix = "<leader>",
+})
+
 which_key.register(cr_mappings, {
   mode = "n",
   prefix = [[<cr>]],
 })
 
-which_key.register(leader, {
-  mode = "n",
-  prefix = "<leader>",
+which_key.register(cr_mappings_visual, {
+  mode = "v",
+  prefix = [[<cr>]],
 })
 
 which_key.setup()

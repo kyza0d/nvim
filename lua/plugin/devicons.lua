@@ -10,14 +10,14 @@ local current_icons = nvim_web_devicons.get_icons()
 local new_icons = {}
 
 for key, icon in pairs(current_icons) do
-  -- icon.icon = icon.icon .. " "
-  icon.icon = " "
+  icon.icon = icon.icon .. " "
+  -- icon.icon = " "
   if icon.name == "Md" then
     icon.icon = " "
     icon.color = colors.foreground_3
   end
 
-  icon.color = colors.foreground_3
+  -- icon.color = colors.foreground_3
 
   new_icons[key] = icon
 end

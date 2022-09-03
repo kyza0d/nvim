@@ -7,10 +7,9 @@ end
 local colors = require("palette").colors
 
 local background = colors.background_darken
-
 local dimmed = {
-  c = { bg = background, fg = colors.foreground_4, gui = "strikethrough" },
-  x = { bg = background, fg = colors.foreground_4, gui = "strikethrough" },
+  c = { bg = background, fg = colors.foreground_2 },
+  x = { bg = background, fg = colors.foreground_2 },
 }
 
 local theme = {
@@ -85,7 +84,7 @@ local inactive_sections = {
 
 lualine.setup({
   sections = sections,
-  inactive_sections = inactive_sections,
+  inactive_sections = sections,
 
   options = {
     icons_enabled = true,

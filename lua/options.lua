@@ -4,7 +4,6 @@ local options = {
   showmode = false,
   signcolumn = "yes",
   termguicolors = true,
-  laststatus = 3,
   scrolloff = 8,
   pumheight = 13,
 
@@ -12,6 +11,8 @@ local options = {
   tabstop = 2,
   softtabstop = 2,
   shiftwidth = 2,
+  laststatus = 3,
+  cmdheight = 1,
   expandtab = true,
   autoindent = true,
   breakindent = true,
@@ -26,19 +27,20 @@ local options = {
   -- Behavior
   hidden = true,
   timeoutlen = 300,
+  ignorecase = true,
   lazyredraw = true,
   swapfile = false,
   backup = false,
 }
 
 vim.opt.fillchars:append({
-  vert = "│",
-  vertright = "├",
-  fold = "│",
+  vert = " ",
+  vertright = " ",
+  fold = " ",
   foldclose = "",
   foldopen = "",
   foldsep = " ",
-  vertleft = "▕",
+  vertleft = " ",
   eob = " ",
   horiz = "─",
 })
