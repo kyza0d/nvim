@@ -16,18 +16,18 @@ end
 bufferline.setup({
   options = {
     indicator = {
-      icon = "▎", -- this should be omitted if indicator style is not 'icon'
+      icon = " ",
       style = "icon",
     },
     separator_style = { "", "" },
     right_mouse_command = "Bdelete! %d",
     show_buffer_close_icons = false,
-    enforce_regular_tabs = true,
+    enforce_regular_tabs = false,
     show_buffer_icons = false,
-    buffer_close_icon = "",
+    buffer_close_icon = " ",
     show_close_icon = false,
     themeable = true,
-    tab_size = 26,
+    tab_size = 21,
     modified_icon = "ﱣ",
     left_trunc_marker = "",
     right_trunc_marker = "",

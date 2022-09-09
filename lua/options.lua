@@ -1,30 +1,28 @@
+vim.g.cursorhold_updatetime = 300
+
 local options = {
   -- Appearance
   number = true,
+  numberwidth = 5,
   showmode = false,
   signcolumn = "yes",
   termguicolors = true,
+  cmdheight = 1,
+  laststatus = 3,
+  list = true,
   scrolloff = 8,
   pumheight = 13,
-
-  -- Indent
   tabstop = 2,
+  cursorline = true,
   softtabstop = 2,
   shiftwidth = 2,
-  laststatus = 3,
-  cmdheight = 1,
   expandtab = true,
   autoindent = true,
   breakindent = true,
   breakindentopt = "shift:4",
-  list = true,
-
-  -- Wrapping
   wrap = true,
   textwidth = 80,
   linebreak = true,
-
-  -- Behavior
   hidden = true,
   timeoutlen = 300,
   ignorecase = true,

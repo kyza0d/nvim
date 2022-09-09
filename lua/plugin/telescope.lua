@@ -48,15 +48,10 @@ require("utils.layout").pager()
 
 _pager = function()
   return require("telescope.themes").get_ivy({
-    layout_config = {
-      width = 0.3,
-      height = 0.4,
-    },
-
     borderchars = {
-      prompt = { "─", "│", "─", "│", "╭", "╮", "┘", "└" },
-      results = { "─", "│", "─", "│", "├", "┤", "╯", "╰" },
-      preview = { "─", "│", "─", "│", "┤", "┤", "┘", "╰" },
+      prompt = { "─", "│", "─", "│", "┌", "┐", "┘", "└" },
+      results = { "─", "│", "─", "│", "├", "┤", "┘", "└" },
+      preview = { "─", "│", "─", "│", "┤", "┤", "┘", "└" },
     },
 
     layout_strategy = "pager",
@@ -68,7 +63,7 @@ telescope.setup({
   defaults = {
     sorting_strategy = "ascending",
     selection_caret = " ",
-    prompt_prefix = " ",
+    prompt_prefix = "    ",
     entry_prefix = " ",
     path_display = { "smart" },
 
@@ -77,12 +72,12 @@ telescope.setup({
       height = 0.4,
     },
 
-    layout_strategy = "bottom_borders",
+    layout_strategy = "pager",
 
     borderchars = {
-      prompt = { "─", "│", "─", "│", "┌", "┬", "┘", "└" },
-      results = { "─", "│", "─", "│", "├", "┤", "┴", "└" },
-      preview = { "─", "│", "─", "│", "┤", "┐", "┘", "└" },
+      prompt = { "─", "│", "─", "│", "┌", "┐", "┘", "└" },
+      results = { "─", "│", "─", "│", "├", "┤", "┘", "└" },
+      preview = { "─", "│", "─", "│", "┤", "┤", "┘", "└" },
     },
 
     preview_title = "",

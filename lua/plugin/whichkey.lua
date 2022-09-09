@@ -6,6 +6,7 @@ end
 
 -- Space for leader
 vim.g.mapleader = " "
+-- vim.g.localmapleader = " "
 
 local leader = {
   p = {
@@ -74,12 +75,12 @@ which_key.register(leader, {
 
 which_key.register(cr_mappings, {
   mode = "n",
-  prefix = [[<cr>]],
+  prefix = "<cr>",
 })
 
 which_key.register(cr_mappings_visual, {
   mode = "v",
-  prefix = [[<cr>]],
+  prefix = "<cr>",
 })
 
-which_key.setup()
+which_key.setup({})

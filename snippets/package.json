@@ -1,0 +1,33 @@
+{
+  "name": "nvim-snippets",
+  "author": "nvim",
+  "engines": {
+    "vscode": "^1.11.0"
+  },
+  "contributes": {
+    "snippets": [
+      {
+        "language": "all",
+        "path": "global.json"
+      },
+      {
+        "language": [
+          "typescript",
+          "typescriptreact"
+        ],
+        "path": "react.json"
+      },
+      {
+        "language": [
+          "typescript",
+          "typescriptreact"
+        ],
+        "path": "typescript.json"
+      },
+      {
+        "language": "lua",
+        "path": "lua.json"
+      }
+    ]
+  }
+}

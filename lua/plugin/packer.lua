@@ -3,17 +3,38 @@ require("packer").startup({
     use("wbthomason/packer.nvim")
 
     use({
+      "neovim/nvim-lspconfig",
+
       config = function()
         require("plugin.lsp-config.servers")
         require("plugin.lsp-config.settings")
         require("plugin.lsp-config.handlers")
       end,
-      "neovim/nvim-lspconfig",
     })
+
+    use("antoinemadec/FixCursorHold.nvim")
 
     use("sainnhe/sonokai")
 
+    use("sainnhe/everforest")
+
+    use({
+      "vimwiki/vimwiki",
+      config = function()
+        -- require("plugin.wiki")
+      end,
+    })
+
+    use("navarasu/onedark.nvim")
+
     use("Mofiqul/vscode.nvim")
+
+    use({
+      "~/github/aura/",
+      config = function()
+        require("plugin.aura")
+      end,
+    })
 
     use("shaunsingh/nord.nvim")
 
@@ -21,7 +42,6 @@ require("packer").startup({
 
     use({
       "nvim-treesitter/nvim-treesitter",
-      -- commit = "65d0818fede50cb92697701a6afb1c77c7c33ae8",
       config = function()
         require("plugin.treesitter")
       end,
@@ -31,7 +51,6 @@ require("packer").startup({
 
     use({
       "lukas-reineke/indent-blankline.nvim",
-      disable = true,
       config = function()
         require("plugin.indent-blankline")
       end,
@@ -41,9 +60,6 @@ require("packer").startup({
       "kevinhwang91/nvim-ufo",
       requires = "kevinhwang91/promise-async",
 
-      keymap("n", "<C-s-h>", ":foldclose<cr>"),
-      keymap("n", "<C-s-l>", ":foldopen<cr>"),
-
       config = function()
         require("ufo").setup()
       end,
@@ -51,6 +67,7 @@ require("packer").startup({
 
     use({
       "jose-elias-alvarez/null-ls.nvim",
+      commit = "1569ad4817492e0daefa4e1bcf55f8280cdc82db",
       config = function()
         require("plugin.null-ls")
       end,
@@ -69,10 +86,6 @@ require("packer").startup({
       config = function()
         require("plugin.telescope")
       end,
-
-      -- keymap("n", "<C-p>", ":Telescope find_files<cr>"),
-      keymap("n", "<C-p>", ':lua require("telescope.builtin").find_files(_pager())<cr>'),
-      keymap("n", "?", ":Telescope live_grep<cr>"),
 
       requires = {
         "nvim-lua/plenary.nvim",
@@ -118,7 +131,7 @@ require("packer").startup({
     use({
       "windwp/nvim-ts-autotag",
       config = function()
-        require("nvim-ts-autotag")
+        require("nvim-ts-autotag").setup()
       end,
     })
 
@@ -169,7 +182,12 @@ require("packer").startup({
       requires = "moll/vim-bbye",
     })
 
-    use("lewis6991/gitsigns.nvim")
+    use({
+      "lewis6991/gitsigns.nvim",
+      config = function()
+        require("plugin.gitsigns")
+      end,
+    })
 
     -- Snippet engine
 
@@ -184,6 +202,7 @@ require("packer").startup({
         "saadparwaiz1/cmp_luasnip",
         "hrsh7th/cmp-cmdline",
         "hrsh7th/cmp-path",
+        "uga-rosa/cmp-dictionary",
         "hrsh7th/cmp-calc",
         "hrsh7th/cmp-nvim-lsp",
         "hrsh7th/cmp-buffer",
@@ -192,24 +211,14 @@ require("packer").startup({
     })
 
     use({
-      "nvim-lualine/lualine.nvim",
-      requires = {
-        {
-          "SmiteshP/nvim-navic",
-          config = function()
-            require("plugin.nvim-navic")
-          end,
-        },
-      },
+      "SmiteshP/nvim-navic",
       config = function()
-        require("plugin.lualine")
+        require("plugin.nvim-navic")
       end,
     })
 
     use({
       "nvim-neo-tree/neo-tree.nvim",
-
-      keymap("n", "<C-n>", ":Neotree focus toggle<cr>"),
 
       config = function()
         require("plugin.neo-tree")

@@ -27,18 +27,13 @@ neotree.setup({
     container = {
       enable_character_fade = false,
     },
-    indent = {
-      with_markers = true,
-      indent_marker = "│",
-      last_indent_marker = "└",
-      expander_highlight = "NeoTreeExpander",
-      with_expanders = false,
-    },
-
     icon = {
-      folder_closed = " ",
-      folder_open = " ",
-      folder_empty = " ",
+      folder_closed = " ",
+      folder_open = " ",
+      folder_empty = " ",
+      -- folder_closed = " ",
+      -- folder_open = " ",
+      -- folder_empty = " ",
     },
 
     modified = {
@@ -47,7 +42,7 @@ neotree.setup({
   },
 
   window = {
-    width = 40,
+    width = 35,
     mappings = {
       ["l"] = "open",
       ["h"] = "close_node",

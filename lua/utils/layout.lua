@@ -43,9 +43,9 @@ M.pager = function()
 
     layout_config = {
       anchor = "S",
-      width = 0.35,
+      width = 0.4,
       preview_width = 0,
-      height = 0.3,
+      height = 0.4,
       preview_cutoff = 0,
       prompt_position = "top",
     }

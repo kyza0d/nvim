@@ -5,7 +5,7 @@ vim.api.nvim_create_autocmd("BufEnter", {
     if get_buf_info("%").listed == 1 then
       vim.opt_local.winbar = " "
 
-      vim.opt_local.winbar:append('   %{expand("%:p:h:t")}  %{expand("%:p:t")}')
+      vim.opt_local.winbar:append('   %{expand("%:p:h:t")}  %{expand("%:p:t")}')
       vim.opt_local.winbar:append(" %{%v:lua.require'nvim-navic'.get_location()%}")
 
       vim.opt_local.winbar:append("%=")
@@ -14,7 +14,6 @@ vim.api.nvim_create_autocmd("BufEnter", {
 
       if icon and color_name ~= nil then
         vim.opt_local.winbar:append(vim.bo.filetype)
-        -- vim.opt_local.winbar:append(vim.fn.expand("%:e"))
         vim.opt_local.winbar:append("%#" .. color_name .. "# " .. icon .. "  ")
         return
       end

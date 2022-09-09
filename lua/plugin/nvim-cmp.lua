@@ -31,7 +31,7 @@ local kind_icons = {
   Keyword = " ",
   Snippet = " ",
   Color = " ",
-  File = " ",
+  File = " ",
   Reference = " ",
   Folder = " ",
   EnumMember = " ",
@@ -40,6 +40,17 @@ local kind_icons = {
   Event = " ",
   Operator = " ",
   TypeParameter = " ",
+}
+
+local border = {
+  { "┌", "FloatBorder" },
+  { "─", "FloatBorder" },
+  { "┐", "FloatBorder" },
+  { "│", "FloatBorder" },
+  { "┘", "FloatBorder" },
+  { "─", "FloatBorder" },
+  { "└", "FloatBorder" },
+  { "│", "FloatBorder" },
 }
 
 local keymaps = {
@@ -65,7 +76,7 @@ local keymaps = {
   ["<C-u>"] = cmp.mapping.scroll_docs(-1),
   ["<C-d>"] = cmp.mapping.scroll_docs(1),
 
-  ["<CR>"] = cmp.mapping.confirm({ select = false, behavior = cmp.ConfirmBehavior.Insert }),
+  ["<CR>"] = cmp.mapping.confirm({ select = true, behavior = cmp.ConfirmBehavior.Insert }),
 }
 
 local luasnip = require("luasnip")
@@ -87,16 +98,34 @@ cmp.setup({
 
   mapping = cmp.mapping.preset.insert(keymaps),
 
+  window = {
+    completion = {
+      -- border = border,
+      scrollbar = "┃",
+    },
+    documentation = {
+      -- border = border,
+      scrollbar = "┃",
+    },
+  },
+
   formatting = {
     fields = { "kind", "abbr", "menu" },
     format = function(entry, vim_item)
       vim_item.kind = string.format("%s", kind_icons[vim_item.kind])
+
+      if entry.source.name == "dictionary" then
+        vim_item.kind = " "
+        vim_item.kind_hl_group = "CmpItemKindText"
+      end
+
       vim_item.menu = ({
         luasnip = "Snippet",
         nvim_lsp = "LSP",
         path = "File",
         calc = "calc",
         spell = "Spell",
+        dictionary = "Dictionary",
         buffer = "Buffer",
       })[entry.source.name]
 
@@ -112,6 +141,7 @@ cmp.setup({
     { name = "nvim_lsp", max_item_count = 10 },
     { name = "calc", max_item_count = 1 },
     { name = "luasnip" },
+    { name = "dictionary", keyword_length = 4, max_item_count = 3 },
     { name = "buffer" },
     { name = "path", trigger_characters = { "/", "." } },
   }),
@@ -132,3 +162,14 @@ require("cmp").setup.cmdline("/", {
     { name = "buffer" },
   },
 })
+
+require("cmp_dictionary").setup({
+  dic = {
+    ["*"] = { "~/dict/en_US.dic" },
+  },
+})
+
+require("luasnip/loaders/from_vscode").load({ paths = { "~/.config/nvim/snippets" } })
+
+-- You can also use lazy loading so you only get in memory snippets of languages you use
+require("luasnip/loaders/from_vscode").lazy_load()

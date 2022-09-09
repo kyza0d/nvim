@@ -4,28 +4,51 @@ if not status_ok then
   return
 end
 
+-- stylua: ignore
 palette.setup({
   on_change = function()
-    vim.cmd([[source ~/.config/nvim/lua/plugin/lualine.lua]])
     vim.cmd([[source ~/.config/nvim/lua/plugin/bufferline.lua]])
   end,
 
+
   colors = {
     ["*"] = {
-      background = { "#161616", "#efefef" },
+      background = { "#181a1c", "#efefef" },
       foreground = { "#ced2da", "#383A42" },
-    },
 
-    highlights = {
-      IndentBlankLineContextChar = { fg = "#ff0000" },
+      highlights = {
+        IndentBlankLineContextChar = { fg = "@foreground_4" },
+      },
     },
 
     ["doom-one"] = {
-      background = { "#191C1F", "#3B224C" },
-      foreground = { "#b7c2cc", "#3B224C" },
+      background = { "#161B1E", "#efefef" },
+      foreground = { "#ced2da", "#383A42" },
+      green      = {"#98BE65", "#ffffff"},
+      yellow     = {"#ECBE7B", "#ffffff"},
+      blue       = { "#56B6C2", "#383A42" },
+      purple     = { "#A9A1E1", "#383A42" },
+
+      highlights = {
+        -- IndentBlankLineContextChar = { fg = "@blue" },
+      },
+    },
+
+    ["vscode"] = {
+      background = { "#1E1E1E", "#efefef" },
+      foreground = { "#ced2da", "#383A42" },
+
+      highlights = {
+        IndentBlankLineContextChar = { links = "@foreground_3" },
+      },
+    },
+
+    ["zenburn"] = {
+      background = { "#1E1E1E", "#efefef" },
+      foreground = { "#ced2da", "#383A42" },
     },
   },
 })
 
 -- vim.cmd([[colorscheme summer-time]])
-vim.cmd([[colorscheme doom-one]])
+-- vim.cmd([[colorscheme doom-one]])
