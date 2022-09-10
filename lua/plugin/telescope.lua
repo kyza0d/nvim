@@ -6,7 +6,7 @@ end
 
 require("utils.layout").dropdown()
 
-_dropdown = function()
+dropdown = function()
   return require("telescope.themes").get_ivy({
     layout_config = {
       width = 0.5,
@@ -63,7 +63,7 @@ telescope.setup({
   defaults = {
     sorting_strategy = "ascending",
     selection_caret = " ",
-    prompt_prefix = "    ",
+    prompt_prefix = " ",
     entry_prefix = " ",
     path_display = { "smart" },
 
@@ -87,3 +87,6 @@ telescope.setup({
     file_ignore_patterns = { "node_modules", "package-lock.json", "yarn.lock" },
   },
 })
+
+keymap("n", "<C-p>", ':lua require("telescope.builtin").find_files(_pager())<cr>')
+keymap("n", "?", ":Telescope live_grep<cr>")

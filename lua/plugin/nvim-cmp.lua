@@ -116,7 +116,6 @@ cmp.setup({
 
       if entry.source.name == "dictionary" then
         vim_item.kind = " "
-        vim_item.kind_hl_group = "CmpItemKindText"
       end
 
       vim_item.menu = ({

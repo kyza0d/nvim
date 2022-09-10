@@ -10,8 +10,7 @@ toggleterm.setup({
   shade_terminals = false,
   shell = "zsh",
   on_open = function()
-    vim.cmd("set laststatus=0")
-    vim.cmd("startinsert!")
+    vim.cmd("set laststatus=0 | startinsert!")
   end,
   on_close = function()
     vim.cmd("set laststatus=3")

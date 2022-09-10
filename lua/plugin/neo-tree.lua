@@ -4,36 +4,30 @@ if not status_ok then
   return
 end
 
-local highlights = require("neo-tree.ui.highlights")
-
 neotree.setup({
-  enable_git_status = true,
+  enable_git_status = false,
   enable_diagnostics = false,
 
+  hide_root_node = true,
+  retain_hidden_root_indent = true,
+
   default_component_configs = {
-    git_status = {
-      symbols = {
-        added = "✚ ",
-        modified = "  ",
-        deleted = "✖ ",
-        renamed = " ",
-        untracked = " ",
-        ignored = " ",
-        unstaged = " ",
-        staged = " ",
-        conflict = " ",
-      },
-    },
+
     container = {
-      enable_character_fade = false,
+      enable_character_fade = true,
     },
+
+    indent = {
+      indent_marker = " 🭰",
+      last_indent_marker = " 🭰 ",
+      indent_size = 2,
+      padding = 0,
+    },
+
     icon = {
-      folder_closed = " ",
-      folder_open = " ",
-      folder_empty = " ",
-      -- folder_closed = " ",
-      -- folder_open = " ",
-      -- folder_empty = " ",
+      folder_closed = "   ",
+      folder_open = "   ",
+      folder_empty = "   ",
     },
 
     modified = {
@@ -79,3 +73,6 @@ neotree.setup({
     },
   },
 })
+
+-- Toggle filetree
+keymap("n", "<C-n>", ":Neotree focus toggle<cr>")

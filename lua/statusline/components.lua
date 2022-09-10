@@ -15,7 +15,8 @@ local mode = {
       ["t"] = "terminal",
     }
     local current_mode = vim.api.nvim_get_mode().mode
-    vim.api.nvim_command("hi Mode guibg=" .. colors.accent .. " guifg=" .. colors.background_3)
+    -- vim.api.nvim_command("hi Mode guibg=" .. colors.accent .. " guifg=" .. colors.background_shaded_1)
+    vim.api.nvim_command("hi Mode guibg=" .. colors.background_4 .. " guifg=" .. colors.foreground_1)
     return "%#Mode# " .. string.format("%s", modes[current_mode]):upper() .. " %#Statusline#"
   end,
 }
@@ -54,8 +55,9 @@ local file = {
     color = color or ""
     icon = icon or ""
 
-    vim.api.nvim_command("hi StatuslineFile guifg=" .. color .. " guibg=" .. colors.background_shaded_1)
-    icon = "%#StatuslineFile#" .. icon .. "%#Statusline#"
+    vim.api.nvim_command(string.format("hi Icon guifg=%s guibg=%s", color, colors.background_shaded_1))
+
+    icon = "%#Icon#" .. icon .. "%#Statusline#"
 
     return string.format("%s%s %s", modified, icon, vim.fn.expand("%:p:t"))
   end,
@@ -104,12 +106,15 @@ local root = {
 local git = {
   value = function()
     local git_info = vim.b.gitsigns_status_dict
+
     if not git_info or git_info.head == "" then
       return ""
     end
+
     local function format_git(icon, status)
-      return status ~= 0 and string.format(" " .. icon .. "%s", status) or ""
+      return status ~= 0 and status ~= nil and string.format(" " .. icon .. "%s", status) or ""
     end
+
     return table.concat({
       git_info.head,
       format_git("+", git_info.added),

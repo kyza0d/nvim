@@ -2,7 +2,6 @@ local M = {}
 
 local resolve = require("telescope.config.resolve")
 local p_window = require("telescope.pickers.window")
-local if_nil = vim.F.if_nil
 
 local get_border_size = function(opts)
   if opts.window.border == false then

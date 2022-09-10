@@ -13,11 +13,11 @@ palette.setup({
 
   colors = {
     ["*"] = {
-      background = { "#181a1c", "#efefef" },
+      background = { "#111214", "#efefef" },
       foreground = { "#ced2da", "#383A42" },
 
       highlights = {
-        IndentBlankLineContextChar = { fg = "@foreground_4" },
+        -- IndentBlankLineContextChar = { fg = "@foreground_4" },
       },
     },
 
@@ -39,7 +39,7 @@ palette.setup({
       foreground = { "#ced2da", "#383A42" },
 
       highlights = {
-        IndentBlankLineContextChar = { links = "@foreground_3" },
+        -- IndentBlankLineContextChar = { links = "@foreground_3" },
       },
     },
 

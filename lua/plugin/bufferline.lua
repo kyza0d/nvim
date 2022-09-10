@@ -7,19 +7,13 @@ end
 local workspace_root = function()
   local workspace_root = vim.fn.getcwd()
   local workspace = workspace_root:sub(workspace_root:find("[^/]*$"))
-  if workspace == "evan" then
-    workspace = "~"
-  end
   return workspace
 end
 
 bufferline.setup({
   options = {
-    indicator = {
-      icon = " ",
-      style = "icon",
-    },
     separator_style = { "", "" },
+    indicator = "",
     right_mouse_command = "Bdelete! %d",
     show_buffer_close_icons = false,
     enforce_regular_tabs = false,
@@ -36,8 +30,13 @@ bufferline.setup({
         filetype = "neo-tree",
         text_align = "left",
         padding = 0,
-        text = "  " .. workspace_root(),
+        -- text = "   " .. workspace_root(),
+        -- text = "  " .. workspace_root():upper(),
       },
     },
   },
 })
+
+keymap("n", "<S-l>", "<cmd>BufferLineCycleNext<cr>")
+keymap("n", "<S-h>", "<cmd>BufferLineCyclePrev<cr>")
+keymap("n", "<S-d>", "<cmd>Bdelete<cr>")

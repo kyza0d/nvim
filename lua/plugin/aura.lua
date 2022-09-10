@@ -16,7 +16,7 @@ local doom = {
 
 local witness = {
   primary = { "#BCB6A4", "#ffffff" },
-      secondary = { "#78C388", "#ffffff" },
+  secondary = { "#78C388", "#ffffff" },
   background = { "#072627", "#ffffff" },
   foreground = { "#c1d3f2", "#ffffff" },
   comment = { "#3c4b66", "#ffffff" },

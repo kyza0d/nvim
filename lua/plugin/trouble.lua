@@ -5,3 +5,6 @@ if not status_ok then
 end
 
 require("trouble").setup()
+
+keymap("n", "gr", ":Trouble lsp_references<cr>")
+keymap("n", "gD", ":Trouble workspace_diagnostics<cr>")

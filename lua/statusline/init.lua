@@ -21,13 +21,13 @@ return {
         goto continue
       end
 
-      local prettified = check_type(component.value)
+      local format = check_type(component.value)
 
-      if not empty(prettified) then
-        prettified = prettified .. "  "
+      if not empty(format) then
+        format = format .. "  "
       end
 
-      statusline = statusline .. prettified
+      statusline = statusline .. format
       ::continue::
 
     end

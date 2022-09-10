@@ -67,7 +67,6 @@ require("packer").startup({
 
     use({
       "jose-elias-alvarez/null-ls.nvim",
-      commit = "1569ad4817492e0daefa4e1bcf55f8280cdc82db",
       config = function()
         require("plugin.null-ls")
       end,
@@ -146,10 +145,6 @@ require("packer").startup({
       tag = "v0.6.1",
       "numToStr/Comment.nvim",
 
-      keymap("i", "<C-/>", "<esc>:norm gcA<cr>a"),
-      keymap("n", "<C-/>", ":lua require('Comment.api').toggle_current_linewise()<cr>"),
-      keymap("v", "<C-/>", ":lua require('Comment.api').toggle_linewise_op(vim.fn.visualmode())<cr>"),
-
       requires = "JoosepAlviste/nvim-ts-context-commentstring",
       config = function()
         require("plugin.comment")
@@ -172,10 +167,6 @@ require("packer").startup({
     use({
       "akinsho/bufferline.nvim",
 
-      keymap("n", "<S-l>", "<cmd>BufferLineCycleNext<cr>"),
-      keymap("n", "<S-h>", "<cmd>BufferLineCyclePrev<cr>"),
-      keymap("n", "<S-d>", "<cmd>Bdelete<cr>"),
-
       config = function()
         require("plugin.bufferline")
       end,
@@ -190,9 +181,9 @@ require("packer").startup({
     })
 
     -- Snippet engine
-
     use("L3MON4D3/LuaSnip")
 
+    -- Completion engine
     use({
       "hrsh7th/nvim-cmp",
       config = function()

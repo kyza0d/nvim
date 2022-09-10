@@ -34,12 +34,11 @@ keymap({ "n", "v" }, "<C-b>", "<C-v>")
 -- Previous buffer
 keymap("n", "<C-CR>", "<C-^>")
 
--- Other pair
-keymap({ "n", "v" }, "<C-j>", "%")
+-- Save Buffer
+keymap("n", "<S-w>", ":w<cr>")
 
 -- Other pair
-keymap("n", "<C-p>", ':lua require("telescope.builtin").find_files(_pager())<cr>')
-keymap("n", "?", ":Telescope live_grep<cr>")
+keymap({ "n", "v" }, "<C-j>", "%")
 
 -- Vertical movement
 keymap("n", "<C-u>", "2<C-y>")
@@ -48,14 +47,3 @@ keymap("n", "<C-d>", "2<C-e>")
 -- Folding
 keymap("n", "<C-s-h>", ":foldclose<cr>")
 keymap("n", "<C-s-l>", ":foldopen<cr>")
-
--- Toggle filetree
-keymap("n", "<C-n>", ":Neotree focus toggle<cr>")
-
--- Language Server
-keymap("n", "gd", ":lua vim.lsp.buf.declaration()<cr>")
-keymap("n", "gr", ":Trouble lsp_references<cr>")
-keymap("n", "gR", ":lua vim.lsp.buf.rename()<cr>")
-keymap("n", "<S-k>", ":lua vim.lsp.buf.hover()<cr>")
-keymap("n", "<C-S-k>", ":lua vim.diagnostic.open_float()<cr>")
-keymap("n", ">", ":lua vim.lsp.buf.code_action()<cr>")
