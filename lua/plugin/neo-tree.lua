@@ -14,20 +14,28 @@ neotree.setup({
   default_component_configs = {
 
     container = {
-      enable_character_fade = true,
+      enable_character_fade = false,
     },
 
     indent = {
-      indent_marker = " 🭰",
-      last_indent_marker = " 🭰 ",
+      indent_marker = "🭴",
+      last_indent_marker = "🭴 ",
+
+      -- indent_marker = " ",
+      -- last_indent_marker = "  ",
+
       indent_size = 2,
       padding = 0,
     },
 
     icon = {
-      folder_closed = "   ",
-      folder_open = "   ",
-      folder_empty = "   ",
+      folder_closed = "  ",
+      folder_open = "  ",
+      folder_empty = "  ",
+    },
+
+    name = {
+      use_git_status_colors = true,
     },
 
     modified = {
@@ -44,6 +52,14 @@ neotree.setup({
   },
 
   renderers = {
+    directory = {
+      -- { "indent" },
+      { "icon" },
+      { "current_filter" },
+      { "name" },
+      { "symlink_target", highlight = "NeoTreeSymbolicLinkTarget" },
+      { "clipboard" },
+    },
     file = {
       { "indent" },
       { "icon" },
@@ -75,4 +91,4 @@ neotree.setup({
 })
 
 -- Toggle filetree
-keymap("n", "<C-n>", ":Neotree focus toggle<cr>")
+keymap("n", "<C-n>", ":lua vim.g.neo_tree_opened=not vim.g.neo_tree_opened<cr> | :Neotree focus toggle<cr>")

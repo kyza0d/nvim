@@ -7,7 +7,14 @@
   "contributes": {
     "snippets": [
       {
-        "language": "all",
+        "language": [
+          "plaintext",
+          "markdown",
+          "tex",
+          "html",
+          "global",
+          "all"
+        ],
         "path": "global.json"
       },
       {

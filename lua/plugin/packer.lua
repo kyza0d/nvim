@@ -30,6 +30,14 @@ require("packer").startup({
     use("Mofiqul/vscode.nvim")
 
     use({
+      "folke/todo-comments.nvim",
+      requires = "nvim-lua/plenary.nvim",
+      config = function()
+        require("plugin.todo-comments")
+      end,
+    })
+
+    use({
       "~/github/aura/",
       config = function()
         require("plugin.aura")
@@ -193,6 +201,7 @@ require("packer").startup({
         "saadparwaiz1/cmp_luasnip",
         "hrsh7th/cmp-cmdline",
         "hrsh7th/cmp-path",
+        "hrsh7th/cmp-nvim-lsp-signature-help",
         "uga-rosa/cmp-dictionary",
         "hrsh7th/cmp-calc",
         "hrsh7th/cmp-nvim-lsp",

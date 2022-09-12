@@ -65,7 +65,7 @@ telescope.setup({
     selection_caret = " ",
     prompt_prefix = " ",
     entry_prefix = " ",
-    path_display = { "smart" },
+    -- path_display = { "smart" },
 
     layout_config = {
       width = 0.4,

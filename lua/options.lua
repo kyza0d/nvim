@@ -32,7 +32,7 @@ local options = {
 }
 
 vim.opt.fillchars:append({
-  vert = " ",
+  vert = "▕",
   vertright = " ",
   fold = " ",
   foldclose = "",
@@ -40,7 +40,7 @@ vim.opt.fillchars:append({
   foldsep = " ",
   vertleft = " ",
   eob = " ",
-  horiz = "─",
+  horiz = "▔",
 })
 
 vim.wo.foldlevel = 20

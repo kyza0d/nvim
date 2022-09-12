@@ -1,3 +1,5 @@
+-- Taken from https://github.com/barrett-ruth/dots
+
 local empty = require("utils.empty")
 
 local check_type = function(value)
@@ -21,7 +23,7 @@ return {
         goto continue
       end
 
-      local format = check_type(component.value)
+      local format = check_type(component[1])
 
       if not empty(format) then
         format = format .. "  "

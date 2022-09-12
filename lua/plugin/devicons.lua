@@ -16,10 +16,10 @@ for key, icon in pairs(current_icons) do
 
   if icon.name == "Md" then
     icon.icon = " "
-    icon.color = colors.foreground_3
+    icon.color = colors.foreground_2
   end
 
-  -- icon.color = colors.foreground_3
+  -- icon.color = colors.foreground_2
 
   new_icons[key] = icon
 end

@@ -4,17 +4,7 @@ if not status_ok then
   return
 end
 
-local luasnip = require("luasnip")
-
-local select_next_item = function(fallback)
-  if luasnip.expand_or_jumpable() then
-    luasnip.expand_or_jump()
-  else
-    fallback()
-  end
-end
-
-local kind_icons = {
+local icons = {
   Text = " ",
   Method = "m ",
   Function = " ",
@@ -42,16 +32,15 @@ local kind_icons = {
   TypeParameter = " ",
 }
 
-local border = {
-  { "┌", "FloatBorder" },
-  { "─", "FloatBorder" },
-  { "┐", "FloatBorder" },
-  { "│", "FloatBorder" },
-  { "┘", "FloatBorder" },
-  { "─", "FloatBorder" },
-  { "└", "FloatBorder" },
-  { "│", "FloatBorder" },
-}
+local luasnip = require("luasnip")
+
+local select_next_item = function(fallback)
+  if luasnip.expand_or_jumpable() then
+    luasnip.expand_or_jump()
+  else
+    fallback()
+  end
+end
 
 local keymaps = {
   ["<Tab>"] = cmp.mapping({
@@ -79,16 +68,6 @@ local keymaps = {
   ["<CR>"] = cmp.mapping.confirm({ select = true, behavior = cmp.ConfirmBehavior.Insert }),
 }
 
-local luasnip = require("luasnip")
-
-local select_next_item = function(fallback)
-  if luasnip.expand_or_jumpable() then
-    luasnip.expand_or_jump()
-  else
-    fallback()
-  end
-end
-
 cmp.setup({
   snippet = {
     expand = function(args)
@@ -98,51 +77,44 @@ cmp.setup({
 
   mapping = cmp.mapping.preset.insert(keymaps),
 
-  window = {
-    completion = {
-      -- border = border,
-      scrollbar = "┃",
-    },
-    documentation = {
-      -- border = border,
-      scrollbar = "┃",
-    },
-  },
-
   formatting = {
     fields = { "kind", "abbr", "menu" },
     format = function(entry, vim_item)
-      vim_item.kind = string.format("%s", kind_icons[vim_item.kind])
-
-      if entry.source.name == "dictionary" then
-        vim_item.kind = " "
-      end
-
       vim_item.menu = ({
         luasnip = "Snippet",
         nvim_lsp = "LSP",
         path = "File",
         calc = "calc",
         spell = "Spell",
-        dictionary = "Dictionary",
+        dictionary = "Dict",
         buffer = "Buffer",
       })[entry.source.name]
+
+      local label = vim_item.abbr
+
+      vim_item.kind = string.format("%s", icons[vim_item.kind])
+      vim_item.abbr = string.format("%s%s", label, "  ")
+
+      if entry.source.name == "dictionary" then
+        vim_item.kind = " "
+      end
 
       return vim_item
     end,
   },
 
   completion = {
-    completeopt = "menu,menuone,noinsert",
+    completeopt = "menu, menuone, noinsert",
   },
 
   sources = cmp.config.sources({
     { name = "nvim_lsp", max_item_count = 10 },
     { name = "calc", max_item_count = 1 },
+    { name = "nvim_lsp_signature_help" },
     { name = "luasnip" },
-    { name = "dictionary", keyword_length = 4, max_item_count = 3 },
     { name = "buffer" },
     { name = "path", trigger_characters = { "/", "." } },
+    { name = "dictionary", keyword_length = 3, max_item_count = 3 },
   }),
 
   experimental = {
@@ -170,5 +142,4 @@ require("cmp_dictionary").setup({
 
 require("luasnip/loaders/from_vscode").load({ paths = { "~/.config/nvim/snippets" } })
 
--- You can also use lazy loading so you only get in memory snippets of languages you use
 require("luasnip/loaders/from_vscode").lazy_load()
