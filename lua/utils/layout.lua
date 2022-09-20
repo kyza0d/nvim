@@ -146,7 +146,7 @@ M.bottom_borders = function()
       anchor = "S",
       width = 0.99,
       preview_width = 0.65,
-      height = 0.4,
+      height = 0.45,
       preview_cutoff = 0,
       prompt_position = "top",
     }
@@ -251,7 +251,7 @@ M.dropdown = function()
 
     layout_config = {
       anchor = "S",
-      width = 0.5,
+      width = 0.6,
       height = 0.5,
       preview_cutoff = 20,
       prompt_position = "top",

@@ -4,17 +4,6 @@
     "body": ["/**", " *", " */", "constructor() {", "\tsuper();", "\t$0", "}"],
     "description": "Constructor"
   },
-  "Class Definition": {
-    "prefix": "class",
-    "body": [
-      "class ${1:name} {",
-      "\tconstructor(${2:parameters}) {",
-      "\t\t$0",
-      "\t}",
-      "}"
-    ],
-    "description": "Class Definition"
-  },
   "Interface Definition": {
     "prefix": "iface",
     "body": ["interface ${1:name} {", "\t$0", "}"],

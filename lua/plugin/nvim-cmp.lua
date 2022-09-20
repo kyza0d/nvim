@@ -4,33 +4,7 @@ if not status_ok then
   return
 end
 
-local icons = {
-  Text = " ",
-  Method = "m ",
-  Function = " ",
-  Constructor = " ",
-  Field = " ",
-  Variable = " ",
-  Class = " ",
-  Interface = " ",
-  Module = " ",
-  Property = " ",
-  Unit = " ",
-  Value = " ",
-  Enum = " ",
-  Keyword = " ",
-  Snippet = " ",
-  Color = " ",
-  File = " ",
-  Reference = " ",
-  Folder = " ",
-  EnumMember = " ",
-  Constant = " ",
-  Struct = " ",
-  Event = " ",
-  Operator = " ",
-  TypeParameter = " ",
-}
+local icons = require("options").cmp
 
 local luasnip = require("luasnip")
 
@@ -75,14 +49,30 @@ cmp.setup({
     end,
   },
 
+  sorting = {
+    priority_weight = 100,
+    comparators = {
+      cmp.config.compare.exact,
+      cmp.config.compare.offset,
+      cmp.config.compare.score,
+      cmp.config.compare.sort_text,
+      cmp.config.compare.length,
+      cmp.config.compare.order,
+    },
+  },
+
   mapping = cmp.mapping.preset.insert(keymaps),
 
+  window = {
+    documentation = cmp.config.disable,
+  },
+
   formatting = {
-    fields = { "kind", "abbr", "menu" },
+    fields = vim.g.icons_enabled and { "kind", "abbr", "menu" } or { "abbr", "menu" },
     format = function(entry, vim_item)
       vim_item.menu = ({
-        luasnip = "Snippet",
         nvim_lsp = "LSP",
+        luasnip = "Snippet",
         path = "File",
         calc = "calc",
         spell = "Spell",
@@ -93,10 +83,14 @@ cmp.setup({
       local label = vim_item.abbr
 
       vim_item.kind = string.format("%s", icons[vim_item.kind])
-      vim_item.abbr = string.format("%s%s", label, "  ")
+      vim_item.abbr = string.format("%s%s", label, "")
 
       if entry.source.name == "dictionary" then
-        vim_item.kind = " "
+        vim_item.kind = icons.Dictionary
+      end
+
+      if entry.source.name == "nvim_lsp_signature_help" then
+        vim_item.kind = icons.Signature
       end
 
       return vim_item
@@ -108,13 +102,13 @@ cmp.setup({
   },
 
   sources = cmp.config.sources({
-    { name = "nvim_lsp", max_item_count = 10 },
+    { name = "nvim_lsp" },
     { name = "calc", max_item_count = 1 },
     { name = "nvim_lsp_signature_help" },
     { name = "luasnip" },
     { name = "buffer" },
     { name = "path", trigger_characters = { "/", "." } },
-    { name = "dictionary", keyword_length = 3, max_item_count = 3 },
+    { name = "dictionary", keyword_length = 5, max_item_count = 3 },
   }),
 
   experimental = {

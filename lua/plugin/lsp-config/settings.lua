@@ -1,8 +1,10 @@
+local icons = require("options").icons
+
 local signs = {
-  { name = "DiagnosticSignError", text = " " },
-  { name = "DiagnosticSignWarn", text = " " },
-  { name = "DiagnosticSignInfo", text = " " },
-  { name = "DiagnosticSignHint", text = " " },
+  { name = "DiagnosticSignError", text = icons.error },
+  { name = "DiagnosticSignWarn", text = icons.warning },
+  { name = "DiagnosticSignInfo", text = icons.info },
+  { name = "DiagnosticSignHint", text = icons.hint },
 }
 
 for _, sign in ipairs(signs) do
@@ -38,7 +40,7 @@ vim.diagnostic.config({
 })
 
 -- Language Server
-keymap("n", "gd", ":lua vim.lsp.buf.declaration()<cr>")
+keymap("n", "gd", ":lua vim.lsp.buf.definition()<cr>")
 keymap("n", "gR", ":lua vim.lsp.buf.rename()<cr>")
 keymap("n", "<S-k>", ":lua vim.lsp.buf.hover()<cr>")
 keymap("n", "<C-S-k>", ":lua vim.diagnostic.open_float()<cr>")

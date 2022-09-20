@@ -2,7 +2,7 @@ local fn_match = require("utils.fn_match")
 local get_buf_info = require("utils.get_buf_info")
 
 vim.api.nvim_create_autocmd("TextYankPost", {
-  command = "silent! lua require('vim.highlight').on_yank({higroup = 'Visual', timeout = 60})",
+  command = "silent! lua require('vim.highlight').on_yank({higroup = 'Visual', timeout = 40})",
 })
 
 vim.api.nvim_create_autocmd("BufWinEnter", {
@@ -37,6 +37,10 @@ vim.api.nvim_create_autocmd("BufEnter", {
       vim.opt.buflisted = false
     end
   end,
+})
+
+vim.api.nvim_create_autocmd("ColorScheme", {
+  command = "hi! clear Normal",
 })
 
 vim.api.nvim_create_autocmd("Filetype", {

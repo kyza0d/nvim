@@ -28,22 +28,31 @@ local leader = {
     o = { "<cmd>colorscheme onedark<cr>", "onedark" },
     D = { "<cmd>colorscheme dark-pines<cr>", "dark-pines" },
     d = { "<cmd>colorscheme doom-one<cr>", "doom-one" },
+    e = { "<cmd>colorscheme everforest<cr>", "everforest" },
     n = { "<cmd>colorscheme nord<cr>", "nord" },
     s = { "<cmd>colorscheme summer-time<cr>", "summer-time" },
+    i = { "<cmd>colorscheme iceberg<cr>", "iceberg" },
     g = { "<cmd>colorscheme gruvbox<cr>", "gruvbox" },
     z = { "<cmd>colorscheme zenburn<cr>", "zenburn" },
     v = { "<cmd>colorscheme vscode<cr>", "vscode" },
     t = { "<cmd>colorscheme tokyonight<cr>", "tokyonight" },
   },
 
-  b = {
-    name = "Buffer",
-    s = { ":Gitsigns stage_buffer<cr>", "Stage Buffer" },
-  },
-
   g = {
     name = "Git",
-    ["%"] = { ":!git add %<cr>", "Add current file" },
+    ["%"] = { ":!git add %<cr>", "  Add current file" },
+    ["d"] = { "<cmd>lua _lazygit_toggle()<CR>", "  Git details" },
+    ["i"] = { "<cmd>Octo issue search<cr>", "  Search issues" },
+    r = {
+      name = "碑 Reset",
+      ["h"] = { ":Gitsigns reset_hunk<cr>", "碑 Reset hunk" },
+      ["b"] = { ":Gitsigns reset_hunk<cr>", "  Reset buffer" },
+    },
+    s = {
+      name = "  Stage",
+      ["h"] = { ":Gitsigns stage_hunk<cr>", "  Stage hunk" },
+      ["b"] = { ":Gitsigns stage_buffer<cr>", "  Stage buffer" },
+    },
   },
 
   d = {
@@ -64,8 +73,9 @@ local leader = {
 
 local cr_mappings = {
   r = { ':lua require("telescope.builtin").oldfiles(dropdown())<cr>', "Recent files" },
+  g = { ':lua require("telescope.builtin").live_grep(bottom_borders())<cr>', "Grep" },
   d = { ":WhichKey \\<leader>d<cr>", "Dotfiles" },
-  f = { ":Telescope live_grep<cr>", "Find" },
+  t = { ":TodoTrouble <cr>", "  Todo" },
   w = { ":w!<cr>", "Write buffer" },
   a = { ":norm @a<CR>", "Preform 'a' macro", silent = false },
   n = { ":norm ", "Normal command", silent = false },
@@ -97,4 +107,10 @@ which_key.register(cr_mappings_visual, {
   prefix = "<cr>",
 })
 
-which_key.setup({})
+which_key.setup({
+  icons = {
+    breadcrumb = "",
+    separator = "",
+    group = "",
+  },
+})

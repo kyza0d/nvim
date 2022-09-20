@@ -12,9 +12,18 @@ require("packer").startup({
       end,
     })
 
+    use({
+      "williamboman/mason.nvim",
+      config = function()
+        require("mason").setup()
+      end,
+    })
+
     use("antoinemadec/FixCursorHold.nvim")
 
     use("sainnhe/sonokai")
+
+    use("yazeed1s/minimal.nvim")
 
     use("sainnhe/everforest")
 
@@ -29,6 +38,10 @@ require("packer").startup({
 
     use("Mofiqul/vscode.nvim")
 
+    use("shaunsingh/nord.nvim")
+
+    use("NTBBloodbath/doom-one.nvim")
+
     use({
       "folke/todo-comments.nvim",
       requires = "nvim-lua/plenary.nvim",
@@ -38,24 +51,28 @@ require("packer").startup({
     })
 
     use({
-      "~/github/aura/",
+      "~/plugins/aura/",
       config = function()
         require("plugin.aura")
       end,
     })
 
-    use("shaunsingh/nord.nvim")
-
-    use("NTBBloodbath/doom-one.nvim")
-
     use({
       "nvim-treesitter/nvim-treesitter",
+      run = ":TSUpdate",
       config = function()
         require("plugin.treesitter")
       end,
     })
 
     use("nvim-treesitter/playground")
+
+    use({
+      "pwntester/octo.nvim",
+      config = function()
+        require("octo").setup()
+      end,
+    })
 
     use({
       "lukas-reineke/indent-blankline.nvim",
@@ -67,10 +84,6 @@ require("packer").startup({
     use({
       "kevinhwang91/nvim-ufo",
       requires = "kevinhwang91/promise-async",
-
-      config = function()
-        require("ufo").setup()
-      end,
     })
 
     use({
@@ -82,6 +95,7 @@ require("packer").startup({
 
     use({
       "jose-elias-alvarez/typescript.nvim",
+      disable = true,
       config = function()
         require("typescript").setup()
       end,
@@ -170,10 +184,13 @@ require("packer").startup({
       end,
     })
 
-    use("~/github/summer-time/")
+    use("~/plugins/summer-time")
+
+    use("~/plugins/image")
 
     use({
       "akinsho/bufferline.nvim",
+      -- tag = "v2.7.0",
 
       config = function()
         require("plugin.bufferline")
@@ -223,6 +240,7 @@ require("packer").startup({
       config = function()
         require("plugin.neo-tree")
       end,
+
       requires = {
         "nvim-lua/plenary.nvim",
         "kyazdani42/nvim-web-devicons",
@@ -231,7 +249,7 @@ require("packer").startup({
     })
 
     use({
-      "~/github/palette.lua",
+      "~/plugins/palette.lua",
       config = function()
         require("plugin.palette")
       end,
@@ -240,7 +258,7 @@ require("packer").startup({
   config = {
     display = {
       open_fn = function()
-        return require("packer.util").float({ border = "single" })
+        return require("packer.util").float({ border = "none" })
       end,
     },
   },

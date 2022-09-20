@@ -8,6 +8,7 @@ end
 autopairs.setup({
   check_ts = true,
   map_cr = true,
+  map_c_w = true,
   ts_config = {
     lua = { "string", "source" },
     javascript = { "string", "template_string" },

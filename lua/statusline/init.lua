@@ -34,6 +34,6 @@ return {
 
     end
 
-    return "%#Statusline#" .. statusline .. "% "
+    return "%#Statusline# " .. statusline .. "% "
   end,
 }

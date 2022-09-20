@@ -4,6 +4,8 @@ if not status_ok then
   return
 end
 
+local icons = require("options").icons
+
 neotree.setup({
   enable_git_status = false,
   enable_diagnostics = false,
@@ -18,20 +20,24 @@ neotree.setup({
     },
 
     indent = {
-      indent_marker = "🭴",
-      last_indent_marker = "🭴 ",
+      -- indent_marker = "🭴",
+      -- last_indent_marker = "🭴 ",
 
-      -- indent_marker = " ",
-      -- last_indent_marker = "  ",
+      indent_marker = icons.indent_marker,
+      last_indent_marker = icons.last_indent_marker,
 
       indent_size = 2,
       padding = 0,
     },
 
     icon = {
-      folder_closed = "  ",
-      folder_open = "  ",
-      folder_empty = "  ",
+      folder_open = icons.folder_open,
+      folder_closed = icons.folder_closed,
+      folder_empty = icons.folder_empty,
+
+      -- folder_closed = "  ",
+      -- folder_open = "  ",
+      -- folder_empty = "  ",
     },
 
     name = {
@@ -45,6 +51,7 @@ neotree.setup({
 
   window = {
     width = 35,
+    position = "right",
     mappings = {
       ["l"] = "open",
       ["h"] = "close_node",
@@ -90,5 +97,4 @@ neotree.setup({
   },
 })
 
--- Toggle filetree
-keymap("n", "<C-n>", ":lua vim.g.neo_tree_opened=not vim.g.neo_tree_opened<cr> | :Neotree focus toggle<cr>")
+keymap("n", "<C-n>", ":Neotree focus toggle<cr>") -- Toggle filetree

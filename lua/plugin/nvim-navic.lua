@@ -4,6 +4,8 @@ if not status_ok then
   return
 end
 
+local icons = require("options").icons
+
 navic.setup({
   icons = {
     File = "",
@@ -34,7 +36,7 @@ navic.setup({
     TypeParameter = "",
   },
 
-  separator = "  ",
-  depth_limit = 0,
+  separator = icons.chevron,
+  depth_limit = 3,
   depth_limit_indicator = "..",
 })

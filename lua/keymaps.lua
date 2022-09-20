@@ -1,49 +1,40 @@
--- Toggle hlsearch
-keymap("n", "\\", ":set invhlsearch<cr>")
-
 -- Highlight selected text https://vim.fandom.com/wiki/Search_for_visually_selected_text#
 keymap("v", "//", [[y/\V<C-R>=escape(@",'/\')<CR><CR>:set hlsearch<CR>N]])
 
--- Change go next
-keymap("v", "<C-d>", "//dgn", { noremap = false })
-keymap("v", "<C-n>", "//cgn", { noremap = false })
+-- stylua: ignore start
+keymap("v", "<C-n>", "//cgn", { noremap = false }) -- Change go next
+keymap("v", "<C-d>", "//dgn", { noremap = false }) -- Delete go next
+keymap("v", "<C-i>", "//", { noremap = false })    -- Change at beginning of next
+keymap("i", "<C-l>", "<Right>")                    -- Right for insert mode
+keymap("i", "<C-h>", "<Left>")                     -- Left for insert mode
 
--- Left / right for insert mode
-keymap("i", "<C-l>", "<Right>")
-keymap("i", "<C-h>", "<Left>")
+keymap({ "n", "v" }, "<C-c>", '"+y')               -- Copy
+keymap({ "i", "c" }, "<C-v>", "<C-r><C-p>+")       -- Paste insert mode
+keymap({ "n", "v" }, "<C-v>", '"+p')               -- Paste from "+
+keymap({ "i", "s" }, "<C-p>", "<C-r>0")            -- Paste from "0
 
--- Copy
-keymap({ "n", "v" }, "<C-c>", '"+y')
+keymap({ "n", "v" }, "<C-b>", "<C-v>")             -- Block selection
 
--- Paste
-keymap({ "i", "c" }, "<C-v>", "<C-r><C-p>+")
-keymap({ "n", "v" }, "<C-v>", '"+p')
-keymap({ "i", "s" }, "<C-p>", "<C-r>0")
+keymap({ "n", "v" }, "<C-l>", "$")                 -- End of line
+keymap({ "n", "v" }, "<C-h>", "^")                 -- Start of line
 
--- Start / end of line
-keymap({ "n", "v" }, "<C-l>", "$")
-keymap({ "n", "v" }, "<C-h>", "^")
+keymap("c", "<C-l>", "$", { silent = false })      -- End of line for normal commands
+keymap("c", "<C-h>", "^", { silent = false })      -- Start of line for normal commands
 
--- Start / end of line for normal commands
-keymap("c", "<C-l>", "$", { silent = false })
-keymap("c", "<C-h>", "^", { silent = false })
+keymap({ "n", "v" }, "s", "*")                     -- Next occurrence for word under cursor
+keymap({ "n", "v" }, "S", "#")                     -- Previous occurrence for word under cursor
 
--- Block selection
-keymap({ "n", "v" }, "<C-b>", "<C-v>")
+keymap("n", "<C-CR>", "<C-^>")                     -- Previous buffer
+keymap("n", "<S-w>", ":w<cr>")                     -- Save Buffer
+keymap({ "n", "v" }, "<C-j>", "%")                 -- Other pair
 
--- Previous buffer
-keymap("n", "<C-CR>", "<C-^>")
+keymap("n", "<C-u>", "3<C-y>")                     -- 2 Lines up
+keymap("n", "<C-d>", "3<C-e>")                     -- 2 Lines down
 
--- Save Buffer
-keymap("n", "<S-w>", ":w<cr>")
+keymap("n", "<C-s-h>", ":foldclose<cr>")           -- Fold close
+keymap("n", "<C-s-l>", ":foldopen<cr>")            -- Fold open
 
--- Other pair
-keymap({ "n", "v" }, "<C-j>", "%")
+keymap("n", "\\", ":set invhlsearch<cr>")          -- Toggle hlsearch
 
--- Vertical movement
-keymap("n", "<C-u>", "2<C-y>")
-keymap("n", "<C-d>", "2<C-e>")
-
--- Folding
-keymap("n", "<C-s-h>", ":foldclose<cr>")
-keymap("n", "<C-s-l>", ":foldopen<cr>")
+keymap("i", "<C-o>", "<C-o>o")
+keymap("i", "<C-S-o>", "<C-o>O")

@@ -7,7 +7,7 @@ end
 require("trouble").setup({
   padding = false,
 
-  height = 15,
+  height = 10,
 
   fold_open = "",
   fold_closed = "",
@@ -16,6 +16,8 @@ require("trouble").setup({
     jump = { "o" },
     jump_close = { "<cr>" },
   },
+
+  use_diagnostic_signs = true, -- enabling this will use the signs defined in your lsp client
 })
 
 keymap("n", "gr", ":Trouble lsp_references<cr>")

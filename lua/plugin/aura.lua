@@ -4,22 +4,38 @@ local midnight = {
   background = { "#0F1215", "#ffffff" },
   foreground = { "#b2ceff", "#ffffff" },
   comment = { "#3c4b66", "#ffffff" },
+  strings = { "#83C092", "#ffffff" },
 }
 
-local doom = {
-  primary = { "#51AFEF", "#ffffff" },
-  secondary = { "#A9A1E1", "#ffffff" },
-  background = { "#161b1e", "#ffffff" },
-  foreground = { "#c1d3f2", "#ffffff" },
-  comment = { "#3c4b66", "#ffffff" },
+-- stylua: ignore
+local abyss = {
+  primary    = { "#555555", "#555555" },
+  secondary  = { "#333333", "#555555" },
+  tertiary   = { "#555555", "#555555" },
+
+  accent     = { "#555555", "#555555" },
+
+  background = { "#000000", "#ffffff" },
+  foreground = { "#555555", "#555555" },
+
+  comment    = { "#333333", "#333333" },
 }
 
-local witness = {
-  primary = { "#BCB6A4", "#ffffff" },
-  secondary = { "#78C388", "#ffffff" },
-  background = { "#072627", "#ffffff" },
-  foreground = { "#c1d3f2", "#ffffff" },
-  comment = { "#3c4b66", "#ffffff" },
+-- stylua: ignore
+local iosevkem = {
+  background = { "#22272E", "#ffffff" },
+  foreground = { "#b7c9e5", "#ffffff" },
+
+  accent     = { "#03AEE9", "#ffffff" },
+
+  primary    = { "#03AEE9", "#ffffff" },
+  secondary  = { "#B77FDB", "#ffffff" },
+
+  strings    = { "#E7C664", "#ffffff" },
+  boolean    = { "#E79A48", "#ffffff" },
+  numbers    = { "#E79A48", "#ffffff" },
+
+  comment    = { "#6e7989", "#ffffff" },
 }
 
-vim.g.aura = midnight
+vim.g.aura = abyss

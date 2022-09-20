@@ -1,5 +1,6 @@
 local empty = require("utils.empty")
 local colors = require("palette").colors
+local icons = require("options").icons
 
 local mode = {
   function()
@@ -17,10 +18,7 @@ local mode = {
 
     local current_mode = vim.api.nvim_get_mode().mode
 
-    -- vim.api.nvim_command("hi Mode guibg=" .. colors.accent .. " guifg=" .. colors.background_1)
-    -- return "%#Mode# " .. string.format("%s", modes[current_mode]):upper() .. " %#Statusline#"
-
-    return " " .. string.format("%s", modes[current_mode]):upper()
+    return string.format("%s", modes[current_mode]):upper()
   end,
 }
 
@@ -57,13 +55,11 @@ local file = {
     color = color or ""
     icon = icon or ""
 
-    vim.api.nvim_command(string.format("hi Icon guifg=%s guibg=%s", color, colors.background_shaded_1))
+    -- vim.api.nvim_command(string.format("hi Icon guifg=%s guibg=%s", color, colors.background_shaded_1))
 
     icon = "%#Icon#" .. icon .. "%#Statusline#"
-    -- icon = "%#Statusline#" .. icon .. "%#Statusline#"
 
-    -- return string.format("%s%s %s", modified, icon, vim.fn.expand("%:p:t"))
-    return string.format("%s %s", modified, vim.fn.expand("%:p:t"))
+    return string.format("%s %s", vim.fn.expand("%:p:t"), modified)
   end,
 }
 
@@ -84,18 +80,20 @@ local diagnostics = {
   function()
     local count = {}
     local levels = { errors = "Error", warnings = "Warn", info = "Info", hints = "Hint" }
+
     for k, level in pairs(levels) do
       count[k] = vim.tbl_count(vim.diagnostic.get(0, { severity = level }))
     end
+
     local function format_diagnostic(icon, status)
       return count[status] ~= 0 and string.format(icon .. "%s", count[status]) or ""
     end
-    return table.concat({
-      string.format("  %s ", count["errors"]),
-      string.format("  %s", count["warnings"]),
 
-      format_diagnostic("   ", "hints"),
-      format_diagnostic("   ", "info"),
+    return table.concat({
+      format_diagnostic(icons.error, "errors"),
+      format_diagnostic(icons.warning, "warnings"),
+      format_diagnostic(icons.hint, "hints"),
+      format_diagnostic(icons.info, "info"),
     })
   end,
 }
@@ -104,7 +102,7 @@ local root = {
   function()
     local root = vim.fn.getcwd()
     local workspace = root:sub(root:find("[^/]*$"))
-    return workspace
+    return icons.folder_alt .. workspace
   end,
 }
 
@@ -121,7 +119,7 @@ local git = {
     end
 
     return table.concat({
-      git_info.head,
+      icons.git_branch .. git_info.head,
       format_git("+", git_info.added),
       format_git("~", git_info.changed),
       format_git("-", git_info.removed),

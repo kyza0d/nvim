@@ -12,13 +12,22 @@ M.on_attach = function(client, bufnr)
     callback = function()
       local opts = {
         focusable = false,
-        close_events = { "BufLeave", "CursorMoved", "InsertEnter", "FocusLost" },
         source = "always",
         prefix = " ",
       }
       vim.diagnostic.open_float(nil, opts)
     end,
   })
+
+  keymap("n", "<C-S-j>", function()
+    local opts = {
+      focusable = true,
+      close_events = { "BufLeave", "CursorMoved", "InsertEnter", "FocusLost" },
+      source = "always",
+      prefix = " ",
+    }
+    vim.diagnostic.open_float(nil, opts)
+  end)
 end
 
 local capabilities = require("cmp_nvim_lsp").update_capabilities(vim.lsp.protocol.make_client_capabilities())
@@ -26,7 +35,7 @@ local capabilities = require("cmp_nvim_lsp").update_capabilities(vim.lsp.protoco
 capabilities.textDocument.completion.completionItem.snippetSupport = true
 
 capabilities.textDocument.foldingRange = {
-  dynamicRegistration = true,
+  dynamicRegistration = false,
   lineFoldingOnly = true,
 }
 

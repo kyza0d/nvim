@@ -26,7 +26,7 @@ end
 
 require("utils.layout").bottom_borders()
 
-_bottom_borders = function()
+bottom_borders = function()
   return require("telescope.themes").get_ivy({
     layout_config = {
       width = 0.3,
@@ -34,9 +34,9 @@ _bottom_borders = function()
     },
 
     borderchars = {
-      prompt = { "─", "│", "─", "│", "┤", "┤", "┘", "└" },
+      prompt = { "─", "│", "─", "│", "┌", "┬", "┘", "└" },
       results = { "─", "│", "─", "│", "├", "┤", "┘", "└" },
-      preview = { "─", "│", "─", "│", "┤", "┤", "┘", "└" },
+      preview = { "─", "│", "─", "│", "┤", "┐", "┘", "└" },
     },
 
     layout_strategy = "bottom_borders",
@@ -46,7 +46,7 @@ end
 
 require("utils.layout").pager()
 
-_pager = function()
+pager = function()
   return require("telescope.themes").get_ivy({
     borderchars = {
       prompt = { "─", "│", "─", "│", "┌", "┐", "┘", "└" },
@@ -55,6 +55,24 @@ _pager = function()
     },
 
     layout_strategy = "pager",
+    preview = false,
+  })
+end
+
+sublime = function()
+  return require("telescope.themes").get_ivy({
+    layout_config = {
+      width = 0.5,
+      height = 0.4,
+    },
+
+    borderchars = {
+      prompt = { "─", "│", "─", "│", "┌", "┐", "┘", "└" },
+      results = { "─", "│", "─", "│", "├", "┤", "┘", "└" },
+      preview = { "─", "│", "─", "│", "┌", "┐", "┘", "└" },
+    },
+
+    layout_strategy = "sublime",
     preview = false,
   })
 end
@@ -68,11 +86,12 @@ telescope.setup({
     -- path_display = { "smart" },
 
     layout_config = {
-      width = 0.4,
+      width = 0.99,
       height = 0.4,
     },
 
-    layout_strategy = "pager",
+    -- layout_strategy = "pager",
+    layout_strategy = "bottom_borders",
 
     borderchars = {
       prompt = { "─", "│", "─", "│", "┌", "┐", "┘", "└" },
@@ -84,9 +103,9 @@ telescope.setup({
     prompt_title = "",
     results_title = "",
 
-    file_ignore_patterns = { "node_modules", "package-lock.json", "yarn.lock" },
+    file_ignore_patterns = { "node_modules", "package-lock.json", "yarn.lock", "dist" },
   },
 })
 
-keymap("n", "<C-p>", ':lua require("telescope.builtin").find_files(_pager())<cr>')
+keymap("n", "<C-p>", ':lua require("telescope.builtin").find_files(pager())<cr>')
 keymap("n", "?", ":Telescope live_grep<cr>")
