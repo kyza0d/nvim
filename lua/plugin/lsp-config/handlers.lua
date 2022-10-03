@@ -1,23 +1,36 @@
 local M = {}
-local navic = require("nvim-navic")
+
+local status_ok, nvim_navic = pcall(require, "nvim-navic")
+
+if not status_ok then
+  return
+end
 
 M.on_attach = function(client, bufnr)
   vim.g.navic_silence = true
-  navic.attach(client, bufnr)
+  nvim_navic.attach(client, bufnr)
 
   client.server_capabilities.documentFormattingProvider = false
 
-  vim.api.nvim_create_autocmd("CursorHold", {
-    buffer = bufnr,
-    callback = function()
-      local opts = {
-        focusable = false,
-        source = "always",
-        prefix = " ",
-      }
-      vim.diagnostic.open_float(nil, opts)
-    end,
-  })
+  if client.server_capabilities.documentHighlightProvider then
+    vim.api.nvim_create_augroup("lsp_document_highlight", {
+      clear = false,
+    })
+    vim.api.nvim_clear_autocmds({
+      buffer = bufnr,
+      group = "lsp_document_highlight",
+    })
+    vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
+      group = "lsp_document_highlight",
+      buffer = bufnr,
+      callback = vim.lsp.buf.document_highlight,
+    })
+    vim.api.nvim_create_autocmd("CursorMoved", {
+      group = "lsp_document_highlight",
+      buffer = bufnr,
+      callback = vim.lsp.buf.clear_references,
+    })
+  end
 
   keymap("n", "<C-S-j>", function()
     local opts = {

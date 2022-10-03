@@ -1,12 +1,11 @@
-local status_ok, neotree = pcall(require, "neo-tree")
-
-if not status_ok then
-  return
-end
+-- local status_ok, neotree = pcall(require, "neo-tree")
+--
+-- if not status_ok then return
+-- end
 
 local icons = require("options").icons
 
-neotree.setup({
+require("neo-tree").setup({
   enable_git_status = false,
   enable_diagnostics = false,
 
@@ -20,11 +19,11 @@ neotree.setup({
     },
 
     indent = {
-      -- indent_marker = "🭴",
-      -- last_indent_marker = "🭴 ",
+      -- indent_marker = icons.indent_marker,
+      -- last_indent_marker = icons.last_indent_marker,
 
-      indent_marker = icons.indent_marker,
-      last_indent_marker = icons.last_indent_marker,
+      indent_marker = "🭳",
+      last_indent_marker = "🭳",
 
       indent_size = 2,
       padding = 0,
@@ -50,8 +49,8 @@ neotree.setup({
   },
 
   window = {
-    width = 35,
-    position = "right",
+    width = 30,
+    position = "left",
     mappings = {
       ["l"] = "open",
       ["h"] = "close_node",
@@ -94,7 +93,19 @@ neotree.setup({
         ".DS_Store",
       },
     },
+    components = {
+
+      name = function(config, node)
+        local name = node.name
+        local highlight = config.highlight
+        if node.type == "directory" then
+          name = name .. "/"
+        end
+        return {
+          text = name,
+          highlight = highlight,
+        }
+      end,
+    },
   },
 })
-
-keymap("n", "<C-n>", ":Neotree focus toggle<cr>") -- Toggle filetree

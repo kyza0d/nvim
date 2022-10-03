@@ -64,19 +64,22 @@ cmp.setup({
   mapping = cmp.mapping.preset.insert(keymaps),
 
   window = {
+    completion = {
+      -- border = { "┌", "", "▕", "▕", "┘", "", "└", "▏" },
+
+      -- winhighlight = "FloatBorder:FloatBorder,FloatNormal:FloatNormal",
+      side_padding = 1,
+    },
     documentation = cmp.config.disable,
   },
 
   formatting = {
-    fields = vim.g.icons_enabled and { "kind", "abbr", "menu" } or { "abbr", "menu" },
+    -- fields = vim.g.icons_enabled and { "kind", "abbr", "menu" } or { "abbr", "menu" },
+    fields = { "kind", "abbr" },
+
     format = function(entry, vim_item)
       vim_item.menu = ({
         nvim_lsp = "LSP",
-        luasnip = "Snippet",
-        path = "File",
-        calc = "calc",
-        spell = "Spell",
-        dictionary = "Dict",
         buffer = "Buffer",
       })[entry.source.name]
 
@@ -84,14 +87,6 @@ cmp.setup({
 
       vim_item.kind = string.format("%s", icons[vim_item.kind])
       vim_item.abbr = string.format("%s%s", label, "")
-
-      if entry.source.name == "dictionary" then
-        vim_item.kind = icons.Dictionary
-      end
-
-      if entry.source.name == "nvim_lsp_signature_help" then
-        vim_item.kind = icons.Signature
-      end
 
       return vim_item
     end,
@@ -107,12 +102,13 @@ cmp.setup({
     { name = "nvim_lsp_signature_help" },
     { name = "luasnip" },
     { name = "buffer" },
+    { name = "orgmode" },
     { name = "path", trigger_characters = { "/", "." } },
     { name = "dictionary", keyword_length = 5, max_item_count = 3 },
   }),
 
   experimental = {
-    ghost_text = true,
+    -- ghost_text = true,
   },
 })
 
@@ -128,12 +124,18 @@ require("cmp").setup.cmdline("/", {
   },
 })
 
-require("cmp_dictionary").setup({
+require("luasnip/loaders/from_vscode").load({ paths = { "~/.config/nvim/snippets" } })
+
+require("luasnip/loaders/from_vscode").lazy_load()
+
+local status_ok, dictonary = pcall(require, "cmp_dictionary")
+
+if not status_ok then
+  return
+end
+
+dictonary.setup({
   dic = {
     ["*"] = { "~/dict/en_US.dic" },
   },
 })
-
-require("luasnip/loaders/from_vscode").load({ paths = { "~/.config/nvim/snippets" } })
-
-require("luasnip/loaders/from_vscode").lazy_load()

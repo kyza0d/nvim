@@ -18,13 +18,10 @@ treesitter.setup({
   highlight = {
     enable = true,
     additional_vim_regex_highlighting = { "markdown" },
+    disable = { "help" },
   },
 
   indent = {
-    enable = true,
-  },
-
-  playground = {
     enable = true,
   },
 })
@@ -34,6 +31,3 @@ require("ufo").setup({
     return { "treesitter", "indent" }
   end,
 })
-
-local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
-parser_config.markdown.filetype_to_parsername = "octo"

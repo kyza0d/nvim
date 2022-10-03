@@ -1,9 +1,3 @@
-local status_ok, toggleterm = pcall(require, "toggleterm")
-
-if not status_ok then
-  return
-end
-
 local Terminal = require("toggleterm.terminal").Terminal
 local lazygit = Terminal:new({
   cmd = "lazygit",
@@ -21,11 +15,13 @@ function _lazygit_toggle()
   lazygit:toggle()
 end
 
-toggleterm.setup({
+require("toggleterm").setup({
   open_mapping = "<C-\\>",
   direction = "horizontal",
-  shade_terminals = false,
+  shade_terminals = true,
   shell = "zsh",
+  -- size = vim.api.nvim_win_get_height(0) * 0.4,
+  size = 13,
   on_open = function()
     vim.cmd("set laststatus=0 | startinsert!")
   end,

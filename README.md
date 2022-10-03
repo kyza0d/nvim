@@ -1,27 +1,20 @@
-  ---
-  
-<style>
-span {
-  color: dodgerblue
-}
-</style>
 
-<pre>
-├─ <span>lua/</span>                   Help Directory
+```
+├─ lua/
 │
-├─┬─ <span>plugin/</span>            :h plugin-configuration
-│ ├─┬─ <span>lsp-config/</span>      :h plugin-configuration
+├─┬─ plugin/
+│ ├─┬─ lsp-config/
 │ │ │  handlers.lua
 │ │ │  servers.lua
 │ │ └─ settings.lua
 │ │  vim-wiki.lua
 │ └─ whichkey.lua
 │
-├─┬─ <span>statusline/</span>
+├─┬─ statusline/
 │ │  components.lua
 │ └─ init.lua
 │
-├─┬─ <span>utils/</span>
+├─┬─ utils/
 │ │  empty.lua
 │ │  fn_match.lua
 │ │  get_buf_info.lua
@@ -32,5 +25,4 @@ span {
 │  keymaps.lua
 │  options.lua
 └─ winbar.lua
-</pre>
----
+```

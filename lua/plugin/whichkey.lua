@@ -4,17 +4,15 @@ if not status_ok then
   return
 end
 
--- Space for leader
-vim.g.mapleader = " "
-vim.g.localmapleader = " "
-
 local leader = {
   p = {
     name = "Packer",
-    c = { ":PackerClean<cr>", "Clean" },
-    i = { ":PackerInstall<cr>", "Install" },
-    s = { ":PackerSync<cr>", "Sync" },
-    u = { ":PackerUpdate<cr>", "Update" },
+    d = { ":PackerStatus<cr>", "details" },
+    c = { ":PackerCompile profile=true<cr>", "compile" },
+    i = { ":PackerInstall<cr>", "install" },
+    p = { ":PackerProfile<cr>", "profile" },
+    s = { ":PackerSync<cr>", "sync" },
+    u = { ":PackerUpdate<cr>", "update" },
   },
 
   t = {
@@ -23,7 +21,7 @@ local leader = {
   },
 
   c = {
-    name = "Colorschemes",
+    name = "Colorscheme",
     a = { "<cmd>colorscheme aura<cr>", "aura" },
     o = { "<cmd>colorscheme onedark<cr>", "onedark" },
     D = { "<cmd>colorscheme dark-pines<cr>", "dark-pines" },
@@ -40,26 +38,27 @@ local leader = {
 
   g = {
     name = "Git",
-    ["%"] = { ":!git add %<cr>", "  Add current file" },
-    ["d"] = { "<cmd>lua _lazygit_toggle()<CR>", "  Git details" },
-    ["i"] = { "<cmd>Octo issue search<cr>", "  Search issues" },
+    ["%"] = { ":!git add %<cr>", "Add current file" },
+    ["d"] = { "<cmd>lua _lazygit_toggle()<CR>", "details" },
+    ["i"] = { "<cmd>Octo issue search<cr>", "issues" },
     r = {
-      name = "碑 Reset",
-      ["h"] = { ":Gitsigns reset_hunk<cr>", "碑 Reset hunk" },
-      ["b"] = { ":Gitsigns reset_hunk<cr>", "  Reset buffer" },
+      name = "reset",
+      ["h"] = { ":Gitsigns reset_hunk<cr>", "hunk" },
+      ["b"] = { ":Gitsigns reset_buffer<cr>", "buffer" },
     },
     s = {
-      name = "  Stage",
-      ["h"] = { ":Gitsigns stage_hunk<cr>", "  Stage hunk" },
-      ["b"] = { ":Gitsigns stage_buffer<cr>", "  Stage buffer" },
+      name = "stage",
+      ["h"] = { ":Gitsigns stage_hunk<cr>", "hunk" },
+      ["b"] = { ":Gitsigns stage_buffer<cr>", "buffer" },
     },
   },
 
   d = {
-    name = "Dotfiles",
+    name = "Dotfile",
     v = { ":Telescope find_files cwd=~/.config/nvim/<cr>", ".nvim" },
     p = { ":e ~/.config/polybar/config.ini<cr>", ".polybar" },
     c = { ":e ~/.config/picom/picom.conf<cr>", ".picom" },
+    q = { ":e ~/.config/qutebrowser/config.py<cr>", ".qutebrowser" },
     b = { ":e ~/.config/bspwm/bspwmrc<cr>", ".bspwmrc" },
     d = { ":e ~/.config/dunst/dunstrc<cr>", ".dunst" },
     x = { ":e ~/.xprofile<cr>", ".xprofile" },
@@ -79,12 +78,41 @@ local cr_mappings = {
   w = { ":w!<cr>", "Write buffer" },
   a = { ":norm @a<CR>", "Preform 'a' macro", silent = false },
   n = { ":norm ", "Normal command", silent = false },
+  ["<CR>"] = {
+    name = "dap",
+    i = { ":lua require('dap').step_into()<cr>", "into" },
+    o = { ":lua require('dap').step_over()<cr>", "over" },
+    -- c = { ":lua require('dap').continue()<cr>", "continue" },
+    c = {
+      function()
+        if vim.bo.filetype == "lua" then
+          require("osv").run_this()
+        else
+          require("dap").continue()
+        end
+      end,
+      "continue",
+    },
+    b = { ":lua require('dap').toggle_breakpoint()<cr>", "breakpoint" },
+    B = { ":lua require('dap').set_breakpoint(vim.fn.input('Breakpoint condition: '))<cr>", "breakpoint condition" },
+    r = { ":lua require('dap').repl.open()<cr>", "repl" },
+    l = { ":lua require('dap').repl.run_last()<cr>", "repl last" },
+    u = { ":lua require('dapui').open()<cr>", "ui" },
+    h = { ":lua require('dap').run_to_cursor()<cr>", "run to cursor" },
+    t = { ":lua require('dap').terminate({restart = true})<cr>", "terminate" },
+  },
   ["/"] = { ":Telescope help_tags<cr>", "Man pages" },
+  ["?"] = {
+    function()
+      require("utils.nui").open_first()
+    end,
+    "Search",
+  },
 }
 
 local cr_mappings_visual = {
   a = { ":norm @a<CR>", "Preform 'a' macro", silent = false },
-  s = { ":s/", "Substitute command ", silent = false, noremap = false },
+  s = { ":%s/", "Substitute command ", silent = false, noremap = false },
   n = { ":norm ", "Normal command", silent = false },
   h = {
     name = "hunk",
@@ -92,9 +120,20 @@ local cr_mappings_visual = {
   },
 }
 
+-- Mainly used for debugging
+-- local backtick_mappings_visual = {
+--   a = { ":norm @a<CR>", "Preform 'a' macro", silent = false },
+--   s = { ":%s/", "Substitute command ", silent = false, noremap = false },
+--   n = { ":norm ", "Normal command", silent = false },
+--   h = {
+--     name = "hunk",
+--     s = { ":Gitsigns stage_hunk<cr>", "Stage hunk" },
+--   },
+-- }
+
 which_key.register(leader, {
   mode = "n",
-  prefix = "<leader>",
+  prefix = "<Space>",
 })
 
 which_key.register(cr_mappings, {
@@ -108,6 +147,25 @@ which_key.register(cr_mappings_visual, {
 })
 
 which_key.setup({
+  plugins = {
+    marks = true,
+    registers = false,
+    spelling = {
+      enabled = true,
+      suggestions = 20,
+    },
+
+    presets = {
+      operators = true,
+      motions = true,
+      text_objects = true,
+      windows = true,
+      nav = true,
+      z = true,
+      g = true,
+    },
+  },
+
   icons = {
     breadcrumb = "",
     separator = "",

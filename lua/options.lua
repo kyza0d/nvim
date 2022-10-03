@@ -1,80 +1,69 @@
-vim.g.cursorhold_updatetime = 300
-
--- local colors = require("palette").colors
-
--- vim.cmd("hi FoldColumn guifg=" .. colors.background_0)
+vim.g.icons_enabled = true
 
 local options = {
-  -- Appearance
   number = true,
-  numberwidth = 1,
+  syntax = "enable",
+  numberwidth = 4,
+  cursorline = false,
   relativenumber = false,
-  foldcolumn = "2",
-  signcolumn = "no",
+  foldcolumn = "0",
+  signcolumn = "yes",
   showmode = false,
   termguicolors = true,
-  cmdheight = 1,
   laststatus = 3,
-  wrap = false,
-  list = true,
+  cmdheight = 1,
   scrolloff = 8,
-  pumheight = 10,
+  pumheight = 12,
   tabstop = 2,
+  shortmess = "",
+
   softtabstop = 2,
   shiftwidth = 2,
-  cursorline = false,
   expandtab = true,
   autoindent = true,
   breakindent = true,
   breakindentopt = "shift:4",
-  linebreak = true,
+
+  -- concealcursor = "nc",
+
+  foldenable = true,
+
+  wrap = false,
+
   hidden = true,
-  timeoutlen = 300,
+  timeoutlen = 400,
+  updatetime = 200,
   ignorecase = true,
+  -- lazyredraw = true,
   lazyredraw = true,
   swapfile = false,
   backup = false,
+
+  shell = "/usr/bin/zsh",
 }
 
 for k, v in pairs(options) do
   vim.opt[k] = v
 end
 
-vim.opt.fillchars:append({
-  -- vert = "▕",
-  vert = "▏",
-  vertright = " ",
-  fold = " ",
-  foldclose = "",
-  foldopen = "",
-  foldsep = " ",
-  vertleft = " ",
-  eob = " ",
-  horiz = " ",
-})
-
-vim.wo.foldlevel = 20
-vim.wo.foldenable = true
-
 local icons = {
   file = " ",
   book = " ",
-
   book_alt = " ",
-
   error = " ",
   warning = " ",
   hint = " ",
   info = " ",
-
   chevron = "  ",
-
-  folder_open = " ",
-  folder_closed = " ",
-  folder_empty = " ",
-  folder_alt = "  ",
+  keyboard = "",
+  -- folder_closed = "",
+  -- folder_open = "",
+  -- folder_empty = "",
+  folder_closed = "  ",
+  folder_open = "  ",
+  folder_empty = "  ",
+  folder = "  ",
   git_branch = "  ",
-
   indent_marker = "│",
   last_indent_marker = "╰╴",
 }
@@ -110,6 +99,23 @@ local cmp = {
   Signature = " ",
 }
 
+vim.o.foldlevel = 99 -- Using ufo provider need a large value, feel free to decrease the value
+vim.o.foldlevelstart = 99
+vim.o.foldenable = true
+
+vim.opt.fillchars:append({
+  -- vert = "▕",
+  vert = "▏",
+  vertright = " ",
+  fold = " ",
+  foldclose = "",
+  foldopen = "",
+  foldsep = " ",
+  vertleft = " ",
+  eob = " ",
+  horiz = " ",
+})
+
 local function erase(table)
   for icon, _ in pairs(table) do
     table[icon] = ""
@@ -118,33 +124,29 @@ local function erase(table)
   return table
 end
 
-vim.g.icons_enabled = true
-
 if vim.g.icons_enabled then
   return {
     icons = icons,
     cmp = cmp,
   }
 else
-  local no_icons = {
-    file = "",
-
-    chevron = " > ",
-    folder_open = "v",
-    folder_closed = ">",
-    folder_empty = " ",
-
-    error = "x",
-    warning = "!",
-    hint = "?",
-    info = "i",
-
-    indent_marker = "|",
-    last_indent_marker = "| ",
-  }
-
   return {
-    icons = vim.tbl_deep_extend("keep", {}, no_icons, erase(icons) or {}),
+    icons = vim.tbl_deep_extend("keep", {}, {
+      file = "",
+
+      chevron = " > ",
+      folder_open = "v",
+      folder_closed = ">",
+      folder_empty = " ",
+
+      error = "x",
+      warning = "!",
+      hint = "?",
+      info = "i",
+
+      indent_marker = "|",
+      last_indent_marker = "| ",
+    }, erase(icons) or {}),
     cmp = cmp,
   }
 end

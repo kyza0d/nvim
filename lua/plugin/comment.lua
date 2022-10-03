@@ -21,7 +21,3 @@ require("Comment").setup({
     })
   end,
 })
-
-keymap("i", "<C-/>", "<esc>:norm gcA<cr>a")
-keymap("n", "<C-/>", ":lua require('Comment.api').toggle_current_linewise()<cr>")
-keymap("v", "<C-/>", ":lua require('Comment.api').toggle_linewise_op(vim.fn.visualmode())<cr>")

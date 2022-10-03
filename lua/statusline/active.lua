@@ -1,5 +1,5 @@
 local empty = require("utils.empty")
-local colors = require("palette").colors
+-- local colors = require("palette").colors
 local icons = require("options").icons
 
 local mode = {
@@ -18,7 +18,7 @@ local mode = {
 
     local current_mode = vim.api.nvim_get_mode().mode
 
-    return string.format("%s", modes[current_mode]):upper()
+    return string.format(" %s", modes[current_mode]):upper()
   end,
 }
 
@@ -42,13 +42,13 @@ local search = {
   end,
   condition = function()
     local searchcount = vim.fn.searchcount()
-    return next(searchcount) and searchcount.total > 0
+    return next(searchcount) and searchcount.total > 0 or 0
   end,
 }
 
 local file = {
   function()
-    local modified = vim.bo.modified and "[+] " or ""
+    local modified = vim.bo.modified and "+ " or ""
 
     local icon, color = require("nvim-web-devicons").get_icon_color(vim.fn.expand("%:e"), vim.bo.filetype)
 
@@ -59,18 +59,8 @@ local file = {
 
     icon = "%#Icon#" .. icon .. "%#Statusline#"
 
-    return string.format("%s %s", vim.fn.expand("%:p:t"), modified)
-  end,
-}
-
-local nvim_navic = require("nvim-navic")
-
-local navic = {
-  function()
-    return nvim_navic.get_location()
-  end,
-  condition = function()
-    return nvim_navic.is_available() and not empty(nvim_navic.get_location())
+    -- return string.format("%s %s", vim.fn.expand("%:p:t"), modified)
+    return string.format("%s %s", vim.fn.expand("%"), modified)
   end,
 }
 
@@ -86,7 +76,7 @@ local diagnostics = {
     end
 
     local function format_diagnostic(icon, status)
-      return count[status] ~= 0 and string.format(icon .. "%s", count[status]) or ""
+      return count[status] ~= 0 and string.format(icon .. "%s ", count[status]) or ""
     end
 
     return table.concat({
@@ -102,7 +92,7 @@ local root = {
   function()
     local root = vim.fn.getcwd()
     local workspace = root:sub(root:find("[^/]*$"))
-    return icons.folder_alt .. workspace
+    return icons.folder .. workspace
   end,
 }
 
@@ -134,8 +124,7 @@ return {
   [4] = line,
   [5] = search,
   [6] = file,
-  [7] = navic,
-  [8] = right_align,
-  [9] = root,
-  [10] = git,
+  [7] = right_align,
+  [8] = root,
+  [9] = git,
 }

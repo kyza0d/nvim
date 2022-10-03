@@ -39,9 +39,4 @@ vim.diagnostic.config({
   },
 })
 
--- Language Server
-keymap("n", "gd", ":lua vim.lsp.buf.definition()<cr>")
-keymap("n", "gR", ":lua vim.lsp.buf.rename()<cr>")
-keymap("n", "<S-k>", ":lua vim.lsp.buf.hover()<cr>")
-keymap("n", "<C-S-k>", ":lua vim.diagnostic.open_float()<cr>")
-keymap("n", ">", ":lua vim.lsp.buf.code_action()<cr>")
+local augroup = vim.api.nvim_create_augroup("HighlightWord", {})
