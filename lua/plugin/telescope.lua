@@ -77,13 +77,19 @@ sublime = function()
   })
 end
 
+local actions = require("telescope.actions")
 telescope.setup({
   defaults = {
+    mappings = {
+      i = {
+        ["<cr>"] = { actions.select_default, type = "action", opts = { silent = true } }, -- error when trying to press escape
+      },
+    },
     sorting_strategy = "ascending",
-    selection_caret = " ",
+    selection_caret = "▎",
     prompt_prefix = " ",
     entry_prefix = " ",
-    -- path_display = { "smart" },
+    path_display = { "absolute" },
 
     layout_config = {
       width = 0.99,

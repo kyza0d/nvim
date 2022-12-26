@@ -6,103 +6,104 @@ require("packer").startup({
 
     use({
       "lewis6991/gitsigns.nvim",
-      event = "BufRead",
+      -- event = "BufRead",
       config = function()
         require("plugin.gitsigns")
+        -- require("scrollbar.handlers.gitsigns").setup()
       end,
     })
 
-    use("sainnhe/everforest")
-
     use({
-      "Pocco81/true-zen.nvim",
+      "DNLHC/glance.nvim",
       config = function()
-        require("true-zen").setup({})
+        require("glance").setup({
+          -- your configuration
+        })
       end,
     })
 
+    -- Cool plugin
+    -- use({ "sunjon/stylish.nvim" })
+
     use({
-      "mfussenegger/nvim-dap",
+      "smjonas/live-command.nvim",
+      -- live-command supports semantic versioning via tags
+      -- tag = "1.*",
       config = function()
-        require("plugin.nvim-dap")
+        require("live-command").setup({
+          defaults = {
+            enable_highlighting = true,
+            inline_highlighting = true,
+            hl_groups = {
+              insertion = "DiffAdd",
+              deletion = "DiffDelete",
+              change = "DiffChange",
+            },
+          },
+          commands = {
+            Norm = { cmd = "norm" },
+            G = { cmd = "g" },
+          },
+        })
       end,
     })
 
-    use("rcarriga/nvim-dap-ui")
-
     use({
-      "jbyuki/one-small-step-for-vimkind",
-      after = "nvim-dap",
-    })
-
-    use({
-      "mfussenegger/nvim-dap-python",
-      after = "nvim-dap",
-    })
-
-    use({
-      "norcalli/nvim-colorizer.lua",
-    })
-
-    use({
-      "rafcamlet/nvim-luapad",
+      "~/plugins/themes/aura",
       config = function()
-        -- require("luapad").init() -- saje as Luapad command
+        require("plugin.aura")
       end,
     })
+
     use({
       "github/copilot.vim",
       setup = function()
         vim.cmd([[
           imap <silent><script><expr> <C-J> copilot#Accept("\<CR>")
           let g:copilot_no_tab_map = v:true
+          let g:copilot_filetypes = {
+          \ '*': v:true,
+          \ 'TelescopePrompt': v:false,
+          \ }
         ]])
       end,
     })
 
-    -- use({
-    --   "lukas-reineke/headlines.nvim",
-    --   config = function()
-    --     require("headlines").setup({
-    --       markdown = {
-    --         dash_string = "─",
-    --       },
-    --     })
-    --   end,
-    -- })
+    use({
+      "lukas-reineke/headlines.nvim",
+      config = function()
+        require("headlines").setup({
 
-    use("folke/tokyonight.nvim")
+          markdown = {
+            headline_highlights = { "Headline" },
+            codeblock_highlight = "CodeBlock",
+            dash_highlight = "Dash",
+            dash_string = "─",
+            quote_highlight = "Quote",
+            quote_string = "┃",
+            fat_headlines = true,
+            fat_headline_upper_string = "▃",
+            fat_headline_lower_string = "🬂",
+          },
+        })
+      end,
+    })
 
     use({
       "~/plugins/harmony.nvim",
       config = function()
         require("plugin.harmony")
+        vim.cmd([[so ~/.config/nvim/lua/plugin/harmony/init.lua]])
       end,
     })
 
     -- use({
-    --   "~/plugins/palette.lua",
+    --   "~/plugins/caution.nvim",
+    ----   event = "CursorHold",
     --   config = function()
-    --     require("plugin.palette")
+    --     require("plugin.caution")
     --   end,
     -- })
-
-    use({
-      "~/plugins/caution.nvim",
-      event = "CursorHold",
-      config = function()
-        require("plugin.caution")
-      end,
-    })
-
-    -- use({
-    --   "~/plugins/aura",
-    --   config = function()
-    --     require("plugin.aura")
-    --   end,
-    -- })
-
-    -- use("evan-leigh/caution.nvim")
 
     use("nvim-lua/plenary.nvim")
 
@@ -116,10 +117,6 @@ require("packer").startup({
     use({
       "nvim-neo-tree/neo-tree.nvim",
 
-      branch = "v2.x",
-
-      cmd = "Neotree",
-
       config = function()
         require("plugin.neo-tree")
       end,
@@ -130,7 +127,6 @@ require("packer").startup({
 
       requires = {
         "MunifTanjim/nui.nvim",
-        -- "kyazdani42/nvim-web-devicons",
       },
     })
 
@@ -140,7 +136,7 @@ require("packer").startup({
       "nvim-telescope/telescope.nvim",
       tag = "0.1.0",
 
-      event = "BufEnter",
+      ---- event = "BufEnter",
 
       config = function()
         require("plugin.telescope")
@@ -153,10 +149,7 @@ require("packer").startup({
     })
 
     use({
-      -- "folke/which-key.nvim",
       "~/open-source/which-key.nvim/",
-      -- module = "which-key",
-      -- keys = { "<Space>", "<CR>" },
       config = function()
         require("plugin.whichkey")
       end,
@@ -164,7 +157,7 @@ require("packer").startup({
 
     use({
       "folke/trouble.nvim",
-      event = "BufRead",
+      --event = "BufRead",
       config = function()
         require("plugin.trouble")
       end,
@@ -172,7 +165,7 @@ require("packer").startup({
 
     use({
       "folke/todo-comments.nvim",
-      event = "BufRead",
+      --event = "BufRead",
       requires = "nvim-lua/plenary.nvim",
       config = function()
         require("plugin.todo-comments")
@@ -180,8 +173,9 @@ require("packer").startup({
     })
 
     use({
-      "~/open-source/nvim-cmp/",
-      event = { "InsertEnter", "CmdlineEnter" },
+      -- "~/open-source/nvim-cmp/",
+      "hrsh7th/nvim-cmp",
+      --event = { "InsertEnter", "CmdlineEnter" },
       wants = "LuaSnip",
       requires = {
         { "hrsh7th/cmp-nvim-lsp", module = "cmp_nvim_lsp" },
@@ -200,12 +194,12 @@ require("packer").startup({
 
     use({
       "L3MON4D3/LuaSnip",
-      event = "InsertCharPre",
+      --event = "InsertCharPre",
     })
 
     use({
       "neovim/nvim-lspconfig",
-      event = "BufReadPre",
+      --event = "BufReadPre",
       config = function()
         require("plugin.lsp-config")
         require("plugin.lsp-config.settings")
@@ -231,16 +225,16 @@ require("packer").startup({
 
     use({
       "jose-elias-alvarez/typescript.nvim",
-      module = "typescript",
+      --module = "typescript",
       config = function()
-        require("typescript").setup()
+        require("typescript").setup({})
       end,
     })
 
     use({
       "nvim-treesitter/nvim-treesitter",
-      -- event = "BufReadPost",
       run = ":TSUpdate",
+      -- disable = true,
       config = function()
         require("plugin.treesitter")
       end,
@@ -248,7 +242,7 @@ require("packer").startup({
 
     use({
       "nvim-treesitter/playground",
-      disable = true,
+      disable = false,
       after = "nvim-treesitter",
     })
 
@@ -261,10 +255,12 @@ require("packer").startup({
     use({
       "lukas-reineke/indent-blankline.nvim",
       after = "nvim-treesitter",
+      disable = false,
       config = function()
         require("plugin.indent-blankline")
       end,
     })
+
     use("navarasu/onedark.nvim")
 
     use({
@@ -278,8 +274,8 @@ require("packer").startup({
 
     use({
       "SmiteshP/nvim-navic",
-      module = "nvim-navic",
-      after = "nvim-treesitter",
+      --module = "nvim-navic",
+      -- after = "nvim-treesitter",
       config = function()
         require("plugin.nvim-navic")
       end,
@@ -287,18 +283,21 @@ require("packer").startup({
 
     use({
       "akinsho/bufferline.nvim",
-      event = "BufRead",
-      disable = true,
+      -- event = "BufRead",
+      disable = false,
       config = function()
         require("plugin.bufferline")
       end,
     })
 
-    use({ "moll/vim-bbye", after = "bufferline.nvim" })
+    -- use({ "moll/vim-bbye", after = "bufferline.nvim" })
+    use("moll/vim-bbye")
 
     use({
       "akinsho/toggleterm.nvim",
-      event = "BufEnter",
+      -- tag = "v2.2.1",
+
+      --event = "BufEnter",
       config = function()
         require("plugin.toggleterm")
       end,
@@ -306,7 +305,7 @@ require("packer").startup({
 
     use({
       "kylechui/nvim-surround",
-      event = "BufRead",
+      --event = "BufRead",
       config = function()
         require("nvim-surround").setup()
       end,
@@ -315,7 +314,7 @@ require("packer").startup({
     use({
       "numToStr/Comment.nvim",
       tag = "v0.6.1",
-      module = "Comment",
+      --module = "Comment",
       requires = {
         {
           "JoosepAlviste/nvim-ts-context-commentstring",
@@ -346,7 +345,7 @@ require("packer").startup({
 
     use({
       "Vonr/align.nvim",
-      module = "align",
+      --module = "align",
     })
 
     use({

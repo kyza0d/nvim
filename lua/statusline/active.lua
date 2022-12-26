@@ -1,35 +1,53 @@
 local empty = require("utils.empty")
--- local colors = require("palette").colors
 local icons = require("options").icons
+
+local mode_names = {
+  ["n"] = "normal",
+  ["i"] = "insert",
+  ["v"] = "visual",
+  ["V"] = "line",
+  [""] = "block",
+  ["R"] = "replace",
+  ["s"] = "select",
+  ["c"] = "command",
+  ["t"] = "terminal",
+}
+
+local mode_highlights = {
+  ["n"] = "normal_mode",
+  ["i"] = "insert_mode",
+  ["v"] = "visual_mode",
+  ["V"] = "line_mode",
+  [""] = "block_mode",
+  ["R"] = "replace_mode",
+  ["s"] = "select_mode",
+  ["c"] = "command_mode",
+  ["t"] = "terminal_mode",
+}
 
 local mode = {
   function()
-    local modes = {
-      ["n"] = "normal",
-      ["i"] = "insert",
-      ["v"] = "visual",
-      ["V"] = "v·line",
-      [""] = "v·block",
-      ["R"] = "replace",
-      ["s"] = "select",
-      ["c"] = "command",
-      ["t"] = "terminal",
-    }
-
     local current_mode = vim.api.nvim_get_mode().mode
-
-    return string.format(" %s", modes[current_mode]):upper()
+    return string.format("%%#%s#%%#Statusline#", mode_highlights[current_mode], mode_names[current_mode]):upper()
+    -- return string.format("%%#%s#  %%#Statusline#", mode_highlights[current_mode], mode_names[current_mode]):upper()
+    -- return string.format("%%#%s#🮉%%#Statusline#", mode_highlights[current_mode], mode_names[current_mode]):upper()
+    -- return string.format("%%#%s#  🭨%%#Statusline#", mode_highlights[current_mode], mode_names[current_mode]):upper()
+    -- return string.format("%%#%s# 🭨%%#Statusline#", mode_highlights[current_mode], mode_names[current_mode]):upper()
   end,
 }
 
 local macro = {
-  " ",
+  function()
+    local current_mode = vim.api.nvim_get_mode().mode
+    return string.format("%%#%s# recording @%s %%#Statusline#", mode_highlights[current_mode], vim.fn.reg_recording())
+  end,
   condition = function()
     return not empty(vim.fn.reg_recording())
   end,
 }
 
-local line = { "%l:%L" }
+-- local line = { " %l:%c" }
+local line = { " Ln %l, Col %c" }
 
 local search = {
   function()
@@ -38,7 +56,11 @@ local search = {
     end
 
     local count = vim.fn.searchcount({ maxcount = 999 })
-    return string.format("/%s [%s/%d]", vim.fn.getreg("/"), count.current, count.total)
+
+    -- local current_mode = vim.api.nvim_get_mode().mode
+    -- return string.format("%%#%s# /%s [%s/%d] %%#Statusline#", mode_highlights[current_mode], vim.fn.getreg("/"), count.current, count.total)
+
+    return string.format(" /%s [%s/%d] ", vim.fn.getreg("/"), count.current, count.total)
   end,
   condition = function()
     local searchcount = vim.fn.searchcount()
@@ -48,20 +70,11 @@ local search = {
 
 local file = {
   function()
-    local modified = vim.bo.modified and "+ " or ""
+    local modified = vim.bo.modified and "[+] " or ""
 
-    local icon, color = require("nvim-web-devicons").get_icon_color(vim.fn.expand("%:e"), vim.bo.filetype)
-
-    color = color or ""
-    icon = icon or ""
-
-    -- vim.api.nvim_command(string.format("hi Icon guifg=%s guibg=%s", color, colors.background_shaded_1))
-
-    icon = "%#Icon#" .. icon .. "%#Statusline#"
-
-    -- return string.format("%s %s", vim.fn.expand("%:p:t"), modified)
-    return string.format("%s %s", vim.fn.expand("%"), modified)
+    return string.format(" %s %s%%L lines", vim.fn.expand("%:P"), modified)
   end,
+  padding = true,
 }
 
 local right_align = { "%=" }
@@ -86,14 +99,16 @@ local diagnostics = {
       format_diagnostic(icons.info, "info"),
     })
   end,
+  padding = true,
 }
 
 local root = {
   function()
     local root = vim.fn.getcwd()
     local workspace = root:sub(root:find("[^/]*$"))
-    return icons.folder .. workspace
+    return workspace
   end,
+  padding = true,
 }
 
 local git = {
@@ -115,16 +130,20 @@ local git = {
       format_git("-", git_info.removed),
     })
   end,
+
+  padding = true,
 }
 
-return {
-  [1] = mode,
-  [2] = diagnostics,
-  [3] = macro,
+local components = {
+  [1] = macro,
+  [2] = mode,
+  [3] = search,
   [4] = line,
-  [5] = search,
-  [6] = file,
-  [7] = right_align,
+  [5] = file,
+  [6] = right_align,
+  [7] = diagnostics,
   [8] = root,
   [9] = git,
 }
+
+return components

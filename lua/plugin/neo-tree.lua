@@ -6,11 +6,16 @@
 local icons = require("options").icons
 
 require("neo-tree").setup({
-  enable_git_status = false,
+  enable_git_status = true,
   enable_diagnostics = false,
 
-  hide_root_node = true,
+  -- hide_root_node = true,
   retain_hidden_root_indent = true,
+
+  source_selector = {
+    winbar = false,
+    statusline = false,
+  },
 
   default_component_configs = {
 
@@ -19,14 +24,13 @@ require("neo-tree").setup({
     },
 
     indent = {
-      -- indent_marker = icons.indent_marker,
-      -- last_indent_marker = icons.last_indent_marker,
-
-      indent_marker = "🭳",
-      last_indent_marker = "🭳",
+      indent_marker = icons.indent_marker,
+      last_indent_marker = icons.last_indent_marker,
 
       indent_size = 2,
-      padding = 0,
+      padding = 1,
+
+      -- with_expanders = true, -- if nil and file nesting is enabled, will enable expanders
     },
 
     icon = {
@@ -49,7 +53,7 @@ require("neo-tree").setup({
   },
 
   window = {
-    width = 30,
+    width = 37,
     position = "left",
     mappings = {
       ["l"] = "open",
@@ -98,9 +102,6 @@ require("neo-tree").setup({
       name = function(config, node)
         local name = node.name
         local highlight = config.highlight
-        if node.type == "directory" then
-          name = name .. "/"
-        end
         return {
           text = name,
           highlight = highlight,

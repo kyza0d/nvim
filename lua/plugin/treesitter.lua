@@ -9,10 +9,15 @@ keymap("v", "<C-j>", ":lua require('nvim-treesitter.incremental_selection').node
 keymap("v", "<C-k>", ":lua require('nvim-treesitter.incremental_selection').node_decremental()<cr>")
 
 treesitter.setup({
-  ensure_installed = { "lua", "javascript", "typescript", "tsx", "css", "scss" },
+  ensure_installed = { "lua", "javascript", "typescript", "tsx", "css", "scss", "markdown" },
 
   autotag = {
     enable = true,
+  },
+
+  rainbow = {
+    enable = false,
+    extended_mode = false,
   },
 
   highlight = {

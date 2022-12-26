@@ -63,19 +63,16 @@ cmp.setup({
 
   mapping = cmp.mapping.preset.insert(keymaps),
 
-  window = {
-    completion = {
-      -- border = { "┌", "", "▕", "▕", "┘", "", "└", "▏" },
-
-      -- winhighlight = "FloatBorder:FloatBorder,FloatNormal:FloatNormal",
-      side_padding = 1,
-    },
-    documentation = cmp.config.disable,
-  },
+  -- window = {
+  --   completion = {
+  --     border = { " ", "", " ", "▏", " ", "", " ", "▕" },
+  --     winhighlight = "Pmenu:Pmenu,FloatBorder:FloatBorder,CursorLine:PmenuSel,Search:None",
+  --     side_padding = 1,
+  --   },
+  -- },
 
   formatting = {
-    -- fields = vim.g.icons_enabled and { "kind", "abbr", "menu" } or { "abbr", "menu" },
-    fields = { "kind", "abbr" },
+    fields = vim.g.icons_enabled and { "kind", "abbr", "menu" } or { "abbr", "menu" },
 
     format = function(entry, vim_item)
       vim_item.menu = ({

@@ -3,16 +3,17 @@ vim.g.icons_enabled = true
 local options = {
   number = true,
   syntax = "enable",
-  numberwidth = 4,
-  cursorline = false,
+  numberwidth = 3,
+  cursorline = true,
   relativenumber = false,
-  foldcolumn = "0",
+  foldcolumn = "2",
   signcolumn = "yes",
   showmode = false,
   termguicolors = true,
-  laststatus = 3,
   cmdheight = 1,
-  scrolloff = 8,
+  smartcase = true,
+  laststatus = 3,
+  scrolloff = 6,
   pumheight = 12,
   tabstop = 2,
   shortmess = "",
@@ -24,11 +25,10 @@ local options = {
   breakindent = true,
   breakindentopt = "shift:4",
 
-  -- concealcursor = "nc",
-
   foldenable = true,
 
-  wrap = false,
+  wrap = true,
+  linebreak = true,
 
   hidden = true,
   timeoutlen = 400,
@@ -46,6 +46,24 @@ for k, v in pairs(options) do
   vim.opt[k] = v
 end
 
+vim.o.foldlevel = 99 -- Using ufo provider need a large value, feel free to decrease the value
+vim.o.foldlevelstart = 99
+vim.o.foldenable = true
+
+vim.opt.fillchars:append({
+  -- vert = "▕",
+  -- vert = "│",
+  vert = "▏",
+  vertright = "├",
+  fold = " ",
+  foldclose = "",
+  foldopen = "",
+  foldsep = " ",
+  vertleft = "┤",
+  eob = " ",
+  horiz = "─",
+})
+
 local icons = {
   file = " ",
   book = " ",
@@ -56,16 +74,14 @@ local icons = {
   info = " ",
   chevron = "  ",
   keyboard = "",
-  -- folder_closed = "",
-  -- folder_open = "",
-  -- folder_empty = "",
   folder_closed = "  ",
   folder_open = "  ",
   folder_empty = "  ",
   folder = "  ",
-  git_branch = "  ",
+  git_branch = "",
   indent_marker = "│",
-  last_indent_marker = "╰╴",
+  -- last_indent_marker = "└╴",
+  last_indent_marker = "│",
 }
 
 local cmp = {
@@ -99,23 +115,6 @@ local cmp = {
   Signature = " ",
 }
 
-vim.o.foldlevel = 99 -- Using ufo provider need a large value, feel free to decrease the value
-vim.o.foldlevelstart = 99
-vim.o.foldenable = true
-
-vim.opt.fillchars:append({
-  -- vert = "▕",
-  vert = "▏",
-  vertright = " ",
-  fold = " ",
-  foldclose = "",
-  foldopen = "",
-  foldsep = " ",
-  vertleft = " ",
-  eob = " ",
-  horiz = " ",
-})
-
 local function erase(table)
   for icon, _ in pairs(table) do
     table[icon] = ""
@@ -137,7 +136,7 @@ else
       chevron = " > ",
       folder_open = "v",
       folder_closed = ">",
-      folder_empty = " ",
+      folder_empty = "> ",
 
       error = "x",
       warning = "!",

@@ -4,6 +4,8 @@ if not status_ok then
   return
 end
 
+local zen_mode = false
+
 local leader = {
   p = {
     name = "Packer",
@@ -18,6 +20,21 @@ local leader = {
   t = {
     name = "Toggle",
     s = { ":set invspell<cr>", "spell" },
+    z = {
+      function()
+        zen_mode = not zen_mode
+        if zen_mode then
+          vim.api.nvim_command("TZMinimalist")
+          vim.opt_local.winbar = ""
+          vim.opt_local.cmdheight = 0
+        else
+          vim.api.nvim_command("TZMinimalist")
+          vim.opt_local.winbar = WINBAR
+          vim.opt_local.cmdheight = 1
+        end
+      end,
+      "zenmode",
+    },
   },
 
   c = {
@@ -26,7 +43,7 @@ local leader = {
     o = { "<cmd>colorscheme onedark<cr>", "onedark" },
     D = { "<cmd>colorscheme dark-pines<cr>", "dark-pines" },
     d = { "<cmd>colorscheme doom-one<cr>", "doom-one" },
-    e = { "<cmd>colorscheme everforest<cr>", "everforest" },
+    e = { "<cmd>colorscheme embark<cr>", "embark" },
     n = { "<cmd>colorscheme nord<cr>", "nord" },
     s = { "<cmd>colorscheme summer-time<cr>", "summer-time" },
     i = { "<cmd>colorscheme iceberg<cr>", "iceberg" },
@@ -54,19 +71,19 @@ local leader = {
   },
 
   d = {
-    name = "Dotfile",
+    name = "Dotfiles",
     v = { ":Telescope find_files cwd=~/.config/nvim/<cr>", ".nvim" },
-    p = { ":e ~/.config/polybar/config.ini<cr>", ".polybar" },
-    c = { ":e ~/.config/picom/picom.conf<cr>", ".picom" },
-    q = { ":e ~/.config/qutebrowser/config.py<cr>", ".qutebrowser" },
-    b = { ":e ~/.config/bspwm/bspwmrc<cr>", ".bspwmrc" },
-    d = { ":e ~/.config/dunst/dunstrc<cr>", ".dunst" },
-    x = { ":e ~/.xprofile<cr>", ".xprofile" },
-    z = { ":e ~/.zshrc<cr>", ".zsh" },
-    s = { ":e ~/.config/sxhkd/sxhkdrc<cr>", ".sxhkd" },
-    r = { ":e ~/.config/rofi/config.rasi<cr>", ".rofi" },
-    k = { ":e ~/.config/kitty/kitty.conf<cr>", ".kitty" },
-    l = { ":e ~/.config/lsd/config.yaml<cr>", ".lsd" },
+    p = { ":silent e ~/.config/polybar/config.ini<cr>", ".polybar" },
+    c = { ":silent e ~/.config/picom/picom.conf<cr>", ".picom" },
+    q = { ":silent e ~/.config/qutebrowser/config.py<cr>", ".qutebrowser" },
+    b = { ":silent e ~/.config/bspwm/bspwmrc<cr>", ".bspwmrc" },
+    d = { ":silent e ~/.config/dunst/dunstrc<cr>", ".dunst" },
+    x = { ":silent e ~/.xprofile<cr>", ".xprofile" },
+    z = { ":silent e ~/.zshrc<cr>", ".zsh" },
+    s = { ":silent e ~/.config/sxhkd/sxhkdrc<cr>", ".sxhkd" },
+    r = { ":silent e ~/.config/rofi/config.rasi<cr>", ".rofi" },
+    k = { ":silent e ~/.config/kitty/kitty.conf<cr>", ".kitty" },
+    l = { ":silent e ~/.config/lsd/config.yaml<cr>", ".lsd" },
   },
 }
 
@@ -77,12 +94,20 @@ local cr_mappings = {
   t = { ":TodoTrouble <cr>", "  Todo" },
   w = { ":w!<cr>", "Write buffer" },
   a = { ":norm @a<CR>", "Preform 'a' macro", silent = false },
-  n = { ":norm ", "Normal command", silent = false },
+  n = { ":Norm ", "Normal command", silent = false },
   ["<CR>"] = {
     name = "dap",
     i = { ":lua require('dap').step_into()<cr>", "into" },
-    o = { ":lua require('dap').step_over()<cr>", "over" },
+    -- o = { ":lua require('dap').step_over()<cr>", "over" },
     -- c = { ":lua require('dap').continue()<cr>", "continue" },
+    o = {
+      function()
+        require("dap").step_over()
+        -- require("dapui").float_element("scopes")
+        -- require("dapui").float_element("scopes", { enter = true })
+      end,
+      "float",
+    },
     c = {
       function()
         if vim.bo.filetype == "lua" then
@@ -101,7 +126,7 @@ local cr_mappings = {
     h = { ":lua require('dap').run_to_cursor()<cr>", "run to cursor" },
     t = { ":lua require('dap').terminate({restart = true})<cr>", "terminate" },
   },
-  ["/"] = { ":Telescope help_tags<cr>", "Man pages" },
+  ["/"] = { ":Telescope help_tags<cr>", "Search" },
   ["?"] = {
     function()
       require("utils.nui").open_first()
@@ -113,7 +138,7 @@ local cr_mappings = {
 local cr_mappings_visual = {
   a = { ":norm @a<CR>", "Preform 'a' macro", silent = false },
   s = { ":%s/", "Substitute command ", silent = false, noremap = false },
-  n = { ":norm ", "Normal command", silent = false },
+  n = { ":Norm ", "Normal command", silent = false },
   h = {
     name = "hunk",
     s = { ":Gitsigns stage_hunk<cr>", "Stage hunk" },
@@ -168,7 +193,7 @@ which_key.setup({
 
   icons = {
     breadcrumb = "",
-    separator = "",
+    separator = "->",
     group = "",
   },
 })

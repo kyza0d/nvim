@@ -8,11 +8,28 @@ local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
 
 null_ls.setup({
   sources = {
+    -- Sylua
     null_ls.builtins.formatting.stylua,
+
+    -- Prettier
     null_ls.builtins.formatting.prettierd,
+
+    -- EsLint
+    -- null_ls.builtins.formatting.eslint,
+    -- null_ls.builtins.diagnostics.eslint,
+    -- null_ls.builtins.code_actions.eslint,
+    -- null_ls.builtins.formatting.eslint_d,
+    -- null_ls.builtins.diagnostics.eslint_d,
+    -- null_ls.builtins.code_actions.eslint_d,
+
+    -- Markdown
+    null_ls.builtins.formatting.markdownlint,
+
+    -- Code Blocks
     null_ls.builtins.formatting.cbfmt,
   },
-  debug = true,
+
+  -- Format on save
   on_attach = function(client, bufnr)
     if client.supports_method("textDocument/formatting") then
       vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })

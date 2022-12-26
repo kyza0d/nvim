@@ -1,85 +1,109 @@
-local colors = require("palette").colors
+local colors = require("harmony").colors
 
--- stylua: ignore start
+-- @string
+-- @string.escape
+-- @string.regex
+-- @punctuation
+-- @keyword
+-- @property
+-- @boolean
+-- @repeat
+-- @number
+-- @label
+-- @storageclass
+-- @float
+-- @parameter
+-- @field
+-- @method
+-- @exception
+-- @method.call
+-- @conditional
+-- @operator
+-- @tag
+-- @tag.delimiter
+-- @tag.attribute
+-- @type
+-- @constructor
+-- @constructor.lua
+-- @include
+-- @function
+-- @function.builtin
+-- @function.macro
+-- @constant
+-- @constant.builtin
+-- @constant.macro
+-- @preproc
+-- @comment
+
 local midnight = {
-  primary      = { "#5a7199", "#ffffff" },
-  secondary    = { "#00ACCE", "#ffffff" },
-  background   = { "#0F1215", "#ffffff" },
-  foreground   = { "#b2ceff", "#ffffff" },
-  comment      = { "#3c4b66", "#ffffff" },
-  strings      = { "#83C092", "#ffffff" },
+  primary = { "#5a7199", "#ffffff" },
+  secondary = { "#00ACCE", "#ffffff" },
+  tertiary = { "#90A1C3", "#ffffff" },
+  background = { "#0F1215", "#ffffff" },
+  foreground = { "#ccddff", "#ffffff" },
+  comment = { "#3c4b66", "#ffffff" },
 }
 
-local abyss    = {
-  -- primary      = { "#32A448", "#555555" },
-  primary      = { "#893437", "#555555" },
-  secondary    = { "#666666", "#555555" },
-  tertiary     = { "#CED4DA", "#555555" },
-  accent       = { "#555555", "#555555" },
-  background   = { "#000000", "#eeeeee" },
-  foreground   = { "#CED4DA", "#000000" },
-  comment      = { "#333333", "#333333" },
-  red          = { "#555555", "#555555" },
-  green        = { "#555555", "#555555" },
-  yellow       = { "#555555", "#555555" },
-  blue         = { "#555555", "#555555" },
-  purple       = { "#555555", "#555555" },
+local lcd = {
+  primary = { "#8bfee7", "#ffffff" },
+  secondary = { "#8bfee7", "#ffffff" },
+  tertiary = { "#8bfee7", "#ffffff" },
+  accent = "#8bfee7",
+  background = "#000000",
+  foreground = "#a5c0cc",
+  comment = "#E8D0A5",
 }
 
-local iosevkem = {
-  background   = { "#22272E", "#ffffff" },
-  foreground   = { "#b7c9e5", "#ffffff" },
-  accent       = { "#03AEE9", "#ffffff" },
-  primary      = { "#03AEE9", "#ffffff" },
-  secondary    = { "#B77FDB", "#ffffff" },
-  strings      = { "#E7C664", "#ffffff" },
-  boolean      = { "#E79A48", "#ffffff" },
-  numbers      = { "#E79A48", "#ffffff" },
-  comment      = { "#6e7989", "#ffffff" },
+local scenery = {
+  primary = { "#BFB7AC", "#ffffff" },
+  secondary = { "#BFB7AC", "#ffffff" },
+  tertiary = { "#BFB7AC", "#ffffff" },
+  accent = "#D2715E",
+  background = "#191816",
+  foreground = "#BFB7AC",
+  comment = "#E8D0A5",
 }
 
-local synthetik = {
-  background   = { "#12202B", "#ffffff" },
-  foreground   = { "#b7c9e5", "#ffffff" },
-  accent       = { "#03AEE9", "#ffffff" },
-  primary      = { "#36BC98", "#ffffff" },
-  secondary    = { "#5C9FD8", "#ffffff" },
-  -- strings      = { "#E7C664", "#ffffff" },
-  -- boolean      = { "#E79A48", "#ffffff" },
-  -- numbers      = { "#E79A48", "#ffffff" },
-  comment      = { "#6e7989", "#ffffff" },
+local ocean = {
+  primary = { "#9ab4bf", "#ffffff" },
+  secondary = { "#9ab4bf", "#ffffff" },
+  tertiary = { "#9ab4bf", "#ffffff" },
+  accent = "#93DDFA",
+  background = "#102a34",
+  foreground = "#9ab4bf",
+  comment = "#E8D0A5",
 }
 
-local humanoid = {
-  primary      = { "#0ED1D1", "#555555" },
-  secondary    = { "#EC44EB", "#555555" },
-  tertiary     = { "#B0B4BB", "#555555" },
-
-  background   = { "#1D1F21", "#eeeeee" },
-  foreground   = { "#ffffff", "#000000" },
-
-  red          = { "#ff0000", "#555555" },
-  green        = { "#555555", "#555555" },
-  yellow       = { "#555555", "#555555" },
-  blue         = { "#555555", "#555555" },
-  purple       = { "#555555", "#555555" },
-
-  accent       = { "#999999", "#555555" },
-
-  extras       = {
-    comments   = { "#555555", "#333333" },
-    booleans   = { "#02D849", "#333333" },
-    brackets   = { "#02D849", "#333333" },
-    strings    = { "#02D849", "#333333" },
-    numbers    = { "#02D849", "#333333" },
-  },
-
-  highlights = {
-    TSField        = { fg = colors.primary },
-    TSPunctSpecial = { fg = colors.secondary },
-    TSTagDelimiter = { fg = colors.red },
-    TSTypeBuiltin  = { fg = colors.yellow },
-  }
+local solarized = {
+  primary = { "#b1c9cc", "#ffffff" },
+  secondary = { "#709F00", "#ffffff" },
+  tertiary = { "#1C9C94", "#ffffff" },
+  accent = "#93DDFA",
+  background = "#002B37",
+  foreground = "#b1c9cc",
+  comment = "#E8D0A5",
 }
 
-vim.g.aura = synthetik
+local aura = {}
+
+-- aura.themes({
+--   {
+--     name = "humanoid",
+--
+--     background = "#1D1F21",
+--     foreground = "#ffffff",
+--
+--     red = { "#0ED1D1", { "@function", "@keyword", "@operator", "@variable" } },
+--     yellow = { "#EC44EB", { "@number" } },
+--     purple = { "#F2F2F2", { "@string", "@comment" } },
+--     magenta = { "#555555", { "@boolean" } },
+--
+--     highlights = {
+--       ..., -- see `:h harmony-highlights`
+--     },
+--   },
+-- })
+
+vim.g.aura = solarized
+
+-- vim.api.nvim_cmd({ cmd = "colorscheme", args = { "aura" } }, {})

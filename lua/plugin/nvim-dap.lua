@@ -75,16 +75,50 @@ keymap("n", "<F1>", [[:lua require"dap.ui.widgets".hover()<CR>]], { noremap = tr
 
 require("dapui").setup({
   icons = { expanded = "▾", collapsed = "▸", current_frame = "▸" },
-  -- layouts = {
-  --   {
-  --     elements = {
-  --       "scopes",
-  --     },
-  --     size = 10,
-  --     position = "bottom",
-  --   },
-  -- },
+  layouts = {
+    {
+      elements = {
+        "scopes",
+      },
+      size = 10,
+      position = "bottom",
+    },
+  },
+  floating = {
+    max_height = nil, -- These can be integers or a float between 0 and 1.
+    max_width = nil, -- Floats will be treated as percentage of your screen.
+    border = "single", -- Border style. Can be "single", "double" or "rounded"
+    mappings = {
+      close = { "q", "<Esc>" },
+    },
+  },
+
   controls = {
     enabled = false,
   },
 })
+
+local breakpoints = {
+  error = {
+    text = " ",
+    texthl = "LspDiagnosticsSignError",
+    linehl = "",
+    numhl = "",
+  },
+  rejected = {
+    text = " ",
+    texthl = "LspDiagnosticsSignHint",
+    linehl = "",
+    numhl = "",
+  },
+  stopped = {
+    text = " -",
+    texthl = "LspDiagnosticsSignInformation",
+    linehl = "DiagnosticUnderlineInfo",
+    numhl = "LspDiagnosticsSignInformation",
+  },
+}
+
+vim.fn.sign_define("DapBreakpoint", breakpoints.error)
+vim.fn.sign_define("DapStopped", breakpoints.stopped)
+vim.fn.sign_define("DapBreakpointRejected", breakpoints.rejected)

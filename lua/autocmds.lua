@@ -16,12 +16,32 @@ vim.api.nvim_create_autocmd("BufWinEnter", {
 })
 
 vim.api.nvim_create_autocmd("FileType", {
+  pattern = "vimwiki",
+  callback = function()
+    if not string.find(vim.fn.expand("%"), "index") then
+      vim.bo.filetype = "markdown"
+    end
+    -- vim.opt_local.number = false
+    -- vim.opt_local.relativenumber = false
+  end,
+  group = group,
+})
+
+vim.api.nvim_create_autocmd("FileType", {
   pattern = { "markdown", "help" },
   callback = function()
+    -- vim.opt.wrap = false
+    -- vim.opt_local.number = false
+  end,
+  group = group,
+})
+
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = { "help" },
+  callback = function()
+    vim.opt_local.relativenumber = false
     vim.opt_local.number = false
     vim.opt_local.breakindent = false
-    vim.opt_local.wrap = true
-    vim.opt_local.wrapmargin = 8
     vim.opt_local.linebreak = true
   end,
   group = group,
@@ -31,6 +51,7 @@ vim.api.nvim_create_autocmd("BufWinEnter", {
   callback = function()
     fn_match(".zshrc", "silent set ft=bash")
     fn_match("polybar/config.ini", "silent set ft=toml")
+    fn_match("kitty.conf", "silent set ft=conf")
   end,
   group = group,
 })
@@ -61,13 +82,8 @@ vim.api.nvim_create_autocmd("BufEnter", {
   group = group,
 })
 
-vim.api.nvim_create_autocmd("ColorScheme", {
-  command = "hi! clear Normal",
-  group = group,
-})
-
 vim.api.nvim_create_autocmd("Filetype", {
-  command = "nnoremap <silent> <buffer> q :close<cr>",
   pattern = { "Trouble", "neo-tree", "help" },
+  command = "nnoremap <silent> <buffer> q :close<cr>",
   group = group,
 })

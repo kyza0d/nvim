@@ -3,7 +3,7 @@ local empty = require("utils.empty")
 
 local icons = require("options").icons
 
-local colors = require("harmony").colors
+-- local colors = require("harmony").colors
 
 vim.api.nvim_create_autocmd({ "BufEnter", "BufWinEnter", "ColorScheme" }, {
   callback = function()
@@ -29,12 +29,15 @@ vim.api.nvim_create_autocmd({ "BufEnter", "BufWinEnter", "ColorScheme" }, {
       vim.opt_local.winbar:append("  ")
       vim.opt_local.winbar:append(icon)
 
+      -- get relative path up until root
       vim.opt_local.winbar:append('%{expand("%:p:h:t")}' .. icons.chevron .. '%{expand("%:p:t:r")}')
       vim.opt_local.winbar:append(" %{%v:lua.require'nvim-navic'.get_location()%}")
 
       vim.opt_local.winbar:append("%=")
 
-      vim.opt_local.winbar:append("[" .. vim.bo.filetype .. "] ")
+      vim.opt_local.winbar:append(vim.bo.filetype .. " ")
+
+      WINBAR = vim.opt_local.winbar
     end
   end,
 })

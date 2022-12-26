@@ -20,12 +20,10 @@ for key, icon in pairs(current_icons) do
 
   if icon.name == "Txt" then
     icon.icon = icons.file
-    -- icon.color = colors.green
   end
 
   if icon.name == "Md" then
     icon.icon = icons.book
-    -- icon.color = colors.foreground_2
   end
 
   new_icons[key] = icon

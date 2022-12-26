@@ -1,14 +1,10 @@
 local M = {}
 
-local status_ok, nvim_navic = pcall(require, "nvim-navic")
-
-if not status_ok then
-  return
-end
-
 M.on_attach = function(client, bufnr)
-  vim.g.navic_silence = true
-  nvim_navic.attach(client, bufnr)
+  if pcall(require, "nvim-navic") then
+    vim.g.navic_silence = true
+    require("nvim-navic").attach(client, bufnr)
+  end
 
   client.server_capabilities.documentFormattingProvider = false
 
@@ -43,7 +39,7 @@ M.on_attach = function(client, bufnr)
   end)
 end
 
-local capabilities = require("cmp_nvim_lsp").update_capabilities(vim.lsp.protocol.make_client_capabilities())
+local capabilities = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities())
 
 capabilities.textDocument.completion.completionItem.snippetSupport = true
 
