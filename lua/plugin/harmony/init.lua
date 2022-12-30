@@ -23,10 +23,10 @@ harmony.setup({
     highlights = {
       ProjectRoot = { background = colors.background_negative_1, foreground = colors.blue },
 
-      -- CursorLine = { background = colors.background_negative_1 },
-      -- CursorLineSign = { background = colors.background_negative_1 },
-      -- CursorLineNr = { background = colors.background_negative_1, foreground = colors.foreground_3 },
-      -- CursorLineFold = { foreground = colors.background_negative_1, background = colors.background_negative_1 },
+      CursorLine = { background = colors.background_1 },
+      CursorLineSign = { background = colors.background_1 },
+      CursorLineNr = { background = colors.background_1, foreground = colors.foreground_3 },
+      CursorLineFold = { foreground = colors.background_1, background = colors.background_1 },
 
       FoldColumn = { foreground = colors.background_0 },
 
@@ -45,7 +45,8 @@ harmony.setup({
 
       Dash = { foreground = colors.background_2 },
 
-      StatusLine = { foreground = colors.foreground_2, background = colors.background_2 },
+      StatusLine = { foreground = colors.foreground_2, background = colors.background_4 },
+      -- StatusLine = { foreground = colors.foreground_2, background = colors.background_2 },
       StatusLineMacro = { foreground = colors.foreground_2, background = colors.background_2 },
       StatuslineSeperator = { foreground = colors.foreground_4, background = colors.background_0 },
 
@@ -74,8 +75,8 @@ harmony.setup({
   -- },
 
   ["embark"] = {
-    -- background = "#1e1c31",
-    background = "#190E2F",
+    background = "#1e1c31",
+    -- background = "#190E2F",
     foreground = "#cdc7f9",
     red = "#F48FB1",
   },
@@ -107,7 +108,7 @@ harmony.setup({
   },
 
   ["iceberg"] = {
-    background = "#161820",
+    background = "#0B0D0F",
     foreground = "#C6C8D1",
   },
 

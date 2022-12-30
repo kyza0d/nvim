@@ -18,9 +18,9 @@ null_ls.setup({
     -- null_ls.builtins.formatting.eslint,
     -- null_ls.builtins.diagnostics.eslint,
     -- null_ls.builtins.code_actions.eslint,
-    -- null_ls.builtins.formatting.eslint_d,
-    -- null_ls.builtins.diagnostics.eslint_d,
-    -- null_ls.builtins.code_actions.eslint_d,
+    null_ls.builtins.formatting.eslint_d,
+    null_ls.builtins.diagnostics.eslint_d,
+    null_ls.builtins.code_actions.eslint_d,
 
     -- Markdown
     null_ls.builtins.formatting.markdownlint,

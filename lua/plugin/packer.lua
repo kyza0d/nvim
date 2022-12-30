@@ -362,6 +362,7 @@ require("packer").startup({
     -- use("~/plugins/themes/abyss")
     use("~/plugins/themes/summer-time")
     use("~/plugins/themes/summer-night")
+    use("~/plugins/themes/chat-gpt-theme/")
   end,
   config = {
     display = {

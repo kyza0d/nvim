@@ -1,16 +1,16 @@
 vim.g.icons_enabled = true
 
 local options = {
-  number = true,
   syntax = "enable",
   numberwidth = 3,
   cursorline = true,
   relativenumber = false,
-  foldcolumn = "2",
-  signcolumn = "yes",
+  foldcolumn = "1",
+  signcolumn = "no",
+  number = false,
   showmode = false,
   termguicolors = true,
-  cmdheight = 1,
+  cmdheight = 0,
   smartcase = true,
   laststatus = 3,
   scrolloff = 6,

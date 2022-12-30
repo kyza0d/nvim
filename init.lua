@@ -11,12 +11,12 @@ require("plugin.packer")
 vim.opt.shadafile = "NONE"
 vim.opt.shadafile = ""
 
-require("winbar")
-
 -- To disable bufferline without uninstalling it
--- vim.api.nvim_create_autocmd({ "WinEnter", "BufEnter" }, {
---   command = "set showtabline=0",
--- })
+vim.api.nvim_create_autocmd({ "WinEnter", "BufEnter" }, {
+  command = "set showtabline=0",
+})
+
+require("winbar")
 
 vim.keymap.set("n", "<F1>", function()
   require("stylish").ui_menu(vim.fn.menu_get(""), { kind = "menu", prompt = "Main menu", experimental_mouse = true }, function(res)
