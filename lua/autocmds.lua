@@ -10,6 +10,11 @@ vim.api.nvim_create_autocmd("TextYankPost", {
   group = group,
 })
 
+-- vim.api.nvim_create_autocmd("VimEnter", {
+--   command = "hi! clear TelescopeMatching",
+--   group = group,
+-- })
+
 vim.api.nvim_create_autocmd("BufWinEnter", {
   command = "set formatoptions-=cro",
   group = group,

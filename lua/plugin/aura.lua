@@ -104,6 +104,6 @@ local aura = {}
 --   },
 -- })
 
-vim.g.aura = solarized
+vim.g.aura = midnight
 
 -- vim.api.nvim_cmd({ cmd = "colorscheme", args = { "aura" } }, {})

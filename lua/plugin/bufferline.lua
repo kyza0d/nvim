@@ -17,7 +17,8 @@ bufferline.setup({
     separator_style = { "", "" },
 
     indicator = {
-      style = "icon",
+      -- icon = " ",
+      -- style = "underline",
     },
 
     right_mouse_command = "Bdelete! %d",
@@ -26,7 +27,7 @@ bufferline.setup({
     show_buffer_icons = false,
     show_close_icon = false,
 
-    enforce_regular_tabs = true,
+    enforce_regular_tabs = false,
 
     modified_icon = " ",
     buffer_close_icon = " ",
@@ -35,7 +36,7 @@ bufferline.setup({
     right_trunc_marker = "",
 
     truncate_names = false,
-    tab_size = 23,
+    tab_size = 25,
 
     offsets = {
       {

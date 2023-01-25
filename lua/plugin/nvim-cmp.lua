@@ -73,6 +73,7 @@ cmp.setup({
 
   formatting = {
     fields = vim.g.icons_enabled and { "kind", "abbr", "menu" } or { "abbr", "menu" },
+    -- fields = { "kind", "abbr", "menu" },
 
     format = function(entry, vim_item)
       vim_item.menu = ({

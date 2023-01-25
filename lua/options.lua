@@ -4,13 +4,13 @@ local options = {
   syntax = "enable",
   numberwidth = 3,
   cursorline = true,
-  relativenumber = false,
   foldcolumn = "1",
   signcolumn = "no",
-  number = false,
+  relativenumber = true,
+  number = true,
   showmode = false,
   termguicolors = true,
-  cmdheight = 0,
+  cmdheight = 1,
   smartcase = true,
   laststatus = 3,
   scrolloff = 6,
@@ -28,7 +28,7 @@ local options = {
   foldenable = true,
 
   wrap = true,
-  linebreak = true,
+  linebreak = false,
 
   hidden = true,
   timeoutlen = 400,
@@ -51,10 +51,8 @@ vim.o.foldlevelstart = 99
 vim.o.foldenable = true
 
 vim.opt.fillchars:append({
-  -- vert = "▕",
-  -- vert = "│",
   vert = "▏",
-  vertright = "├",
+  vertright = "▏",
   fold = " ",
   foldclose = "",
   foldopen = "",
@@ -80,7 +78,6 @@ local icons = {
   folder = "  ",
   git_branch = "",
   indent_marker = "│",
-  -- last_indent_marker = "└╴",
   last_indent_marker = "│",
 }
 
@@ -143,8 +140,8 @@ else
       hint = "?",
       info = "i",
 
-      indent_marker = "|",
-      last_indent_marker = "| ",
+      indent_marker = " ",
+      last_indent_marker = "  ",
     }, erase(icons) or {}),
     cmp = cmp,
   }

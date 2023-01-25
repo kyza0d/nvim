@@ -17,6 +17,14 @@ local leader = {
     u = { ":PackerUpdate<cr>", "update" },
   },
 
+  f = {
+    name = "Find",
+    f = { "<cmd>Telescope find_files<cr>", "files" },
+    w = { "<cmd>Telescope live_grep<cr>", "grep" },
+    b = { "<cmd>Telescope buffers<cr>", "buffers" },
+    h = { "<cmd>Telescope help_tags<cr>", "help" },
+  },
+
   t = {
     name = "Toggle",
     s = { ":set invspell<cr>", "spell" },

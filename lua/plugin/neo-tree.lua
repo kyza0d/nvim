@@ -6,7 +6,7 @@
 local icons = require("options").icons
 
 require("neo-tree").setup({
-  enable_git_status = true,
+  enable_git_status = false,
   enable_diagnostics = false,
 
   -- hide_root_node = true,
@@ -24,6 +24,8 @@ require("neo-tree").setup({
     },
 
     indent = {
+      -- indent_marker = " ",
+      -- last_indent_marker = " ",
       indent_marker = icons.indent_marker,
       last_indent_marker = icons.last_indent_marker,
 
@@ -53,7 +55,7 @@ require("neo-tree").setup({
   },
 
   window = {
-    width = 37,
+    width = 36,
     position = "left",
     mappings = {
       ["l"] = "open",
@@ -97,6 +99,7 @@ require("neo-tree").setup({
         ".DS_Store",
       },
     },
+    follow_current_file = true, -- This will find and focus the file in the active buffer every
     components = {
 
       name = function(config, node)

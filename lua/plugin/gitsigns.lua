@@ -1,6 +1,6 @@
 require("gitsigns").setup({
   numhl = false,
-  signcolumn = true,
+  -- signcolumn = true,
 
   signs = {
     add = { hl = "GitSignsAdd", text = "┆", numhl = "GitSignsAddNr", linehl = "GitSignsAddLn" },

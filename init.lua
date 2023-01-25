@@ -12,9 +12,9 @@ vim.opt.shadafile = "NONE"
 vim.opt.shadafile = ""
 
 -- To disable bufferline without uninstalling it
-vim.api.nvim_create_autocmd({ "WinEnter", "BufEnter" }, {
-  command = "set showtabline=0",
-})
+-- vim.api.nvim_create_autocmd({ "WinEnter", "BufEnter" }, {
+--   command = "set showtabline=0",
+-- })
 
 require("winbar")
 

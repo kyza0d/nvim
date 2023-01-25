@@ -17,6 +17,14 @@ keymap({ "i", "c" }, "<C-v>", "<C-r><C-p>+", { desc = "Paste from clipboard" })
 keymap({ "n", "v" }, "<C-v>", '"+p', { desc = "Paste from clipboard" })
 keymap({ "i", "s" }, "<C-p>", "<C-r>0", { desc = [[Paste from  "0" register]] })
 
+keymap("n", "[[", function()
+  vim.diagnostic.get_next()
+end, { desc = [[goto prev diagnostic]] })
+
+keymap("n", "]]", function()
+  vim.diagnostic.get_prev()
+end, { desc = [[goto next diagnostic]] })
+
 -- Block selection
 keymap({ "n", "v" }, "<C-b>", "<C-v>", { desc = "Block selection" })
 
@@ -34,6 +42,12 @@ keymap("c", "<C-h>", "<S-Left>", { silent = false, desc = "Move cursor left" })
 keymap("c", "<C-l>", "<S-Right>", { silent = false, desc = "Move cursor right" })
 keymap("c", "<C-j>", "<Left>", { silent = false })
 keymap("c", "<C-k>", "<Right>", { silent = false })
+
+-- Substitue within visual selection
+keymap("v", "s", ":s///g<Left><Left><Left>", { desc = "Substitue within visual selection", silent = false })
+
+-- Preform another substitution
+keymap("c", "<C-s>", "<End> | '<,'>s///g<Left><Left><Left>", { desc = "Preform another substitution", silent = false })
 
 -- Buffer
 keymap("n", "<S-q>", function()
@@ -93,6 +107,7 @@ vim.keymap.set("n", "gd", function()
   vim.lsp.buf.definition({ on_list = on_list })
 end, { desc = "Go to definition" })
 
+keymap("n", "gr", ":Glance references<cr>", { desc = "References" })
 keymap("n", "gR", ":lua vim.lsp.buf.rename()<cr>", { desc = "Rename" })
 keymap("n", "<S-k>", ":lua vim.lsp.buf.hover()<cr>", { desc = "Hover" })
 keymap("n", "<C-S-k>", ":lua vim.diagnostic.open_float()<cr>", { desc = "Show diagnostics" })

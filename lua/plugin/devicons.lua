@@ -15,7 +15,7 @@ require("nvim-web-devicons").set_default_icon(icons.file, "#777777")
 for key, icon in pairs(current_icons) do
   icon.icon = string.format("%s ", icon.icon)
 
-  icon.icon = vim.g.icons_enabled and icon.icon or ""
+  icon.icon = vim.g.icons_enabled and icon.icon or " "
   icon.color = vim.g.icons_enabled and icon.color or "#777777"
 
   if icon.name == "Txt" then

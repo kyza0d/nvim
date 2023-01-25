@@ -29,7 +29,9 @@ local mode = {
   function()
     local current_mode = vim.api.nvim_get_mode().mode
     return string.format("%%#%s#%%#Statusline#", mode_highlights[current_mode], mode_names[current_mode]):upper()
-    -- return string.format("%%#%s#  %%#Statusline#", mode_highlights[current_mode], mode_names[current_mode]):upper()
+    -- return string.format("%%#%s#   %%#Statusline#", mode_highlights[current_mode], mode_names[current_mode]):upper()
+    -- return string.format("%%#%s#   %%#Statusline#", mode_highlights[current_mode], mode_names[current_mode]):upper()
+    -- return string.format("%%#%s#   %%#Statusline#", mode_highlights[current_mode], mode_names[current_mode]):upper()
     -- return string.format("%%#%s#🮉%%#Statusline#", mode_highlights[current_mode], mode_names[current_mode]):upper()
     -- return string.format("%%#%s#  🭨%%#Statusline#", mode_highlights[current_mode], mode_names[current_mode]):upper()
     -- return string.format("%%#%s# 🭨%%#Statusline#", mode_highlights[current_mode], mode_names[current_mode]):upper()
@@ -72,6 +74,7 @@ local file = {
   function()
     local modified = vim.bo.modified and "[+] " or ""
 
+    -- return string.format("   %s %s%%L lines", vim.fn.expand("%:P"), modified)
     return string.format(" %s %s%%L lines", vim.fn.expand("%:P"), modified)
   end,
   padding = true,
@@ -89,7 +92,7 @@ local diagnostics = {
     end
 
     local function format_diagnostic(icon, status)
-      return count[status] ~= 0 and string.format(icon .. "%s ", count[status]) or ""
+      return count[status] ~= 0 and string.format(icon .. " %s ", count[status]) or ""
     end
 
     return table.concat({
@@ -106,6 +109,7 @@ local root = {
   function()
     local root = vim.fn.getcwd()
     local workspace = root:sub(root:find("[^/]*$"))
+    -- return "  " .. workspace
     return workspace
   end,
   padding = true,

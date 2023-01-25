@@ -5,6 +5,7 @@ if not status_ok then
 end
 
 require("utils.layout").dropdown()
+local utils = require("telescope.utils")
 
 dropdown = function()
   return require("telescope.themes").get_ivy({
@@ -59,24 +60,6 @@ pager = function()
   })
 end
 
-sublime = function()
-  return require("telescope.themes").get_ivy({
-    layout_config = {
-      width = 0.5,
-      height = 0.4,
-    },
-
-    borderchars = {
-      prompt = { "─", "│", "─", "│", "┌", "┐", "┘", "└" },
-      results = { "─", "│", "─", "│", "├", "┤", "┘", "└" },
-      preview = { "─", "│", "─", "│", "┌", "┐", "┘", "└" },
-    },
-
-    layout_strategy = "sublime",
-    preview = false,
-  })
-end
-
 local actions = require("telescope.actions")
 telescope.setup({
   defaults = {
@@ -85,8 +68,12 @@ telescope.setup({
         ["<cr>"] = { actions.select_default, type = "action", opts = { silent = true } }, -- error when trying to press escape
       },
     },
+
+    file_ignore_patterns = { "node_modules", "package-lock.json", "yarn.lock", "dist" },
+
     sorting_strategy = "ascending",
-    selection_caret = "▎",
+    -- selection_caret = "▎",
+    selection_caret = " ",
     prompt_prefix = " ",
     entry_prefix = " ",
     path_display = { "absolute" },
@@ -96,7 +83,6 @@ telescope.setup({
       height = 0.4,
     },
 
-    -- layout_strategy = "pager",
     layout_strategy = "bottom_borders",
 
     borderchars = {
@@ -109,9 +95,13 @@ telescope.setup({
     prompt_title = "",
     results_title = "",
 
-    file_ignore_patterns = { "node_modules", "package-lock.json", "yarn.lock", "dist" },
+    pickers = {
+      live_grep = {
+        file_ignore_patterns = { "node_modules", "package-lock.json" },
+      },
+    },
   },
 })
 
 keymap("n", "<C-p>", ':lua require("telescope.builtin").find_files(pager())<cr>')
-keymap("n", "?", ":Telescope live_grep<cr>")
+-- keymap("n", "?", ":Telescope live_grep<cr>")
