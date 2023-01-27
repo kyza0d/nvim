@@ -109,6 +109,8 @@ end, { desc = "Go to definition" })
 
 keymap("n", "gr", ":Glance references<cr>", { desc = "References" })
 keymap("n", "gR", ":lua vim.lsp.buf.rename()<cr>", { desc = "Rename" })
-keymap("n", "<S-k>", ":lua vim.lsp.buf.hover()<cr>", { desc = "Hover" })
-keymap("n", "<C-S-k>", ":lua vim.diagnostic.open_float()<cr>", { desc = "Show diagnostics" })
+
+keymap("n", "<C-S-j>", ":lua vim.diagnostic.open_float()<cr>", { desc = "Show diagnostics" })
+keymap("n", "<C-S-k>", ":lua vim.lsp.buf.hover()<cr>", { desc = "Hover" })
+
 keymap("n", ">", ":lua vim.lsp.buf.code_action()<cr>", { desc = "Code action" })

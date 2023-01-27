@@ -6,16 +6,18 @@ require("toggleterm").setup({
   size = 13,
   highlights = {
     Normal = {
-      link = "Normal",
+      link = "StatusLine",
     },
     NormalFloat = {
       link = "Normal",
     },
   },
   on_open = function()
-    vim.cmd("setlocal laststatus=0 | setlocal foldcolumn=0 | startinsert!")
+    vim.cmd("setlocal foldcolumn=0 | setlocal laststatus=0")
+    vim.cmd("setlocal laststatus=0")
+    vim.cmd("startinsert!")
   end,
   on_close = function()
-    vim.cmd("set laststatus=3")
+    vim.cmd("setlocal foldcolumn=2 | setlocal laststatus=3")
   end,
 })

@@ -18,7 +18,7 @@ bufferline.setup({
 
     indicator = {
       -- icon = " ",
-      -- style = "underline",
+      style = "none",
     },
 
     right_mouse_command = "Bdelete! %d",

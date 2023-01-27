@@ -13,7 +13,15 @@ require("packer").startup({
     use("Mofiqul/vscode.nvim")
 
     use({
+      "monaqa/dial.nvim",
+      setup = function()
+        require("plugin.dial")
+      end,
+    })
+
+    use({
       "andweeb/presence.nvim",
+      disable = false,
       config = function()
         require("plugin.presence")
       end,
@@ -88,7 +96,6 @@ require("packer").startup({
       "~/plugins/harmony.nvim",
       config = function()
         require("plugin.harmony")
-        vim.cmd([[so ~/.config/nvim/lua/plugin/harmony/init.lua]])
       end,
     })
 
@@ -96,6 +103,7 @@ require("packer").startup({
 
     use({
       "kyazdani42/nvim-web-devicons",
+      -- disable = false,
       config = function()
         require("plugin.devicons")
       end,

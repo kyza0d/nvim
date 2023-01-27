@@ -12,7 +12,7 @@ harmony.setup({
     plugins = {
       "akinsho/bufferline.nvim",
       "hrsh7th/nvim-cmp",
-      "SmiteshP/nvim-navic",
+      -- "SmiteshP/nvim-navic",
       "folke/todo-comments.nvim",
       "nvim-telescope/telescope.nvim",
       "lukas-reineke/indent-blankline.nvim",
@@ -40,14 +40,14 @@ harmony.setup({
       ScrollbarInfoHandle = { background = colors.background_4, foreground = colors.blue },
       ScrollbarWarningHandle = { background = colors.background_4, foreground = colors.yellow },
 
-      VertSplit = { foreground = colors.foreground_2, background = colors.background_4 },
-
       Mode = { foreground = colors.accent, background = colors.background_negative_2 },
-      MsgArea = { background = colors.background_0 },
 
       Dash = { foreground = colors.background_2 },
 
+      -- StatusLine = { foreground = colors.foreground_4, background = "#0B0D0F" },
       StatusLine = { foreground = colors.foreground_2, background = colors.background_negative_2 },
+      -- WinBarNC = { foreground = colors.foreground_4, background = "#0B0D0F" },
+      -- MsgArea = { foreground = colors.foreground_4, background = "#0B0D0F" },
 
       normal_mode = { foreground = colors.background_negative_2, background = colors.green },
       insert_mode = { foreground = colors.background_negative_2, background = colors.blue },
@@ -59,6 +59,35 @@ harmony.setup({
       command_mode = { foreground = colors.background_negative_2, background = colors.yellow },
       terminal_mode = { foreground = colors.background_negative_2, background = colors.green },
 
+      -- NavicIconsFile = { foreground = colors.foreground_4, background = "#0B0D0F" },
+      -- NavicIconsModule = { foreground = colors.foreground_4, background = "#0B0D0F" },
+      -- NavicIconsNamespace = { foreground = colors.foreground_4, background = "#0B0D0F" },
+      -- NavicIconsPackage = { foreground = colors.foreground_4, background = "#0B0D0F" },
+      -- NavicIconsClass = { foreground = colors.foreground_4, background = "#0B0D0F" },
+      -- NavicIconsMethod = { foreground = colors.foreground_4, background = "#0B0D0F" },
+      -- NavicIconsProperty = { foreground = colors.foreground_4, background = "#0B0D0F" },
+      -- NavicIconsField = { foreground = colors.foreground_4, background = "#0B0D0F" },
+      -- NavicIconsConstructor = { foreground = colors.foreground_4, background = "#0B0D0F" },
+      -- NavicIconsEnum = { foreground = colors.foreground_4, background = "#0B0D0F" },
+      -- NavicIconsInterface = { foreground = colors.foreground_4, background = "#0B0D0F" },
+      -- NavicIconsFunction = { foreground = colors.foreground_4, background = "#0B0D0F" },
+      -- NavicIconsVariable = { foreground = colors.foreground_4, background = "#0B0D0F" },
+      -- NavicIconsConstant = { foreground = colors.foreground_4, background = "#0B0D0F" },
+      -- NavicIconsString = { foreground = colors.foreground_4, background = "#0B0D0F" },
+      -- NavicIconsNumber = { foreground = colors.foreground_4, background = "#0B0D0F" },
+      -- NavicIconsBoolean = { foreground = colors.foreground_4, background = "#0B0D0F" },
+      -- NavicIconsArray = { foreground = colors.foreground_4, background = "#0B0D0F" },
+      -- NavicIconsObject = { foreground = colors.foreground_4, background = "#0B0D0F" },
+      -- NavicIconsKey = { foreground = colors.foreground_4, background = "#0B0D0F" },
+      -- NavicIconsNull = { foreground = colors.foreground_4, background = "#0B0D0F" },
+      -- NavicIconsEnumMember = { foreground = colors.foreground_4, background = "#0B0D0F" },
+      -- NavicIconsStruct = { foreground = colors.foreground_4, background = "#0B0D0F" },
+      -- NavicIconsEvent = { foreground = colors.foreground_4, background = "#0B0D0F" },
+      -- NavicIconsOperator = { foreground = colors.foreground_4, background = "#0B0D0F" },
+      -- NavicIconsTypeParameter = { foreground = colors.foreground_4, background = "#0B0D0F" },
+      -- NavicText = { foreground = colors.foreground_4, background = "#0B0D0F" },
+      -- NavicSeparator = { foreground = colors.foreground_4, background = "#0B0D0F" },
+      --
       ["@comment"] = { italic = true, foreground = colors.foreground_4 },
     },
   },
@@ -99,8 +128,6 @@ harmony.setup({
   },
 
   ["doom-one"] = {
-    -- background = "#24262b",
-    -- background = "#242634",
     background = "#17181E",
     foreground = "#c7d6f9",
     -- highlights = {
@@ -162,5 +189,7 @@ harmony.setup({
 })
 
 vim.api.nvim_cmd({ cmd = "colorscheme", args = { "iceberg" } }, {})
+-- vim.api.nvim_cmd({ cmd = "colorscheme", args = { "tokyonight" } }, {})
+-- vim.api.nvim_cmd({ cmd = "colorscheme", args = { "summer-time" } }, {})
 -- vim.api.nvim_cmd({ cmd = "colorscheme", args = { "doom-one" } }, {})
 vim.api.nvim_cmd({ cmd = "highlight", args = { "clear", "TelescopeMatching" } }, {})

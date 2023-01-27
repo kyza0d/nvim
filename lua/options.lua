@@ -4,13 +4,13 @@ local options = {
   syntax = "enable",
   numberwidth = 3,
   cursorline = true,
-  foldcolumn = "1",
+  foldcolumn = "2",
   signcolumn = "no",
-  relativenumber = true,
-  number = true,
+  relativenumber = false,
+  number = false,
   showmode = false,
   termguicolors = true,
-  cmdheight = 1,
+  cmdheight = 0,
   smartcase = true,
   laststatus = 3,
   scrolloff = 6,
@@ -51,7 +51,7 @@ vim.o.foldlevelstart = 99
 vim.o.foldenable = true
 
 vim.opt.fillchars:append({
-  vert = "▏",
+  vert = " ",
   vertright = "▏",
   fold = " ",
   foldclose = "",
