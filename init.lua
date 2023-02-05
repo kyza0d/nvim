@@ -1,33 +1,59 @@
-require("impatient")
-require("impatient").enable_profile()
-
-require("globals")
-require("aliases")
-require("options")
-require("keymaps")
-require("autocmds")
-require("plugin.packer")
+vim.g.mapleader = " "
+vim.g.maplocalleader = " "
 
 vim.opt.shadafile = "NONE"
 vim.opt.shadafile = ""
 
--- To disable bufferline without uninstalling it
--- vim.api.nvim_create_autocmd({ "WinEnter", "BufEnter" }, {
---   command = "set showtabline=0",
--- })
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 
-require("winbar")
+if not vim.loop.fs_stat(lazypath) then
+  vim.fn.system({
+    "git",
+    "clone",
+    "--filter=blob:none",
+    "https://github.com/folke/lazy.nvim.git",
+    "--branch=stable", -- latest stable release
+    lazypath,
+  })
+end
 
-vim.keymap.set("n", "<F1>", function()
-  require("stylish").ui_menu(vim.fn.menu_get(""), { kind = "menu", prompt = "Main menu", experimental_mouse = true }, function(res)
-    print("### " .. res)
-  end)
-end, { noremap = true, silent = true })
+vim.opt.rtp:prepend(lazypath)
 
-vim.api.nvim_create_autocmd({ "WinEnter", "BufEnter" }, {
-  command = "set statusline=%{%v:lua.require('statusline').active()%}",
+require("lazy").setup({
+  spec = {
+    { import = "plugin" },
+  },
+  diff = {
+    cmd = "terminal_git",
+  },
+  performance = {
+    cache = {
+      enabled = true,
+    },
+    rtp = {
+      -- stylua: ignore
+      disabled_plugins = {
+        "gzip", "matchparen", "netrwPlugin",
+        "rplugin", "tarPlugin", "tohtml",
+        "tutor", "zipPlugin",
+      },
+    },
+  },
+  defaults = { lazy = true },
+  checker = { enabled = true },
 })
 
-vim.cmd([[
- hi FoldColumn guifg=#24283B
-]])
+require("core.options")
+require("core.mappings")
+require("core.winbar")
+require("core.aliases")
+require("core.autocmds")
+
+require("servers")
+
+vim.api.nvim_create_autocmd({ "WinEnter", "BufEnter" }, {
+  command = "set statusline=%{%v:lua.require('core.statusline').active()%}",
+})
+
+-- vim.api.nvim_cmd({ cmd = "colorscheme", args = { "summer-time" } }, {})
+-- vim.api.nvim_cmd({ cmd = "colorscheme", args = { "tokyonight" } }, {})
