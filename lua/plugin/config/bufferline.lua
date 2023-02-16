@@ -13,7 +13,8 @@ return {
     right_mouse_command = "Bdelete! %d",
 
     indicator = {
-      icon = "▎",
+      -- icon = "▎",
+      icon = " ",
       style = "icon",
     },
 
@@ -23,8 +24,9 @@ return {
 
     enforce_regular_tabs = true,
 
-    modified_icon = " ",
-    buffer_close_icon = " ",
+    modified_icon = " ",
+    buffer_close_icon = " ",
+    -- buffer_close_icon = " ",
 
     left_trunc_marker = "",
     right_trunc_marker = "",

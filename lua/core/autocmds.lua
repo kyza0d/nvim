@@ -15,6 +15,13 @@ vim.api.nvim_create_autocmd("BufWinEnter", {
   group = group,
 })
 
+vim.api.nvim_create_autocmd("BufEnter", {
+  callback = function()
+    fn_match(".fx", "silent set filetype=hlsl")
+  end,
+  group = group,
+})
+
 vim.api.nvim_create_autocmd("FileType", {
   pattern = { "help" },
   callback = function()
@@ -62,7 +69,24 @@ vim.api.nvim_create_autocmd("BufEnter", {
 })
 
 vim.api.nvim_create_autocmd("Filetype", {
-  pattern = { "Trouble", "neo-tree", "help" },
+  -- pattern = { "Trouble", "neo-tree", "help" },
+  pattern = { "Trouble", "help" },
   command = "nnoremap <silent> <buffer> q :close<cr>",
+  group = group,
+})
+
+-- Remember colorscheme on change
+vim.api.nvim_create_autocmd("ColorScheme", {
+  callback = function()
+    require("core.utils.save_colorscheme").save()
+  end,
+  group = group,
+})
+
+-- apply colorscheme on startup
+vim.api.nvim_create_autocmd("VimEnter", {
+  callback = function()
+    require("core.utils.save_colorscheme").apply()
+  end,
   group = group,
 })

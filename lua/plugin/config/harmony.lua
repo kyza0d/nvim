@@ -6,7 +6,7 @@ vim.opt.bg = "dark"
 
 harmony.setup({
   ["*"] = {
-    bg = { "#202124", "#ffffff" },
+    bg = { "#232629", "#ffffff" },
     fg = { "#dddddd", "#222222" },
 
     plugins = {
@@ -19,7 +19,9 @@ harmony.setup({
     },
 
     highlights = {
-      ProjectRoot = { bg = colors.bg_negative_1, fg = colors.accent },
+      -- Visual = { bg = "#0000ff", fg = "white" },
+      ProjectRoot = { bg = colors.bg_negative_1 },
+      ScrollView = { bg = colors.bg_2 },
 
       CursorLine = { bg = colors.bg_negative_1 },
       CursorLineSign = { bg = colors.bg_negative_1 },
@@ -32,19 +34,23 @@ harmony.setup({
 
       Dash = { fg = colors.bg_2 },
 
-      StatusLine = { fg = colors.fg_2, bg = colors.bg_negative_1 },
+      StatusLine = { fg = colors.fg_2, bg = colors.bg_3 },
+      StatusLineError = { fg = colors.red, bg = colors.bg_3 },
+      StatusLineWarning = { fg = colors.yellow, bg = colors.bg_3 },
+      StatusLineInfo = { fg = colors.blue, bg = colors.bg_3 },
+      StatusLineHint = { fg = colors.purple, bg = colors.bg_3 },
 
-      normal_mode = { fg = colors.bg_negative_1, bg = colors.green },
-      insert_mode = { fg = colors.bg_negative_1, bg = colors.blue },
-      visual_mode = { fg = colors.bg_negative_1, bg = colors.purple },
-      line_mode = { fg = colors.bg_negative_1, bg = colors.purple },
-      block_mode = { fg = colors.bg_negative_1, bg = colors.purple },
-      replace_mode = { fg = colors.bg_negative_1, bg = colors.purple },
-      select_mode = { fg = colors.bg_negative_1, bg = colors.yellow },
-      command_mode = { fg = colors.bg_negative_1, bg = colors.yellow },
-      terminal_mode = { fg = colors.bg_negative_1, bg = colors.green },
+      normal_mode = { fg = colors.bg_negative_1, bg = colors.green, bold = true },
+      insert_mode = { fg = colors.bg_negative_1, bg = colors.blue, bold = true },
+      visual_mode = { fg = colors.bg_negative_1, bg = colors.purple, bold = true },
+      line_mode = { fg = colors.bg_negative_1, bg = colors.purple, bold = true },
+      block_mode = { fg = colors.bg_negative_1, bg = colors.purple, bold = true },
+      replace_mode = { fg = colors.bg_negative_1, bg = colors.purple, bold = true },
+      select_mode = { fg = colors.bg_negative_1, bg = colors.yellow, bold = true },
+      command_mode = { fg = colors.bg_negative_1, bg = colors.yellow, bold = true },
+      terminal_mode = { fg = colors.bg_negative_1, bg = colors.green, bold = true },
 
-      ["@comment"] = { italic = true, fg = colors.fg_4 },
+      -- ["@comment"] = { italic = true, fg = colors.fg_4 },
     },
   },
 
@@ -100,7 +106,7 @@ harmony.setup({
   },
 
   ["nocolor"] = {
-    bg = { "#0B0D0F", "#ffffff" },
+    bg = { "#060809", "#ffffff" },
     fg = { "#818898", "#888888" },
   },
 
@@ -110,7 +116,7 @@ harmony.setup({
   },
 
   ["iceberg"] = {
-    bg = "#191b21",
+    bg = "#0F1014",
     fg = "#C6C8D1",
     highlights = {
       ["@constructor.tsx"] = { fg = "#81ADB7" },
@@ -129,4 +135,4 @@ harmony.setup({
   },
 })
 
-vim.api.nvim_cmd({ cmd = "colorscheme", args = { "summer-time" } }, {})
+-- vim.api.nvim_cmd({ cmd = "colorscheme", args = { "summer-time" } }, {})

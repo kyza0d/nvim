@@ -26,6 +26,9 @@ require("lazy").setup({
   diff = {
     cmd = "terminal_git",
   },
+  change_detection = {
+    notify = false,
+  },
   performance = {
     cache = {
       enabled = true,
@@ -39,13 +42,16 @@ require("lazy").setup({
       },
     },
   },
-  defaults = { lazy = true },
-  checker = { enabled = true },
+  defaults = {
+    lazy = true,
+  },
+  checker = {
+    enabled = true,
+  },
 })
 
 require("core.options")
 require("core.mappings")
-require("core.winbar")
 require("core.aliases")
 require("core.autocmds")
 
@@ -54,6 +60,3 @@ require("servers")
 vim.api.nvim_create_autocmd({ "WinEnter", "BufEnter" }, {
   command = "set statusline=%{%v:lua.require('core.statusline').active()%}",
 })
-
--- vim.api.nvim_cmd({ cmd = "colorscheme", args = { "summer-time" } }, {})
--- vim.api.nvim_cmd({ cmd = "colorscheme", args = { "tokyonight" } }, {})

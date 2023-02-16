@@ -1,19 +1,21 @@
 local M = {}
 
 local empty = require("core.utils.empty")
+local concat = require("core.utils.concat")
 
 local icons = require("core.options").icons
 
+-- stylua: ignore
 local mode_names = {
-  ["n"] = "normal",
-  ["i"] = "insert",
-  ["v"] = "visual",
-  ["V"] = "line",
-  [""] = "block",
-  ["R"] = "replace",
-  ["s"] = "select",
-  ["c"] = "command",
-  ["t"] = "terminal",
+  ["n"]  = " normal ",
+  ["i"]  = " insert ",
+  ["v"]  = " visual ",
+  ["V"]  = " v-line ",
+  [""] = " block ",
+  ["R"]  = " replace ",
+  ["s"]  = " select ",
+  ["c"]  = " command ",
+  ["t"]  = " terminal ",
 }
 
 local mode_highlights = {
@@ -31,7 +33,7 @@ local mode_highlights = {
 local mode = {
   function()
     local current_mode = vim.api.nvim_get_mode().mode
-    return string.format("%%#%s#🮉%%#Statusline#", mode_highlights[current_mode])
+    return string.format("%%#%s#%s%%#Statusline#", mode_highlights[current_mode], mode_names[current_mode]:upper())
   end,
 }
 
@@ -65,9 +67,7 @@ local search = {
 local file = {
   function()
     local modified = vim.bo.modified and "[+] " or ""
-
-    -- return string.format("   %s %s%%L lines", vim.fn.expand("%:P"), modified)
-    return string.format(" %s %s%%L lines", vim.fn.expand("%:P"), modified)
+    return string.format("%s %s%%L lines", vim.fn.expand("%:P"), modified)
   end,
   padding = true,
 }
@@ -83,16 +83,16 @@ local diagnostics = {
       count[k] = vim.tbl_count(vim.diagnostic.get(0, { severity = level }))
     end
 
-    local function format_diagnostic(icon, status)
-      return count[status] ~= 0 and string.format(icon .. " %s ", count[status]) or ""
+    local function format_diagnostic(highlight, status)
+      return count[status] ~= 0 and string.format("%%#%s#  %s%%#Statusline#", highlight, count[status]) or ""
     end
 
-    return table.concat({
-      format_diagnostic("x", "errors"),
-      format_diagnostic("!", "warnings"),
-      format_diagnostic("?", "hints"),
-      format_diagnostic("?", "info"),
-    })
+    return concat(
+      format_diagnostic("StatusLineError", "errors"),
+      format_diagnostic("StatusLineWarning", "warnings"),
+      format_diagnostic("StatusLineInfo", "hints"),
+      format_diagnostic("StatusLineHint", "info")
+    )
   end,
   padding = true,
 }
@@ -101,8 +101,7 @@ local root = {
   function()
     local root = vim.fn.getcwd()
     local workspace = root:sub(root:find("[^/]*$"))
-    -- return "  " .. workspace
-    return workspace
+    return " " .. workspace
   end,
   padding = true,
 }
@@ -116,7 +115,7 @@ local git = {
     end
 
     local function format_git(icon, status)
-      return status ~= 0 and status ~= nil and string.format(" " .. icon .. "%s", status) or ""
+      return status ~= 0 and status ~= nil and string.format(" %s%s", icon, status) or ""
     end
 
     return table.concat({

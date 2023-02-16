@@ -55,8 +55,8 @@ local cr_mappings = {
   w = { ":w!<cr>", "Write buffer" },
   r = { "<cmd>Telescope oldfiles<cr>", "recent" },
   a = { ":norm @a<CR>", "Preform 'a' macro", silent = false },
-  n = { ":Norm ", "Normal command", silent = false },
-  ["/"] = { ":Telescope help_tags<cr>", "Search" },
+  h = { ":Telescope help_tags<cr>", "Search" },
+  ["/"] = { ":Telescope live_grep<cr>", "Grep" },
 }
 
 local cr_mappings_visual = {

@@ -32,7 +32,8 @@ cmp.setup({
   },
 
   formatting = {
-    fields = { "kind", "abbr", "menu" },
+    fields = vim.g.disable_icons and { "abbr", "menu" } or { "kind", "abbr", "menu" },
+    -- fields = { "kind", "abbr", "menu" },
 
     format = function(entry, vim_item)
       vim_item.menu = ({

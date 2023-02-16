@@ -1,4 +1,4 @@
-local icons = require("core.options").icons
+local icons = require("core.options").neotree_icons
 
 require("neo-tree").setup({
   event_handlers = {
@@ -13,16 +13,10 @@ require("neo-tree").setup({
   enable_git_status = false,
   enable_diagnostics = false,
 
-  -- hide_root_node = true,
+  hide_root_node = true,
   retain_hidden_root_indent = true,
 
-  source_selector = {
-    winbar = false,
-    statusline = false,
-  },
-
   default_component_configs = {
-
     container = {
       enable_character_fade = false,
     },

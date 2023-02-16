@@ -1,36 +1,8 @@
 local icons = require("core.options").icons
+local navic_icons = require("core.options").navic
 
 return {
-  -- stylua: ignore
-  icons = {
-    File          = "  ",
-    Module        = "  ",
-    Namespace     = "  ",
-    Package       = "  ",
-    Class         = "  ",
-    Method        = "  ",
-    Property      = "  ",
-    Field         = "  ",
-    Constructor   = "  ",
-    Enum          = "練 ",
-    Interface     = "練 ",
-    Function      = "  ",
-    Variable      = "  ",
-    Constant      = "  ",
-    String        = "  ",
-    Number        = "  ",
-    Boolean       = "◩  ",
-    Array         = "  ",
-    Object        = "  ",
-    Key           = "  ",
-    Null          = "ﳠ  ",
-    EnumMember    = "  ",
-    Struct        = "  ",
-    Event         = "  ",
-    Operator      = "  ",
-    TypeParameter = "  ",
-  },
-
+  icons = navic_icons,
   separator = icons.chevron,
   highlight = true,
   depth_limit = 3,

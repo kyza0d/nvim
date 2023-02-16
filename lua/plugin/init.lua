@@ -1,33 +1,10 @@
 return {
 
-  "Vonr/align.nvim",
+  ----------------------------------------------
+  -- Motions / Keystrokes
+  ----------------------------------------------
 
-  "JoosepAlviste/nvim-ts-context-commentstring",
-
-  {
-    "nvim-treesitter/playground",
-    cmd = { "TSPlaygroundToggle", "TSHighlightCapturesUnderCursor" },
-  },
-
-  {
-    "tpope/vim-surround",
-    event = "BufReadPost",
-  },
-
-  {
-    "dstein64/nvim-scrollview",
-    event = "BufReadPost",
-    enabled = false,
-    opts = {
-      excluded_filetypes = { "neo-tree" },
-      current_only = true,
-      winblend = 10,
-    },
-    config = function(_, opts)
-      require("scrollview").setup(opts)
-    end,
-  },
-
+  -- Keystroke-based commands
   {
     "folke/which-key.nvim",
     event = "VeryLazy",
@@ -36,26 +13,205 @@ return {
     end,
   },
 
-  { "folke/tokyonight.nvim", lazy = false },
+  -- Surround motions
+  {
+    "tpope/vim-surround",
+    event = "BufReadPost",
+  },
 
+  -- Align motions
+  "Vonr/align.nvim",
+
+  ----------------------------------------------
+  -- UI, Appearance
+  ----------------------------------------------
+
+  -- Themes
+  { "folke/tokyonight.nvim", lazy = false },
   { dir = "~/plugins/themes/summer-time", lazy = false },
   { dir = "~/plugins/themes/summer-night", lazy = false },
+  { dir = "~/plugins/themes/silent", lazy = false },
+  { dir = "~/plugins/themes/byte", lazy = false },
+
+  -- Scrollbar
+  {
+    "dstein64/nvim-scrollview",
+    event = "BufReadPost",
+    opts = {
+      excluded_filetypes = { "neo-tree" },
+      current_only = true,
+      winblend = 10,
+    },
+  },
+
+  -- Indent Lines
+  {
+    "lukas-reineke/indent-blankline.nvim",
+    event = "BufReadPost",
+    init = function()
+      -- vim.g.indent_blankline_char = require("core.options").icons.indent
+      vim.g.indent_blankline_char = require("core.options").icons.indent
+      vim.g.indent_blankline_context_char = require("core.options").icons.indent
+      vim.g.indent_blankline_show_trailing_blankline_indent = false
+    end,
+    opts = {
+      show_current_context = true,
+    },
+  },
+
+  -- Show LSP progress
+  {
+    "j-hui/fidget.nvim",
+    event = "BufReadPost",
+    opts = {
+      text = { spinner = "dots_ellipsis" },
+    },
+  },
 
   {
-    "github/copilot.vim",
-    event = "InsertEnter",
-    init = function()
-      vim.cmd([[
-        imap <silent><script><expr> <C-J> copilot#Accept("\<CR>")
-        let g:copilot_no_tab_map = v:true
-        let g:copilot_filetypes = {
-        \ '*': v:true,
-        \ 'TelescopePrompt': v:false,
-        \ }
-      ]])
+    "nvim-tree/nvim-web-devicons",
+    config = function()
+      require("plugin.config.devicons")
     end,
   },
 
+  -- Consistent colorschemes
+  {
+    dir = "~/plugins/harmony.nvim",
+    enabled = true,
+    event = "VeryLazy",
+    config = function()
+      require("plugin.config.harmony")
+    end,
+  },
+
+  ----------------------------------------------
+  -- LSP, Completion, Formatter/Linters
+  ----------------------------------------------
+
+  -- Language server quick config
+  {
+    "neovim/nvim-lspconfig",
+    dependencies = {
+      "hrsh7th/cmp-nvim-lsp",
+      {
+        "jose-elias-alvarez/null-ls.nvim",
+        config = function()
+          require("servers.null-ls")
+        end,
+      },
+    },
+  },
+
+  -- Completion menu
+  {
+    "hrsh7th/nvim-cmp",
+    event = { "CmdlineEnter", "InsertEnter" },
+    dependencies = {
+      "hrsh7th/cmp-buffer",
+      "hrsh7th/cmp-cmdline",
+      "hrsh7th/cmp-path",
+    },
+    config = function()
+      require("plugin.config.nvim-cmp")
+    end,
+  },
+
+  -- Snippet engine
+  {
+    "L3MON4D3/LuaSnip",
+    dependencies = { "rafamadriz/friendly-snippets", "saadparwaiz1/cmp_luasnip" },
+  },
+
+  {
+    "dnlhc/glance.nvim",
+    opts = {
+      preview_win_opts = { relativenumber = false },
+    },
+    keys = {
+      { "gD", "<Cmd>Glance definitions<CR>", desc = "lsp: glance definitions" },
+      { "gR", "<Cmd>Glance references<CR>", desc = "lsp: glance references" },
+      { "gY", "<Cmd>Glance type_definitions<CR>" },
+      { "gM", "<Cmd>Glance implementations<CR>" },
+    },
+  },
+
+  ----------------------------------------------
+  -- Editor
+  ----------------------------------------------
+
+  -- Language Parser
+  {
+    "nvim-treesitter/nvim-treesitter",
+    build = ":TSUpdate",
+    version = false,
+    event = "BufReadPost",
+    opts = {
+      -- stylua: ignore
+      ensure_installed = {
+        "bash", "css", "gitignore", "help",
+        "html", "java", "javascript", "tsx",
+        "typescript", "jsdoc", "json", "jsonc",
+        "regex", "rust", "scss", "toml", "vim",
+      },
+      highlight = { enable = true },
+      indent = { enable = true },
+      playground = { enable = true },
+      context_commentstring = {
+        enable = true,
+        enable_autocmd = false,
+      },
+    },
+    config = function(_, opts)
+      require("nvim-treesitter.configs").setup(opts)
+    end,
+  },
+
+  -- Fuzzy finder
+  {
+    "nvim-telescope/telescope.nvim",
+    cmd = "Telescope",
+    opts = require("plugin.config.telescope"),
+    dependencies = "nvim-lua/plenary.nvim",
+  },
+
+  -- File Explorer
+  {
+    "nvim-neo-tree/neo-tree.nvim",
+    cmd = "Neotree",
+    config = function()
+      require("plugin.config.neotree")
+    end,
+    dependencies = "MunifTanjim/nui.nvim",
+  },
+
+  -- Bufferline
+  {
+    "akinsho/bufferline.nvim",
+    -- enabled = false,
+    event = "VeryLazy",
+    opts = require("plugin.config.bufferline"),
+    dependencies = "moll/vim-bbye",
+  },
+
+  -- Terminal
+  {
+    "akinsho/toggleterm.nvim",
+    opts = {
+      open_mapping = "<C-\\>",
+      shade_terminals = false,
+      shell = "zsh",
+      on_open = function()
+        vim.cmd("setlocal foldcolumn=0 | setlocal laststatus=0 | startinsert! | setlocal statuscolumn=")
+      end,
+      on_close = function()
+        vim.cmd("setlocal foldcolumn=2 | setlocal laststatus=3")
+      end,
+    },
+    keys = { "<C-\\>" },
+  },
+
+  -- Source Control
   {
     "lewis6991/gitsigns.nvim",
     event = "BufReadPre",
@@ -71,80 +227,7 @@ return {
     },
   },
 
-  {
-    "nvim-treesitter/nvim-treesitter",
-    build = ":TSUpdate",
-    version = false, -- last release is way too old and doesn't work on Windows
-    event = "BufReadPost",
-    opts = {
-      -- stylua: ignore
-      ensure_installed = {
-        "bash", "css", "gitignore", "help",
-        "html", "java", "javascript", "tsx",
-        "typescript", "jsdoc", "json", "jsonc",
-        "regex", "rust", "scss", "toml", "vim",
-      },
-      indent = { enable = true },
-      playground = {
-        enable = true,
-      },
-      context_commentstring = {
-        enable = true,
-      },
-      highlight = {
-        enable = true,
-      },
-    },
-    config = function(_, opts)
-      require("nvim-treesitter.configs").setup(opts)
-    end,
-  },
-
-  {
-    "lukas-reineke/indent-blankline.nvim",
-    event = "BufReadPost",
-    init = function()
-      vim.g.indent_blankline_char = "▏"
-      vim.g.indent_blankline_context_char = "▏"
-      vim.g.indent_blankline_show_trailing_blankline_indent = false
-    end,
-    opts = {
-      show_current_context = true,
-      -- show_current_context_start = true,
-    },
-  },
-
-  {
-    "L3MON4D3/LuaSnip",
-    dependencies = { "rafamadriz/friendly-snippets", "saadparwaiz1/cmp_luasnip" },
-  },
-
-  {
-    "neovim/nvim-lspconfig",
-    dependencies = {
-      "hrsh7th/cmp-nvim-lsp",
-      {
-        "jose-elias-alvarez/null-ls.nvim",
-        config = function()
-          require("servers.null-ls")
-        end,
-      },
-    },
-  },
-
-  {
-    "hrsh7th/nvim-cmp",
-    event = { "CmdlineEnter", "InsertEnter" },
-    dependencies = {
-      "hrsh7th/cmp-buffer",
-      "hrsh7th/cmp-cmdline",
-      "hrsh7th/cmp-path",
-    },
-    config = function()
-      require("plugin.config.nvim-cmp")
-    end,
-  },
-
+  -- Commenting
   {
     "echasnovski/mini.comment",
     event = "VeryLazy",
@@ -155,11 +238,48 @@ return {
         end,
       },
     },
+    dependencies = "JoosepAlviste/nvim-ts-context-commentstring",
     config = function(_, opts)
       require("mini.comment").setup(opts)
     end,
   },
 
+  -- Folding
+  {
+    "kevinhwang91/nvim-ufo",
+    dependencies = "kevinhwang91/promise-async",
+    event = "BufReadPost",
+    opts = {
+      provider_selector = function(bufnr, filetype, buftype)
+        return { "treesitter", "indent" }
+      end,
+    },
+  },
+
+  -- VS Code like winbar
+  {
+    "utilyre/barbecue.nvim",
+    event = "BufReadPost",
+    version = "*",
+    dependencies = {
+      {
+        "SmiteshP/nvim-navic",
+        init = function()
+          vim.g.navic_silence = true
+        end,
+        opts = require("plugin.config.nvim-navic"),
+      },
+      "nvim-tree/nvim-web-devicons",
+    },
+    opts = {
+      symbols = {
+        separator = vim.g.disable_icons and ">" or ">",
+        kinds = require("core.options").navic,
+      },
+    },
+  },
+
+  -- Better text objects
   {
     "echasnovski/mini.ai",
     keys = {
@@ -194,81 +314,31 @@ return {
     end,
   },
 
+  ----------------------------------------------
+  -- Utilites
+  ----------------------------------------------
+
+  -- Extra tree-sitter information
   {
-    "akinsho/bufferline.nvim",
-    event = "BufReadPost",
-    opts = require("plugin.config.bufferline"),
-    dependencies = "moll/vim-bbye",
+    "nvim-treesitter/playground",
+    cmd = { "TSPlaygroundToggle", "TSHighlightCapturesUnderCursor" },
   },
 
-  {
-    "SmiteshP/nvim-navic",
-    init = function()
-      vim.g.navic_silence = true
-    end,
-    opts = require("plugin.config.nvim-navic"),
-  },
-
-  {
-    dir = "~/plugins/harmony.nvim",
-    event = "BufReadPre",
-    config = function()
-      require("plugin.config.harmony")
-    end,
-  },
-
-  {
-    "kevinhwang91/nvim-ufo",
-    dependencies = "kevinhwang91/promise-async",
-    event = "BufReadPost",
-    opts = {
-      provider_selector = function(bufnr, filetype, buftype)
-        return { "treesitter", "indent" }
-      end,
-    },
-  },
-
-  {
-    "nvim-telescope/telescope.nvim",
-    cmd = "Telescope",
-    opts = require("plugin.config.telescope"),
-    dependencies = "nvim-lua/plenary.nvim",
-  },
-
-  {
-    "nvim-neo-tree/neo-tree.nvim",
-    cmd = "Neotree",
-    config = function()
-      require("plugin.config.neotree")
-    end,
-    dependencies = "MunifTanjim/nui.nvim",
-  },
-
-  {
-    "akinsho/toggleterm.nvim",
-    opts = {
-      open_mapping = "<C-\\>",
-      shade_terminals = false,
-      shell = "zsh",
-      on_open = function()
-        vim.cmd("setlocal foldcolumn=0 | setlocal laststatus=0 | startinsert! | setlocal statuscolumn=")
-      end,
-      on_close = function()
-        vim.cmd("setlocal foldcolumn=2 | setlocal laststatus=3")
-      end,
-    },
-    keys = { "<C-\\>" },
-  },
-
-  {
-    "nvim-tree/nvim-web-devicons",
-    config = function()
-      require("plugin.config.devicons")
-    end,
-  },
-
+  -- Measure startup time
   {
     "dstein64/vim-startuptime",
     cmd = "StartupTime",
   },
+
+  -- {
+  --   "github/copilot.vim",
+  --   event = "InsertEnter",
+  --   init = function()
+  --     vim.g.copilot_filetypes = true
+  --     vim.g.copilot_filetypes = {
+  --       ["*"] = true,
+  --       TelescopePrompt = false,
+  --     }
+  --   end,
+  -- },
 }

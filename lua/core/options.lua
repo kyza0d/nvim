@@ -1,9 +1,96 @@
-local M = {}
+vim.g.disable_icons = false
+local concat = require("core.utils.concat")
+
+local M = {
+  icons = {
+    file = " ",
+    book = " ",
+    book_alt = "",
+    error = " ",
+    warning = " ",
+    hint = " ",
+    info = " ",
+    chevron = "  ",
+    keyboard = "",
+    git_branch = "",
+    indent = "▏",
+  },
+  cmp = {
+    Class = " ",
+    Color = " ",
+    Constant = " ",
+    Constructor = " ",
+    Enum = "練",
+    EnumMember = " ",
+    Event = " ",
+    Field = " ",
+    Folder = " ",
+    Function = " ",
+    Interface = "ﰮ ",
+    Keyword = " ",
+    Method = " ",
+    Module = " ",
+    Array = " ",
+    Operator = "",
+    Property = " ",
+    Reference = " ",
+    Snippet = " ",
+    Struct = " ",
+    Text = "料",
+    TypeParameter = " ",
+    Unit = "塞",
+    Value = " ",
+    Variable = " ",
+    Dictionary = " ",
+    Signature = " ",
+  },
+  navic = {
+    File = "  ",
+    Module = "  ",
+    Namespace = "  ",
+    Package = "  ",
+    Class = "  ",
+    Method = "  ",
+    Property = "  ",
+    Field = "  ",
+    Constructor = "  ",
+    Enum = "練 ",
+    Interface = "練 ",
+    Function = "  ",
+    Variable = "  ",
+    Constant = "  ",
+    String = "  ",
+    Number = "  ",
+    Boolean = "◩  ",
+    Array = "  ",
+    Object = "  ",
+    Key = "  ",
+    Null = "ﳠ  ",
+    EnumMember = "  ",
+    Struct = "  ",
+    Event = "  ",
+    Operator = "  ",
+    TypeParameter = "  ",
+  },
+  neotree_icons = {
+    folder_open = " ",
+    folder_closed = " ",
+    folder_empty = " ",
+    folder_empty_open = " ",
+    file = " ",
+    symlink = " ",
+    symlink_open = " ",
+    default = " ",
+    default_open = " ",
+    indent_marker = "▏",
+    last_indent_marker = "▏",
+  },
+}
 
 local options = {
   -- Appearance
-  relativenumber = false,
   number = true,
+  relativenumber = true,
   numberwidth = 5,
   cursorline = false,
   signcolumn = "yes",
@@ -13,8 +100,13 @@ local options = {
   showmode = false,
   termguicolors = true,
   scrolloff = 6,
-  -- statuscolumn = '%=%l %s%#FoldColumn#%{foldlevel(v:lnum) > 0 ? (foldlevel(v:lnum) > foldlevel(v:lnum - 1) ? (foldclosed(v:lnum) == -1 ? "󰅀 " : "󰅂 ") : "🭱 ") : "  " }',
-  statuscolumn = '%=%l %s%{foldlevel(v:lnum) > foldlevel(v:lnum - 1) ? (foldclosed(v:lnum) == -1 ? "󰅀 " : "󰅂 ") : "  " }',
+
+  statuscolumn = concat({
+    "%= ",
+    " %l ", -- numbers
+    " %s ", -- signcolumn
+    '%{foldlevel(v:lnum) > 0 ? (foldlevel(v:lnum) > foldlevel(v:lnum - 1) ? (foldclosed(v:lnum) == -1 ? "󰅀 " : "󰅂 ") : "🭱 ") : "  "}',
+  }),
 
   -- Indenting
   tabstop = 2,
@@ -57,65 +149,31 @@ end
 vim.opt.fillchars:append({
   vert = " ",
   vertright = "▏",
-  fold = " ",
+  vertleft = " ",
+  horiz = "─",
   foldclose = "",
   foldopen = "",
-  foldsep = " ",
-  vertleft = "┤",
   eob = " ",
-  horiz = "─",
 })
 
-M.icons = {
-  file = " ",
-  book = " ",
-  book_alt = "",
-  error = " ",
-  warning = " ",
-  hint = " ",
-  info = " ",
-  chevron = "  ",
-  keyboard = "",
-  folder_closed = "󰅂 󰉋",
-  folder_open = "󰅀 󰉋",
-  folder_empty = "󰅀 󰉖",
-  folder = "󰉋 ",
-  git_branch = "",
-  indent_marker = "🭱",
-  last_indent_marker = "🭱",
-  -- indent_marker = "│",
-  -- last_indent_marker = "└",
-}
+if vim.g.disable_icons then
+  vim.opt.fillchars:append({
+    foldclose = ">",
+    foldopen = "v",
+  })
 
-M.cmp = {
-  Class = " ",
-  Color = " ",
-  Constant = " ",
-  Constructor = " ",
-  Enum = "練",
-  EnumMember = " ",
-  Event = " ",
-  Field = " ",
-  File = " ",
-  Folder = " ",
-  Function = " ",
-  Interface = "ﰮ ",
-  Keyword = " ",
-  Method = " ",
-  Module = " ",
-  Array = " ",
-  Operator = "",
-  Property = " ",
-  Reference = " ",
-  Snippet = " ",
-  Struct = " ",
-  Text = "料",
-  TypeParameter = " ",
-  Unit = "塞",
-  Value = " ",
-  Variable = " ",
-  Dictionary = " ",
-  Signature = " ",
-}
+  local tables = {
+    M.icons,
+    M.cmp,
+    M.navic,
+    M.neotree_icons,
+  }
+
+  for _, t in ipairs(tables) do
+    for k in pairs(t) do
+      t[k] = ""
+    end
+  end
+end
 
 return M
