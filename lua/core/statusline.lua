@@ -47,7 +47,7 @@ local macro = {
   end,
 }
 
-local line = { " Ln %l, Col %c" }
+local line = { " %l:%c" }
 
 local search = {
   function()
