@@ -99,20 +99,20 @@ local M = {
 }
 
 local options = {
-	-- Appearance
-	-- numberwidth = 5,
-	cursorline = false,
-	laststatus = 2,
-	cmdheight = 1,
-	pumheight = 12,
-	termguicolors = true,
-	mouse = "a",
-	scrolloff = 6,
-	showmode = false,
+  -- Appearance
+  -- numberwidth = 5,
+  cursorline = false,
+  laststatus = 2,
+  cmdheight = 1,
+  pumheight = 12,
+  termguicolors = true,
+  mouse = "a",
+  scrolloff = 6,
+  showmode = false,
 
-	number = true,
-	relativenumber = false,
-	signcolumn = "no",
+  number = true,
+  relativenumber = false,
+  signcolumn = "no",
 
   -- stylua: ignore
 	statuscolumn = concat({
@@ -123,71 +123,71 @@ local options = {
 		'%#FoldIndicator#%{(foldclosed(v:lnum) == -1 ? "" : "▎" )}',
 	}),
 
-	-- statuscolumn = " %l ",
+  -- statuscolumn = " %l ",
 
-	-- Indenting
-	tabstop = 2,
-	softtabstop = 2,
-	shiftwidth = 2,
-	expandtab = true,
-	autoindent = true,
-	breakindent = true,
-	breakindentopt = "shift:3",
-	wrap = true,
-	linebreak = true,
+  -- Indenting
+  tabstop = 2,
+  softtabstop = 2,
+  shiftwidth = 2,
+  expandtab = true,
+  autoindent = true,
+  breakindent = true,
+  breakindentopt = "shift:3",
+  wrap = true,
+  linebreak = true,
 
-	-- Folding
-	foldenable = true,
-	foldlevel = 99,
+  -- Folding
+  foldenable = true,
+  foldlevel = 99,
 
-	-- Searching
-	ignorecase = true,
-	smartcase = true,
+  -- Searching
+  ignorecase = true,
+  smartcase = true,
 
-	-- Memory and file
-	shell = "/usr/bin/zsh",
-	hidden = true,
-	lazyredraw = true,
-	swapfile = false,
-	backup = false,
+  -- Memory and file
+  shell = "/usr/bin/zsh",
+  hidden = true,
+  lazyredraw = true,
+  swapfile = false,
+  backup = false,
 
-	-- Update times
-	timeoutlen = 400,
-	updatetime = 200,
+  -- Update times
+  timeoutlen = 400,
+  updatetime = 200,
 }
 
 for k, v in pairs(options) do
-	vim.opt[k] = v
+  vim.opt[k] = v
 end
 
 vim.opt.fillchars:append({
-	vertright = " ",
-	vert = "▏",
-	vertleft = " ",
-	horiz = "─",
-	foldclose = "",
-	foldopen = "",
-	eob = " ",
+  vertright = " ",
+  vert = "▏",
+  vertleft = " ",
+  horiz = "─",
+  foldclose = "",
+  foldopen = "",
+  eob = " ",
 })
 
 if vim.g.disable_icons then
-	vim.opt.fillchars:append({
-		foldclose = ">",
-		foldopen = "v",
-	})
+  vim.opt.fillchars:append({
+    foldclose = ">",
+    foldopen = "v",
+  })
 
-	local tables = {
-		M.icons,
-		M.cmp,
-		M.navic,
-		M.neotree_icons,
-	}
+  local tables = {
+    M.icons,
+    M.cmp,
+    M.navic,
+    M.neotree_icons,
+  }
 
-	for _, t in ipairs(tables) do
-		for k in pairs(t) do
-			t[k] = ""
-		end
-	end
+  for _, t in ipairs(tables) do
+    for k in pairs(t) do
+      t[k] = ""
+    end
+  end
 end
 
 return M

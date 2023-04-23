@@ -1,17 +1,17 @@
 local keymap = function(modes, mapping, command, options)
-	local default_opts = { noremap = true, silent = true, nowait = true }
-	local keymap = type(command) == "function" and vim.keymap.set or vim.api.nvim_set_keymap
+  local default_opts = { noremap = true, silent = true, nowait = true }
+  local keymap = type(command) == "function" and vim.keymap.set or vim.api.nvim_set_keymap
 
-	options = options or {}
-	options = vim.tbl_deep_extend("keep", {}, options, default_opts or {})
+  options = options or {}
+  options = vim.tbl_deep_extend("keep", {}, options, default_opts or {})
 
-	if type(modes) == "table" then
-		for _, mode in pairs(modes) do
-			keymap(mode, mapping, command, options)
-		end
-	else
-		keymap(modes, mapping, command, options)
-	end
+  if type(modes) == "table" then
+    for _, mode in pairs(modes) do
+      keymap(mode, mapping, command, options)
+    end
+  else
+    keymap(modes, mapping, command, options)
+  end
 end
 
 -------------------------------
@@ -27,7 +27,7 @@ keymap("n", "<C-n>", ":Neotree left toggle filesystem<cr>")
 
 -- nvim-telescope/telescope.nvim
 keymap("n", "<C-p>", function()
-	require("telescope.builtin").find_files()
+  require("telescope.builtin").find_files()
 end)
 
 -- akinsho/bufferline.nvim
@@ -41,7 +41,7 @@ keymap("n", "<C-/>", "gcc")
 
 -- Vonr/align.nvim
 keymap("x", "as", function()
-	require("align").align_to_char(1, true)
+  require("align").align_to_char(1, true)
 end)
 
 -- dnlhc/glance.nvim
@@ -49,7 +49,7 @@ keymap("n", "gr", "<cmd>Glance references<cr>")
 
 -- smjonas/inc-rename.nvim
 keymap("n", "gR", function()
-	return ":IncRename " .. vim.fn.expand("<cword>")
+  return ":IncRename " .. vim.fn.expand("<cword>")
 end, { expr = true })
 
 -------------------------------
@@ -60,22 +60,22 @@ end, { expr = true })
 -- keymap("n", ">", ":lua vim.lsp.buf.code_action()<cr>")
 
 keymap("n", "gd", function()
-	vim.lsp.buf.definition({
-		on_list = function(options)
-			vim.fn.setqflist({}, " ", options)
-			vim.api.nvim_command("cfirst")
-		end,
-	})
+  vim.lsp.buf.definition({
+    on_list = function(options)
+      vim.fn.setqflist({}, " ", options)
+      vim.api.nvim_command("cfirst")
+    end,
+  })
 end)
 
 -- Show hover
 keymap("n", "<S-k>", function()
-	vim.lsp.buf.hover()
+  vim.lsp.buf.hover()
 end)
 
 -- Show diagnostic
 keymap("n", "<C-k>", function()
-	vim.diagnostic.open_float()
+  vim.diagnostic.open_float()
 end)
 
 -------------------------------
@@ -85,10 +85,10 @@ end)
 -- Search for visually selected text
 -- https://vim.fandom.com/wiki/Search_for_visually_selected_text
 keymap(
-	"v",
-	"//",
-	[[y/\V<C-R>=escape(@",'/\')<CR><CR>:set hlsearch<CR>N]],
-	{ desc = "Search for visually selected text" }
+  "v",
+  "//",
+  [[y/\V<C-R>=escape(@",'/\')<CR><CR>:set hlsearch<CR>N]],
+  { desc = "Search for visually selected text" }
 )
 
 -- Toggle highlight

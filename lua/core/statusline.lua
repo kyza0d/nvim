@@ -3,41 +3,44 @@ local M = {}
 local empty = require("core.utils.empty")
 local concat = require("core.utils.concat")
 
-
 local modes = {
   ["n"] = { "normal", "NormalMode" },
-  ["niI"] = {"normal", "NormalMode" },
-  ["niR"] = {"normal", "NormalMode" },
-  ["niV"] = {"normal", "NormalMode" },
-  ["no"] = {"n-pending", "NormalMode" },
-  ["i"] = {"insert", "InsertMode" },
-  ["ic"] = {"insert", "InsertMode" },
-  ["ix"] = {"insert", "InsertMode" },
-  ["t"] = {"terminal", "TerminalMode" },
-  ["nt"] = {"nterminal", "TerminalMode" },
-  ["v"] = {"visual", "VisualMode" },
-  ["V"] = {"v-line", "VisualMode" },
-  ["Vs"] = {"v-line", "VisualMode" },
-  [""] = {"v-block", "VisualMode" },
-  ["R"] = {"replace", "ReplaceMode" },
-  ["Rv"] = {"v-replace", "ReplaceMode" },
-  ["s"] = {"select", "SelectMode" },
-  ["S"] = {"s-line", "SelectMode" },
-  [""] = {"s-block", "SelectMode" },
-  ["c"] = {"command", "CommandMode" },
-  ["cv"] = {"command", "CommandMode" },
-  ["ce"] = {"command", "CommandMode" },
-  ["r"] =  {"prompt", "PromptMode" },
-  ["rm"] = {"more", "MoreMode" },
-  ["r?"] = {"confirm", "ConfirmMode" },
-  ["!"] =  {"shell", "ShellMode" }
+  ["niI"] = { "normal", "NormalMode" },
+  ["niR"] = { "normal", "NormalMode" },
+  ["niV"] = { "normal", "NormalMode" },
+  ["no"] = { "n-pending", "NormalMode" },
+  ["i"] = { "insert", "InsertMode" },
+  ["ic"] = { "insert", "InsertMode" },
+  ["ix"] = { "insert", "InsertMode" },
+  ["t"] = { "terminal", "TerminalMode" },
+  ["nt"] = { "nterminal", "TerminalMode" },
+  ["v"] = { "visual", "VisualMode" },
+  ["V"] = { "v-line", "VisualMode" },
+  ["Vs"] = { "v-line", "VisualMode" },
+  [""] = { "v-block", "VisualMode" },
+  ["R"] = { "replace", "ReplaceMode" },
+  ["Rv"] = { "v-replace", "ReplaceMode" },
+  ["s"] = { "select", "SelectMode" },
+  ["S"] = { "s-line", "SelectMode" },
+  [""] = { "s-block", "SelectMode" },
+  ["c"] = { "command", "CommandMode" },
+  ["cv"] = { "command", "CommandMode" },
+  ["ce"] = { "command", "CommandMode" },
+  ["r"] = { "prompt", "PromptMode" },
+  ["rm"] = { "more", "MoreMode" },
+  ["r?"] = { "confirm", "ConfirmMode" },
+  ["!"] = { "shell", "ShellMode" },
 }
 
 local mode = {
   function()
     local current_mode = vim.api.nvim_get_mode().mode
     -- return string.format("%%#%s# %s %%#StatusLineMode#%%#StatusLine# ", modes[current_mode][2], modes[current_mode][1]:upper())
-    return string.format("%%#%s#%%#StatusLineMode# %s %%#StatusLine# ", modes[current_mode][2], modes[current_mode][1]:upper())
+    return string.format(
+      "%%#%s#%%#StatusLineMode# %s %%#StatusLine# ",
+      modes[current_mode][2],
+      modes[current_mode][1]:upper()
+    )
   end,
 }
 
@@ -109,7 +112,7 @@ local root = {
     local workspace = root:sub(root:find("[^/]*$"))
     return workspace
   end,
-  padding = true
+  padding = true,
 }
 
 local git = {
@@ -192,7 +195,6 @@ M.active = function()
     statusline = statusline .. format
 
     ::continue::
-
   end
 
   return highlights.background .. statusline .. "% "
