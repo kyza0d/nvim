@@ -1,137 +1,35 @@
-local harmony = require("harmony")
-
-local colors = require("harmony").colors
+local highlights = require("core.highlights")
 
 vim.opt.bg = "dark"
 
-harmony.setup({
+require("harmony").setup({
 	["*"] = {
-		bg = { "#232629", "#ffffff" },
+		bg = { "#222222", "#ffffff" },
 		fg = { "#dddddd", "#222222" },
 
-		plugins = {
-			"hrsh7th/nvim-cmp",
-			"folke/todo-comments.nvim",
-			"nvim-telescope/telescope.nvim",
-			"lukas-reineke/indent-blankline.nvim",
-			"nvim-neo-tree/neo-tree.nvim",
-			"lewis6991/gitsigns.nvim",
-		},
-
-		highlights = {
-			ProjectRoot = { bg = colors.bg_negative_1 },
-			ScrollView = { bg = colors.bg_2 },
-
-			CursorLine = { bg = colors.bg_negative_1 },
-			CursorLineSign = { bg = colors.bg_negative_1 },
-			CursorLineNr = { bg = colors.bg_negative_1, fg = colors.fg_3 },
-			CursorLineFold = { fg = colors.bg_negative_1, bg = colors.bg_negative_1 },
-
-			FoldColumn = { fg = colors.fg_4 },
-
-			Mode = { fg = colors.accent, bg = colors.bg_negative_2 },
-
-			Dash = { fg = colors.bg_2 },
-
-			StatusLine = { fg = colors.fg_2, bg = colors.bg_negative_1 },
-			StatusLineError = { fg = colors.red, bg = colors.bg_negative_1 },
-			StatusLineWarning = { fg = colors.yellow, bg = colors.bg_negative_1 },
-			StatusLineInfo = { fg = colors.blue, bg = colors.bg_negative_1 },
-			StatusLineHint = { fg = colors.purple, bg = colors.bg_negative_1 },
-
-			normal_mode = { fg = colors.bg_negative_1, bg = colors.green, bold = true },
-			insert_mode = { fg = colors.bg_negative_1, bg = colors.blue, bold = true },
-			visual_mode = { fg = colors.bg_negative_1, bg = colors.purple, bold = true },
-			line_mode = { fg = colors.bg_negative_1, bg = colors.purple, bold = true },
-			block_mode = { fg = colors.bg_negative_1, bg = colors.purple, bold = true },
-			replace_mode = { fg = colors.bg_negative_1, bg = colors.purple, bold = true },
-			select_mode = { fg = colors.bg_negative_1, bg = colors.yellow, bold = true },
-			command_mode = { fg = colors.bg_negative_1, bg = colors.yellow, bold = true },
-			terminal_mode = { fg = colors.bg_negative_1, bg = colors.green, bold = true },
-
-			["@comment"] = { italic = true, fg = colors.fg_4 },
-		},
+		highlights = highlights,
 	},
 
-	["default"] = {
-		highlights = {
-			["@tag"] = { fg = "#EB9801" },
-		},
-	},
-
-	["solarized"] = {
-		bg = "#202124",
-		fg = "#b9cccc",
-	},
-
-	["palenightfall"] = {
-		bg = "#252836",
-		fg = "#c8d0f7",
-	},
-
-	["embark"] = {
-		bg = "#1e1c31",
-		fg = "#cdc7f9",
-		red = "#F48FB1",
-		accent = "#a37acc",
-	},
-
-	["nord"] = {
-		bg = "#24292d",
-		fg = "#e1e3e8",
-	},
-
-	["doom-one"] = {
-		bg = "#17181E",
-		fg = "#c7d6f9",
-	},
-
-	["zenburn"] = {
-		bg = "#1c1b1b",
-		fg = "#cccccc",
-		highlights = {
-			["@keyword"] = { fg = "#DDCEA2", bold = true },
-		},
-	},
-
-	["tokyonight"] = {
+	tokyonight = {
 		bg = "#161820",
 		fg = "#c9cee0",
 	},
 
-	["onedark"] = {
+	palenightfall = {
+		bg = "#1d1f2a",
+		fg = "#b7bfe2",
+		highlights = {
+			Conceal = { clear = true },
+		},
+	},
+
+	onedark = {
 		bg = { "#1E232A", "#ffffff" },
 		fg = { "#cdd1d8", "#888888" },
 	},
 
-	["nocolor"] = {
-		bg = { "#060809", "#ffffff" },
-		fg = { "#818898", "#888888" },
-	},
-
-	["everforest"] = {
-		bg = "#1b2223",
-		accent = "#A7C080",
-	},
-
-	["iceberg"] = {
-		bg = "#0F1014",
-		fg = "#C6C8D1",
-		highlights = {
-			["@constructor.tsx"] = { fg = "#81ADB7" },
-			["@tag"] = { fg = "#7E9ABE" },
-			["@tag.delimiter"] = { fg = "#7F9ABF" },
-			["@variable"] = { clear = true },
-		},
-	},
-
-	["sonokai"] = {
-		bg = "#1a1b1e",
-	},
-
-	["vscode"] = {
-		bg = "#1E1F1F",
+	sweetie = {
+		bg = "#0D0D16",
+		fg = "#d2cdf2",
 	},
 })
-
--- vim.api.nvim_cmd({ cmd = "colorscheme", args = { "summer-time" } }, {})

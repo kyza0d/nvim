@@ -36,6 +36,7 @@ vim.api.nvim_create_autocmd("FileType", {
 vim.api.nvim_create_autocmd("BufWinEnter", {
 	callback = function()
 		fn_match(".zshrc", "silent set ft=bash")
+		fn_match(".yuck", "silent set ft=yuck")
 		fn_match("polybar/config.ini", "silent set ft=toml")
 		fn_match("kitty.conf", "silent set ft=conf")
 	end,
@@ -69,24 +70,51 @@ vim.api.nvim_create_autocmd("BufEnter", {
 })
 
 vim.api.nvim_create_autocmd("Filetype", {
-	-- pattern = { "Trouble", "neo-tree", "help" },
-	pattern = { "Trouble", "help" },
-	command = "nnoremap <silent> <buffer> q :close<cr>",
+	pattern = { "Trouble", "neo-tree", "help", "dashboard" },
+	command = "nnoremap <silent> <buffer> q :quit!<cr>",
 	group = group,
 })
 
 -- Remember colorscheme on change
 vim.api.nvim_create_autocmd("ColorScheme", {
 	callback = function()
-		require("core.utils.save_colorscheme").save()
+		require("core.utils.colorscheme").save()
 	end,
 	group = group,
 })
 
--- Apply colorscheme on startup
+-- vim.api.nvim_create_autocmd("BufWritePost", {
+-- 	command = "lua require('harpoon.mark').add_file()",
+-- 	group = group,
+-- })
+
+-- vim.api.nvim_create_autocmd("CmdLineLeave", {
+-- 	command = "set cmdheight=0",
+-- 	group = group,
+-- })
+--
+-- vim.api.nvim_create_autocmd("CmdLineEnter", {
+-- 	command = "set cmdheight=1",
+-- 	group = group,
+-- })
+
 vim.api.nvim_create_autocmd("VimEnter", {
-	callback = function()
-		require("core.utils.save_colorscheme").apply()
-	end,
+	command = "normal <C-o>",
 	group = group,
+})
+
+vim.api.nvim_create_autocmd("Filetype", {
+	pattern = "norg",
+	callback = function()
+		vim.api.nvim_exec(
+			[[
+		    augroup HideUI
+		    autocmd!
+		    autocmd BufEnter <buffer> setlocal showtabline=0 laststatus=0 cmdheight=0 nonumber
+		    autocmd BufLeave <buffer> setlocal showtabline=2 laststatus=2 cmdheight=1
+		    augroup END
+		  ]],
+			true
+		)
+	end,
 })

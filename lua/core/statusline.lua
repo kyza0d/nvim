@@ -3,51 +3,55 @@ local M = {}
 local empty = require("core.utils.empty")
 local concat = require("core.utils.concat")
 
-local icons = require("core.options").icons
 
--- stylua: ignore
-local mode_names = {
-  ["n"]  = " normal ",
-  ["i"]  = " insert ",
-  ["v"]  = " visual ",
-  ["V"]  = " v-line ",
-  [""] = " block ",
-  ["R"]  = " replace ",
-  ["s"]  = " select ",
-  ["c"]  = " command ",
-  ["t"]  = " terminal ",
-}
-
-local mode_highlights = {
-  ["n"] = "normal_mode",
-  ["i"] = "insert_mode",
-  ["v"] = "visual_mode",
-  ["V"] = "line_mode",
-  [""] = "block_mode",
-  ["R"] = "replace_mode",
-  ["s"] = "select_mode",
-  ["c"] = "command_mode",
-  ["t"] = "terminal_mode",
+local modes = {
+  ["n"] = { "normal", "NormalMode" },
+  ["niI"] = {"normal", "NormalMode" },
+  ["niR"] = {"normal", "NormalMode" },
+  ["niV"] = {"normal", "NormalMode" },
+  ["no"] = {"n-pending", "NormalMode" },
+  ["i"] = {"insert", "InsertMode" },
+  ["ic"] = {"insert", "InsertMode" },
+  ["ix"] = {"insert", "InsertMode" },
+  ["t"] = {"terminal", "TerminalMode" },
+  ["nt"] = {"nterminal", "TerminalMode" },
+  ["v"] = {"visual", "VisualMode" },
+  ["V"] = {"v-line", "VisualMode" },
+  ["Vs"] = {"v-line", "VisualMode" },
+  [""] = {"v-block", "VisualMode" },
+  ["R"] = {"replace", "ReplaceMode" },
+  ["Rv"] = {"v-replace", "ReplaceMode" },
+  ["s"] = {"select", "SelectMode" },
+  ["S"] = {"s-line", "SelectMode" },
+  [""] = {"s-block", "SelectMode" },
+  ["c"] = {"command", "CommandMode" },
+  ["cv"] = {"command", "CommandMode" },
+  ["ce"] = {"command", "CommandMode" },
+  ["r"] =  {"prompt", "PromptMode" },
+  ["rm"] = {"more", "MoreMode" },
+  ["r?"] = {"confirm", "ConfirmMode" },
+  ["!"] =  {"shell", "ShellMode" }
 }
 
 local mode = {
   function()
     local current_mode = vim.api.nvim_get_mode().mode
-    return string.format("%%#%s#%s%%#Statusline#", mode_highlights[current_mode], mode_names[current_mode]:upper())
+    -- return string.format("%%#%s# %s %%#StatusLineMode#%%#StatusLine# ", modes[current_mode][2], modes[current_mode][1]:upper())
+    return string.format("%%#%s#%%#StatusLineMode# %s %%#StatusLine# ", modes[current_mode][2], modes[current_mode][1]:upper())
   end,
 }
 
 local macro = {
   function()
     local current_mode = vim.api.nvim_get_mode().mode
-    return string.format("%%#%s# recording @%s %%#Statusline#", mode_highlights[current_mode], vim.fn.reg_recording())
+    return string.format("%%#%s# recording @%s %%#StatusLine#", modes[current_mode][2], vim.fn.reg_recording())
   end,
   condition = function()
     return not empty(vim.fn.reg_recording())
   end,
 }
 
-local line = { " %l:%c" }
+local line = { "%l:%c " }
 
 local search = {
   function()
@@ -55,8 +59,8 @@ local search = {
       return ""
     end
 
-    local count = vim.fn.searchcount({ maxcount = 999 })
-    return string.format(" /%s [%s/%d] ", vim.fn.getreg("/"), count.current, count.total)
+    local count = vim.fn.searchcount({ maxcount = 0 })
+    return string.format("/%s [%s/%d] ", vim.fn.getreg("/"), count.current, count.total)
   end,
   condition = function()
     local searchcount = vim.fn.searchcount()
@@ -66,10 +70,13 @@ local search = {
 
 local file = {
   function()
-    local modified = vim.bo.modified and "[+] " or ""
-    return string.format("%s %s%%L lines", vim.fn.expand("%:P"), modified)
+    local modified = vim.bo.modified and "%#StatusLineBlue# %#StatusLine#" or ""
+
+    local parent = vim.fn.expand("%:p:h:t")
+    local file = vim.fn.expand("%:p:t")
+
+    return string.format("%s%s/%s ", modified, parent, file)
   end,
-  padding = true,
 }
 
 local right_align = { "%=" }
@@ -84,26 +91,25 @@ local diagnostics = {
     end
 
     local function format_diagnostic(highlight, status)
-      return count[status] ~= 0 and string.format("%%#%s#  %s%%#Statusline#", highlight, count[status]) or ""
+      return count[status] ~= 0 and string.format("%%#%s%%#StatusLine#%s ", highlight, count[status]) or ""
     end
 
     return concat(
-      format_diagnostic("StatusLineError", "errors"),
-      format_diagnostic("StatusLineWarning", "warnings"),
-      format_diagnostic("StatusLineInfo", "hints"),
-      format_diagnostic("StatusLineHint", "info")
+      format_diagnostic("StatusLineError# 󰅚  ", "errors"),
+      format_diagnostic("StatusLineWarning# 󱇏  ", "warnings"),
+      format_diagnostic("StatusLineInfo# 󱋉  ", "hints"),
+      format_diagnostic("StatusLineHint# 󰗖  ", "info")
     )
   end,
-  padding = true,
 }
 
 local root = {
   function()
     local root = vim.fn.getcwd()
     local workspace = root:sub(root:find("[^/]*$"))
-    return " " .. workspace
+    return workspace
   end,
-  padding = true,
+  padding = true
 }
 
 local git = {
@@ -119,10 +125,10 @@ local git = {
     end
 
     return table.concat({
-      icons.git_branch .. git_info.head,
-      format_git("+", git_info.added),
-      format_git("~", git_info.changed),
-      format_git("-", git_info.removed),
+      "[" .. git_info.head .. "]",
+      format_git("%#StatusLineGreen# ", git_info.added),
+      format_git("%#StatusLineYellow# ", git_info.changed),
+      format_git("%#StatusLineRed# ", git_info.removed),
     })
   end,
 
@@ -130,13 +136,13 @@ local git = {
 }
 
 local components = {
-  [1] = macro,
-  [2] = mode,
-  [3] = search,
-  [4] = line,
+  [1] = mode,
+  [2] = line,
+  [3] = macro,
+  [4] = search,
   [5] = file,
-  [6] = right_align,
-  [7] = diagnostics,
+  [6] = diagnostics,
+  [7] = right_align,
   [8] = root,
   [9] = git,
 }
@@ -155,8 +161,8 @@ M.active = function()
   local statusline = ""
 
   local highlights = {
-    seperator = "%#StatuslineSeperator#",
-    background = "%#Statusline#",
+    seperator = "%#StatusLineSeperator#",
+    background = "%#StatusLine#",
   }
 
   for i = 1, #active do
@@ -171,7 +177,7 @@ M.active = function()
     if not empty(format) then
       format = format
       if component.padding then
-        format = " " .. format .. " "
+        format = format .. " "
       end
     end
 
@@ -186,6 +192,7 @@ M.active = function()
     statusline = statusline .. format
 
     ::continue::
+
   end
 
   return highlights.background .. statusline .. "% "

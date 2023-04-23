@@ -1,5 +1,4 @@
-local cache_dir = vim.fn.stdpath("cache")
-local colorscheme_file = cache_dir .. "/colorscheme"
+local colorscheme_file = "/home/evan/.cache/nvim/colorscheme"
 
 return {
 	save = function()

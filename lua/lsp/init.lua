@@ -1,12 +1,14 @@
-local on_attach = require("servers.handlers").on_attach
-local capabilities = require("servers.handlers").capabilities
+require("lsp.servers.lua-ls")
+require("lsp.servers.null-ls")
+require("lsp.servers.tsserver")
 
-require("servers.config.lua_ls")
-require("servers.config.tsserver")
-
+require("lspconfig").rust_analyzer.setup({})
 require("lspconfig").jedi_language_server.setup({})
+require("lspconfig").tailwindcss.setup({})
+require("lspconfig").ccls.setup({})
 
--- UI Settings
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities.textDocument.completion.completionItem.snippetSupport = true
 
 local icons = require("core.options").icons
 
@@ -25,7 +27,7 @@ local orig_util_open_floating_preview = vim.lsp.util.open_floating_preview
 
 function vim.lsp.util.open_floating_preview(contents, syntax, opts, ...)
 	opts = opts or {}
-	opts.max_width = 90
+	opts.max_width = 60
 	opts.max_height = 10
 	return orig_util_open_floating_preview(contents, syntax, opts, ...)
 end

@@ -1,4 +1,5 @@
 --
+--
 --  ██████   █████                   █████   █████  ███
 -- ░░██████ ░░███                   ░░███   ░░███  ░░░
 --  ░███░███ ░███   ██████   ██████  ░███    ░███  ████  █████████████
@@ -8,6 +9,8 @@
 --  █████  ░░█████░░██████ ░░██████     ░░███      █████ █████░███ █████
 -- ░░░░░    ░░░░░  ░░░░░░   ░░░░░░       ░░░      ░░░░░ ░░░░░ ░░░ ░░░░░
 --
+-- Author: Evan Smith <hi@kkyza.dev>
+-- URL: https://github.com/ky2a/nvim
 
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
@@ -15,6 +18,7 @@ vim.g.maplocalleader = " "
 vim.opt.shadafile = "NONE"
 vim.opt.shadafile = ""
 
+-- Bootstrap lazy.nvim
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 
 if not vim.loop.fs_stat(lazypath) then
@@ -57,17 +61,23 @@ require("lazy").setup({
 		lazy = true,
 	},
 	checker = {
-		enabled = true,
+		enabled = false,
 	},
 })
+
+require("core.utils.colorscheme").apply()
 
 require("core.options")
 require("core.mappings")
 require("core.aliases")
 require("core.autocmds")
 
-require("servers")
+require("lsp")
 
-vim.api.nvim_create_autocmd({ "WinEnter", "BufEnter" }, {
-	command = "set statusline=%{%v:lua.require('core.statusline').active()%}",
+vim.api.nvim_create_autocmd({ "BufEnter", "InsertEnter" }, {
+	callback = function()
+		if vim.bo.filetype ~= "neo-tree" then
+			vim.o.statusline = "%{%v:lua.require('core.statusline').active()%}"
+		end
+	end,
 })

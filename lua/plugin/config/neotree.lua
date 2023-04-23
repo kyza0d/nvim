@@ -1,9 +1,20 @@
 local icons = require("core.options").neotree_icons
 
 require("neo-tree").setup({
+	-- popup_border_style = { "", "", "", "", "", "", "", "" },
+	-- popup_border_style = { " ", " ", " ", " ", "", "", "", " " },
+	-- popup_border_style = "none",
+	popup_border_style = "single", -- "double", "none", "rounded", "shadow", "single" or "solid"
+
 	source_selector = {
 		winbar = false,
-		statusline = false,
+		statusline = true,
+		sources = { -- table
+			{ source = "filesystem", display_name = " 󰉖  Files" }, -- string | nil
+			{ source = "buffers", display_name = " 󰈤  Tabs " }, -- string | nil
+			{ source = "git_status", display_name = " 󰓂  Git" }, -- string | nil
+			{ source = "diagnostics", display_name = " 裂" }, -- string | nil
+		},
 	},
 
 	event_handlers = {
@@ -16,9 +27,9 @@ require("neo-tree").setup({
 	},
 
 	enable_git_status = false,
-	enable_diagnostics = false,
+	enable_diagnostics = true,
 
-	hide_root_node = true,
+	hide_root_node = false,
 	retain_hidden_root_indent = true,
 
 	default_component_configs = {
@@ -31,7 +42,7 @@ require("neo-tree").setup({
 			last_indent_marker = icons.last_indent_marker,
 
 			indent_size = 2,
-			padding = 1,
+			padding = 0,
 		},
 
 		icon = {
@@ -50,7 +61,13 @@ require("neo-tree").setup({
 	},
 
 	window = {
-		-- width = 32,
+		-- position = "float",
+		position = "left",
+		width = 36,
+		popup = { -- settings that apply to float position only
+			size = { height = "80%", width = "80%" },
+			position = "50%", -- 50% means center it
+		},
 		mappings = {
 			["l"] = "open",
 			["h"] = "close_node",
@@ -96,17 +113,35 @@ require("neo-tree").setup({
 		follow_current_file = true, -- This will find and focus the file in the active buffer every
 		components = {
 			icon = function(config, node, state)
+				local highlight = config.highlight or "Normal"
+
 				local icon = config.default
 				local padding = config.padding or " "
 
-				local highlight = config.highlight or "Normal"
-
 				if node.type == "directory" then
 					highlight = "NeoTreeDirectoryName"
+
 					if node:is_expanded() then
 						icon = config.folder_open or "-"
 					else
 						icon = config.folder_closed or "+"
+					end
+
+					if node:get_depth() == 1 then
+						highlight = "NeoTreeRootName"
+						icon = ""
+					end
+
+					if node.name == ".git" then
+						icon = "󰴌 "
+					end
+
+					if node.name == "doc" then
+						icon = "󰥩 "
+					end
+
+					if node.name == "test" then
+						icon = "󱧻 "
 					end
 				elseif node.type == "file" then
 					local success, web_devicons = pcall(require, "nvim-web-devicons")
@@ -124,7 +159,18 @@ require("neo-tree").setup({
 			end,
 			name = function(config, node)
 				local name = node.name
+
 				local highlight = config.highlight
+
+				if node.type == "directory" then
+					name = node.name
+					highlight = "NeoTreeDirectoryNode"
+				end
+
+				if node:get_depth() == 1 then
+					highlight = "NeoTreeRootName"
+				end
+
 				return {
 					text = name,
 					highlight = highlight,

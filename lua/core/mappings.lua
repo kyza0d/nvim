@@ -22,7 +22,8 @@ end
 keymap("i", "<C-J>", "copilot#Accept('<CR>')", { silent = true, expr = true })
 
 -- nvim-neo-tree/neo-tree.nvim
-keymap("n", "<C-n>", ":Neotree focus toggle<cr>")
+-- keymap("n", "<C-n>", ":Neotree focus toggle<cr>")
+keymap("n", "<C-n>", ":Neotree left toggle filesystem<cr>")
 
 -- nvim-telescope/telescope.nvim
 keymap("n", "<C-p>", function()
@@ -43,16 +44,20 @@ keymap("x", "as", function()
 	require("align").align_to_char(1, true)
 end)
 
--- sar/ufo.nvim
-keymap("n", "<C-[>", ":foldclose<cr>")
-keymap("n", "<C-]>", ":foldopen<cr>")
+-- dnlhc/glance.nvim
+keymap("n", "gr", "<cmd>Glance references<cr>")
+
+-- smjonas/inc-rename.nvim
+keymap("n", "gR", function()
+	return ":IncRename " .. vim.fn.expand("<cword>")
+end, { expr = true })
 
 -------------------------------
 -- LSP
 -------------------------------
 
 -- Preform code action
-keymap("n", ">", ":lua vim.lsp.buf.code_action()<cr>")
+-- keymap("n", ">", ":lua vim.lsp.buf.code_action()<cr>")
 
 keymap("n", "gd", function()
 	vim.lsp.buf.definition({
@@ -88,7 +93,6 @@ keymap(
 
 -- Toggle highlight
 keymap("n", "\\", ":set invhlsearch<cr>")
-keymap("n", "\\", ":set invhlsearch<cr>")
 
 -------------------------------
 -- Editing
@@ -107,8 +111,12 @@ keymap({ "i", "s" }, "<C-p>", "<C-r>0")
 -- Block selection
 keymap({ "n", "v" }, "<C-b>", "<C-v>")
 
+-- Block selection
+-- keymap({ "i", "n", "v" }, "<Tab>", "<cmd>norm <Right><Right>V><cr>")
+-- keymap({ "i", "n", "v" }, "<S-Tab>", "<cmd>norm <Left><Left>V<<cr>")
+
 -- Substitue selected text
-keymap("v", "s", [["hy:%s/<C-r>h//gc<left><left><left>]], { silent = false })
+keymap("v", "<C-s>", [["hy:%s/<C-r>h//gc<left><left><left>]], { silent = false })
 
 -- Command line movement
 keymap("c", "<C-h>", "<Left>", { silent = false })
@@ -140,6 +148,15 @@ keymap("n", "<C-d>", "10<C-e>", { desc = "Move 10 lines down" })
 keymap("n", "<C-CR>", "<C-^>", { desc = "Switch to last buffer" })
 
 -- Quit Buffer
-keymap("n", "<S-q>", function()
-	vim.api.nvim_command("Bd")
-end, { desc = "Save and quit", silent = false })
+keymap("n", "<S-q>", ":Bd<cr>", { desc = "Save and quit", silent = false })
+
+-- Quit Neovim
+keymap("n", "Z", "ZZ", { desc = "Save and quit", silent = false })
+
+-------------------------------
+-- Apperance
+-------------------------------
+
+-- Folding
+keymap("n", "[[", ":foldclose<cr>", { nowait = true })
+keymap("n", "]]", ":foldopen<cr>", { nowait = true })
