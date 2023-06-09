@@ -1,5 +1,5 @@
-local null_ls = require("null-ls")
-local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
+local null_ls = require('null-ls')
+local augroup = vim.api.nvim_create_augroup('LspFormatting', {})
 
 null_ls.setup({
   sources = {
@@ -7,26 +7,26 @@ null_ls.setup({
 
     null_ls.builtins.formatting.stylua.with({
       filetypes = {
-        "lua",
+        'lua',
       },
     }),
 
     null_ls.builtins.formatting.stylelint.with({
       filetypes = {
-        "scss",
-        "css",
+        'scss',
+        'css',
       },
     }),
 
     null_ls.builtins.formatting.prettierd.with({
       filetypes = {
-        "html",
-        "javascript",
-        "javascriptreact",
-        "typescript",
-        "typescriptreact",
-        "json",
-        "jsonc",
+        'html',
+        'javascript',
+        'javascriptreact',
+        'typescript',
+        'typescriptreact',
+        'json',
+        'jsonc',
       },
     }),
 
@@ -34,22 +34,20 @@ null_ls.setup({
 
     null_ls.builtins.code_actions.eslint_d.with({
       filetypes = {
-        "javascript",
-        "javascriptreact",
-        "typescript",
-        "typescriptreact",
+        'javascript',
+        'javascriptreact',
+        'typescript',
+        'typescriptreact',
       },
     }),
   },
   on_attach = function(client, bufnr)
-    if client.supports_method("textDocument/formatting") then
+    if client.supports_method('textDocument/formatting') then
       clear_autocmds({ group = augroup, buffer = bufnr })
-      create_autocmd("BufWritePre", {
+      create_autocmd('BufWritePre', {
         group = augroup,
         buffer = bufnr,
-        callback = function()
-          vim.lsp.buf.format({ bufnr = bufnr })
-        end,
+        callback = function() vim.lsp.buf.format({ bufnr = bufnr }) end,
       })
     end
   end,

@@ -1,14 +1,12 @@
-local icons = require("options").neotree
+local icons = require('options').neotree
 
-require("neo-tree").setup({
-  popup_border_style = "single",
+require('neo-tree').setup({
+  popup_border_style = 'single',
 
   event_handlers = {
     {
-      event = "neo_tree_window_after_open",
-      handler = function()
-        vim.opt_local.statuscolumn = " "
-      end,
+      event = 'neo_tree_window_after_open',
+      handler = function() vim.opt_local.statuscolumn = ' ' end,
     },
   },
 
@@ -42,15 +40,15 @@ require("neo-tree").setup({
     },
 
     modified = {
-      symbol = "",
+      symbol = '',
     },
   },
 
   window = {
     width = 36,
     mappings = {
-      ["l"] = "open",
-      ["h"] = "close_node",
+      ['l'] = 'open',
+      ['h'] = 'close_node',
     },
   },
 
@@ -60,7 +58,7 @@ require("neo-tree").setup({
       hide_dotfiles = true,
       hide_gitignored = true,
       never_show = {
-        ".DS_Store",
+        '.DS_Store',
       },
     },
     follow_current_file = true,

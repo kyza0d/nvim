@@ -22,37 +22,35 @@
 -------------------------------------------------------------
 
 -- Global namespace
-require("globals")
+require('globals')
 
 -- Set leader as Space
-vim.g.mapleader = " "
-vim.g.maplocalleader = " "
+vim.g.mapleader = ' '
+vim.g.maplocalleader = ' '
 
 -- Bootstrap lazy.nvim
-local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+local lazypath = vim.fn.stdpath('data') .. '/lazy/lazy.nvim'
 
 if not vim.loop.fs_stat(lazypath) then
   vim.fn.system({
-    "git",
-    "clone",
-    "--filter=blob:none",
-    "https://github.com/folke/lazy.nvim.git",
-    "--branch=stable",
+    'git',
+    'clone',
+    '--filter=blob:none',
+    'https://github.com/folke/lazy.nvim.git',
+    '--branch=stable',
     lazypath,
   })
 end
 
 vim.opt.rtp:prepend(lazypath)
 
-create_autocmd({ "BufEnter" }, {
+create_autocmd({ 'BufEnter' }, {
   callback = function()
-    if vim.bo.filetype ~= "neo-tree" then
-      vim.o.statusline = "%{%v:lua.require('statusline').active()%}"
-    end
+    if vim.bo.filetype ~= 'neo-tree' then vim.o.statusline = "%{%v:lua.require('statusline').active()%}" end
   end,
 })
 
-require("lazy").setup(require("plugins"), {
+require('lazy').setup(require('plugins'), {
   change_detection = {
     notify = false,
   },
@@ -77,11 +75,11 @@ require("lazy").setup(require("plugins"), {
   },
 })
 
-require("options")
-require("keymaps")
-require("autocmds")
+require('options')
+require('keymaps')
+require('autocmds')
 
-require("utils.colorscheme").apply()
+require('utils.colorscheme').apply()
 
-vim.opt.shadafile = "NONE"
-vim.opt.shadafile = ""
+vim.opt.shadafile = 'NONE'
+vim.opt.shadafile = ''

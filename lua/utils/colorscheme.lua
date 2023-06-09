@@ -1,14 +1,12 @@
-local colorscheme_file = "/home/evan/.cache/nvim/colorscheme"
+local colorscheme_file = '/home/evan/.cache/nvim/colorscheme'
 
 return {
   save = function()
-    local file = io.open(colorscheme_file, "w")
+    local file = io.open(colorscheme_file, 'w')
 
-    if file == nil then
-      return
-    end
+    if file == nil then return end
 
-    file:seek("set")
+    file:seek('set')
 
     local colorscheme = vim.g.colors_name
 
@@ -16,11 +14,11 @@ return {
     file:close()
   end,
   apply = function()
-    local file = io.open(colorscheme_file, "r")
+    local file = io.open(colorscheme_file, 'r')
     if file then
       local colorscheme = file:read()
 
-      vim.cmd("colorscheme " .. (colorscheme or "default"))
+      vim.cmd('colorscheme ' .. (colorscheme or 'default'))
       file:close()
     end
   end,

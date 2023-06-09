@@ -1,5 +1,5 @@
-local colors = require("harmony").colors
-local neowal = require("neowal").palette
+local colors = require('harmony').colors
+local neowal = require('neowal').palette
 
 local wal_colors = {
   Color1 = { fg = neowal.color1 },
@@ -56,17 +56,17 @@ local status_line = {
 }
 
 local whichkey = {
-  ["WhichKeyFloat"] = { link = "BufferLineFill" },
+  ['WhichKeyFloat'] = { link = 'BufferLineFill' },
 }
 
 local treesitter = {
   -- ["@comment"] = { italic = true, fg = colors.green },
-  ["@neorg.headings.1.title"] = { fg = colors.orange, bold = true },
-  ["@punctuation.bracket"] = { fg = colors.fg_3 },
-  ["@constructor"] = { clear = true },
-  ["@operator"] = { fg = colors.fg_3 },
-  ["@neorg.tags.ranged_verbatim.code_block"] = { bg = colors.bg_negative_1 },
-  ["@neorg.markup.strikethrough.delimiter"] = { link = "@neorg.markup.strikethrough" },
+  ['@neorg.headings.1.title'] = { fg = colors.orange, bold = true },
+  ['@punctuation.bracket'] = { fg = colors.fg_3 },
+  ['@constructor'] = { clear = true },
+  ['@operator'] = { fg = colors.fg_3 },
+  ['@neorg.tags.ranged_verbatim.code_block'] = { bg = colors.bg_negative_1 },
+  ['@neorg.markup.strikethrough.delimiter'] = { link = '@neorg.markup.strikethrough' },
 }
 
 local bufferline = {
@@ -85,22 +85,22 @@ local neotree = {
   NeoTreeDirectoryName = { fg = colors.fg_2 },
   NeoTreeDirectoryIcon = { fg = colors.blue },
   NeoTreeIndentMarker = { fg = colors.bg_4 },
-  FloatBorder = { fg = colors.fg_4, bg = "none" },
-  NeoTreeFloatBorder = { fg = colors.fg_4, bg = "none" },
+  FloatBorder = { fg = colors.fg_4, bg = 'none' },
+  NeoTreeFloatBorder = { fg = colors.fg_4, bg = 'none' },
   NeoTreeFloatTitle = { fg = colors.fg_4, italic = true },
   NeoTreeNormal = { bg = Neotree.bg },
   NeoTreeNormalNC = { bg = Neotree.bg },
   NeoTreeEndOfBuffer = { bg = Neotree.bg },
   NeoTreeCursorLine = { bg = Neotree.cursor_line },
-  NeoTreeSignColumn = { link = "SignColumn" },
-  NeoTreeStatusLine = { link = "StatusLine" },
-  NeoTreeStatusLineNC = { link = "StatusLineNC" },
-  NeoTreeVertSplit = { link = "VertSplit" },
-  NeoTreeFilterTerm = { link = "SpecialChar" },
-  NeoTreePreview = { link = "Search" },
-  NeoTreeGitAdded = { link = "GitSignsAdd" },
-  NeoTreeGitDeleted = { link = "GitSignsDelete" },
-  NeoTreeGitModified = { link = "GitSignsChange" },
+  NeoTreeSignColumn = { link = 'SignColumn' },
+  NeoTreeStatusLine = { link = 'StatusLine' },
+  NeoTreeStatusLineNC = { link = 'StatusLineNC' },
+  NeoTreeVertSplit = { link = 'VertSplit' },
+  NeoTreeFilterTerm = { link = 'SpecialChar' },
+  NeoTreePreview = { link = 'Search' },
+  NeoTreeGitAdded = { link = 'GitSignsAdd' },
+  NeoTreeGitDeleted = { link = 'GitSignsDelete' },
+  NeoTreeGitModified = { link = 'GitSignsChange' },
 
   NeoTreeTitleBar = { fg = colors.fg_1, bg = colors.bg_0 },
   NeoTreeDimText = { fg = colors.bg_0 },
@@ -113,7 +113,7 @@ local neotree = {
 }
 
 local dashboard = {
-  DashboardHeader = { link = "Color6" },
+  DashboardHeader = { link = 'Color6' },
   DashboardBackground = { bg = colors.bg_3 },
 }
 
@@ -128,7 +128,7 @@ local other = {
   FoldIndicator = { fg = colors.blue, bg = colors.bg_1 },
   FoldColumn = { fg = colors.fg_4 },
 
-  NavBuddyName = { links = "Visual" },
+  NavBuddyName = { links = 'Visual' },
   NavBuddyNormalFloat = { bg = colors.bg, fg = colors.fg_2 },
 
   BufferLineFill = { bg = colors.bg_negative_2, fg = colors.fg_3 },
