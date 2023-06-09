@@ -3,6 +3,7 @@ local leader = {
   ----------------------------------------------
   -- Fuzzy find
   ----------------------------------------------
+
   f = {
     name = "Find",
     f = { "<cmd>Telescope find_files<cr>", "files" },
@@ -15,6 +16,7 @@ local leader = {
   ----------------------------------------------
   -- Open buffers
   ----------------------------------------------
+
   o = {
     name = "Open",
     t = {
@@ -40,6 +42,7 @@ local leader = {
       name = "dotfile",
       n = { ":Telescope find_files cwd=~/.config/nvim/<cr>", ".nvim" },
       p = { ":silent e ~/.config/polybar/config.ini<cr>", ".polybar" },
+      e = { ":Telescope find_files cwd=~/.config/eww/<cr>", ".eww" },
       c = { ":silent e ~/.config/picom/picom.conf<cr>", ".picom" },
       q = { ":silent e ~/.config/qutebrowser/config.py<cr>", ".qutebrowser" },
       b = { ":silent e ~/.config/bspwm/bspwmrc<cr>", ".bspwmrc" },
@@ -97,8 +100,10 @@ local leader = {
 
 local cr_mappings = {
   d = { "<cmd>WhichKey <leader>od<cr>", "Dotfiles" },
-  t = {
-    name = "Trouble",
+  s = { "<cmd>Telescope lsp_workspace_symbols<cr>", "Workspace Symbols" },
+  b = { "<cmd>Telescope buffers<cr>", "buffers" },
+  l = {
+    name = "List",
     t = { ":TodoTrouble <cr>", "  Todo" },
     d = { ":Trouble workspace_diagnostics<cr>", "  Diagnostics" },
   },
@@ -171,7 +176,8 @@ require("which-key").setup({
 
   icons = {
     breadcrumb = "",
-    separator = "->",
+    -- separator = "->",
+    separator = "",
     group = "",
   },
 })

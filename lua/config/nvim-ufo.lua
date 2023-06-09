@@ -24,7 +24,7 @@ local handler = function(virtText, lnum, endLnum, width, truncate)
     curWidth = curWidth + chunkWidth
   end
 
-  table.insert(newVirtText, { suffix, "Folded" })
+  table.insert(newVirtText, { suffix, "FoldIndicator" })
   return newVirtText
 end
 

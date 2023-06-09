@@ -1,5 +1,4 @@
 --
---
 --  ██████   █████                   █████   █████  ███
 -- ░░██████ ░░███                   ░░███   ░░███  ░░░
 --  ░███░███ ░███   ██████   ██████  ░███    ░███  ████  █████████████
@@ -9,14 +8,25 @@
 --  █████  ░░█████░░██████ ░░██████     ░░███      █████ █████░███ █████
 -- ░░░░░    ░░░░░  ░░░░░░   ░░░░░░       ░░░      ░░░░░ ░░░░░ ░░░ ░░░░░
 --
--- Author: Evan Smith <hi@kkyza.dev>
--- URL: https://github.com/ky2a/nvim
+-------------------------------------------------------------------------
+-- Author: Evan Smith <hi@kyza2.dev>
+-- URL: https://github.com/kyza2/nvim
+-------------------------------------------------------------------------
 
+-- Inserpation taken from several configs
+-------------------------------------------------------------
+-- https://github.com/akinsho/dotfiles/tree/main/.config/nvim
+-- https://github.com/folke/dot/tree/master/nvim
+-- https://github.com/b0o/nvim-conf
+-- https://github.com/glepnir/nvim
+-------------------------------------------------------------
+
+-- Global namespace
+require("globals")
+
+-- Set leader as Space
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
-
-vim.opt.shadafile = "NONE"
-vim.opt.shadafile = ""
 
 -- Bootstrap lazy.nvim
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
@@ -27,20 +37,22 @@ if not vim.loop.fs_stat(lazypath) then
     "clone",
     "--filter=blob:none",
     "https://github.com/folke/lazy.nvim.git",
-    "--branch=stable", -- latest stable release
+    "--branch=stable",
     lazypath,
   })
 end
 
 vim.opt.rtp:prepend(lazypath)
 
-require("lazy").setup({
-  spec = {
-    { import = "plugin" },
-  },
-  diff = {
-    cmd = "terminal_git",
-  },
+create_autocmd({ "BufEnter" }, {
+  callback = function()
+    if vim.bo.filetype ~= "neo-tree" then
+      vim.o.statusline = "%{%v:lua.require('statusline').active()%}"
+    end
+  end,
+})
+
+require("lazy").setup(require("plugins"), {
   change_detection = {
     notify = false,
   },
@@ -51,8 +63,8 @@ require("lazy").setup({
     rtp = {
       -- stylua: ignore
       disabled_plugins = {
-        "gzip", "matchparen", "netrwPlugin",
-        "rplugin", "tarPlugin", "tohtml",
+        "gzip", "netrwPlugin",
+        "rplugin", "tarPlugin",
         "tutor", "zipPlugin",
       },
     },
@@ -65,19 +77,11 @@ require("lazy").setup({
   },
 })
 
-require("core.utils.colorscheme").apply()
+require("options")
+require("keymaps")
+require("autocmds")
 
-require("core.options")
-require("core.mappings")
-require("core.aliases")
-require("core.autocmds")
+require("utils.colorscheme").apply()
 
-require("lsp")
-
-vim.api.nvim_create_autocmd({ "BufEnter", "InsertEnter" }, {
-  callback = function()
-    if vim.bo.filetype ~= "neo-tree" then
-      vim.o.statusline = "%{%v:lua.require('core.statusline').active()%}"
-    end
-  end,
-})
+vim.opt.shadafile = "NONE"
+vim.opt.shadafile = ""

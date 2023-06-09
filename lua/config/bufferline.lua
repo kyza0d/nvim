@@ -4,12 +4,13 @@ local root = function()
   return workspace
 end
 
-local icons = require("core.options").icons
+local icons = require("options").editor
 
 return {
   options = {
     -- separator_style = { { "", "▏" }, { "▏", "" } },
     separator_style = { "", "" },
+    -- separator_style = "none",
 
     right_mouse_command = "Bdelete! %d",
 
@@ -18,14 +19,13 @@ return {
     },
 
     show_buffer_close_icons = false,
-    show_buffer_icons = false,
+    show_buffer_icons = true,
     show_close_icon = false,
 
     enforce_regular_tabs = false,
 
     modified_icon = "",
     buffer_close_icon = "",
-    -- buffer_close_icon = " ",
 
     left_trunc_marker = "",
     right_trunc_marker = "",
@@ -38,18 +38,17 @@ return {
         filetype = "neo-tree",
         text_align = "left",
         highlight = "ProjectRoot",
-        padding = 0,
+        padding = 1,
         text = string.format("%s %s", icons.book_alt, root()),
       },
     },
     -- custom_areas = {
-    -- 	right = function()
-    -- 		return {
-    -- 			{ text = "   ", fg = "#aaaaaa" },
-    -- 			{ text = "    ", fg = "#aaaaaa" },
-    -- 			{ text = "  󰖭  ", fg = "#aaaaaa" },
-    -- 		}
-    -- 	end,
+    --   right = function()
+    --     return {
+    --       { text = "%#BufferLineFill#%@func!@   " },
+    --       { text = "%#BufferLineClose#%@func!@  " },
+    --     }
+    --   end,
     -- },
   },
 }

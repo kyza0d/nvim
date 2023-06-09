@@ -21,9 +21,7 @@ require("telescope").setup({
     results_title = "",
 
     pickers = {
-      live_grep = {
-        file_ignore_patterns = { "node_modules", "package-lock.json" },
-      },
+      file_ignore_patterns = { "node_modules", "package-lock.json" },
     },
   },
 })

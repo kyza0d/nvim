@@ -1,4 +1,4 @@
-local icons = require("core.options").icons
+local icons = require("options").editor
 
 local current_icons = require("nvim-web-devicons").get_icons()
 local new_icons = {}
@@ -21,9 +21,6 @@ for key, icon in pairs(current_icons) do
     icon.icon = icons.book
   end
 
-  -- icon.icon = " "
-  -- icon.color = "#999999"
-
   new_icons[key] = icon
 end
 
@@ -38,5 +35,11 @@ if vim.g.disable_icons then
 
   nvim_web_devicons.set_icon(new_icons)
 end
+
+require("nvim-web-devicons").set_icon({
+  ["yuck"] = {
+    icon = "󱂬 ",
+  },
+})
 
 require("nvim-web-devicons").set_icon(new_icons)

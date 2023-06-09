@@ -1,43 +1,45 @@
 local M = {}
 
-local empty = require("core.utils.empty")
-local concat = require("core.utils.concat")
+local concat = require("utils.concat")
+
+local empty = function(s)
+  return s == "" or s == nil
+end
 
 local modes = {
-  ["n"] = { "normal", "NormalMode" },
+  ["n"]   = { "normal", "NormalMode" },
   ["niI"] = { "normal", "NormalMode" },
   ["niR"] = { "normal", "NormalMode" },
   ["niV"] = { "normal", "NormalMode" },
-  ["no"] = { "n-pending", "NormalMode" },
-  ["i"] = { "insert", "InsertMode" },
-  ["ic"] = { "insert", "InsertMode" },
-  ["ix"] = { "insert", "InsertMode" },
-  ["t"] = { "terminal", "TerminalMode" },
-  ["nt"] = { "nterminal", "TerminalMode" },
-  ["v"] = { "visual", "VisualMode" },
-  ["V"] = { "v-line", "VisualMode" },
-  ["Vs"] = { "v-line", "VisualMode" },
-  [""] = { "v-block", "VisualMode" },
-  ["R"] = { "replace", "ReplaceMode" },
-  ["Rv"] = { "v-replace", "ReplaceMode" },
-  ["s"] = { "select", "SelectMode" },
-  ["S"] = { "s-line", "SelectMode" },
-  [""] = { "s-block", "SelectMode" },
-  ["c"] = { "command", "CommandMode" },
-  ["cv"] = { "command", "CommandMode" },
-  ["ce"] = { "command", "CommandMode" },
-  ["r"] = { "prompt", "PromptMode" },
-  ["rm"] = { "more", "MoreMode" },
-  ["r?"] = { "confirm", "ConfirmMode" },
-  ["!"] = { "shell", "ShellMode" },
+  ["no"]  = { "n-pending", "NormalMode" },
+  ["i"]   = { "insert", "InsertMode" },
+  ["ic"]  = { "insert", "InsertMode" },
+  ["ix"]  = { "insert", "InsertMode" },
+  ["t"]   = { "terminal", "TerminalMode" },
+  ["nt"]  = { "nterminal", "TerminalMode" },
+  ["v"]   = { "visual", "VisualMode" },
+  ["V"]   = { "v-line", "VisualMode" },
+  ["Vs"]  = { "v-line", "VisualMode" },
+  [""]  = { "v-block", "VisualMode" },
+  ["R"]   = { "replace", "ReplaceMode" },
+  ["Rv"]  = { "v-replace", "ReplaceMode" },
+  ["s"]   = { "select", "SelectMode" },
+  ["S"]   = { "s-line", "SelectMode" },
+  [""]  = { "s-block", "SelectMode" },
+  ["c"]   = { "command", "CommandMode" },
+  ["cv"]  = { "command", "CommandMode" },
+  ["ce"]  = { "command", "CommandMode" },
+  ["r"]   = { "prompt", "PromptMode" },
+  ["rm"]  = { "more", "MoreMode" },
+  ["r?"]  = { "confirm", "ConfirmMode" },
+  ["!"]   = { "shell", "ShellMode" },
 }
 
 local mode = {
   function()
     local current_mode = vim.api.nvim_get_mode().mode
-    -- return string.format("%%#%s# %s %%#StatusLineMode#%%#StatusLine# ", modes[current_mode][2], modes[current_mode][1]:upper())
     return string.format(
-      "%%#%s#%%#StatusLineMode# %s %%#StatusLine# ",
+      "%%#%s#🮉%%#StatusLineMode# %s %%#StatusLine#",
       modes[current_mode][2],
       modes[current_mode][1]:upper()
     )
@@ -46,8 +48,7 @@ local mode = {
 
 local macro = {
   function()
-    local current_mode = vim.api.nvim_get_mode().mode
-    return string.format("%%#%s# recording @%s %%#StatusLine#", modes[current_mode][2], vim.fn.reg_recording())
+    return string.format("recording @%s ", vim.fn.reg_recording())
   end,
   condition = function()
     return not empty(vim.fn.reg_recording())
@@ -63,7 +64,13 @@ local search = {
     end
 
     local count = vim.fn.searchcount({ maxcount = 0 })
-    return string.format("/%s [%s/%d] ", vim.fn.getreg("/"), count.current, count.total)
+    local search_string = string.format("/%s", vim.fn.getreg("/"))
+
+    if #search_string > math.floor(vim.o.columns * 0.2) then
+      search_string = string.sub(search_string, 1, math.floor(vim.o.columns * 0.2)) .. " …"
+    end
+
+    return search_string .. string.format(" [%s/%d] ", count.current, count.total)
   end,
   condition = function()
     local searchcount = vim.fn.searchcount()
@@ -73,10 +80,14 @@ local search = {
 
 local file = {
   function()
-    local modified = vim.bo.modified and "%#StatusLineBlue# %#StatusLine#" or ""
-
+    local modified = vim.bo.modified and "%#StatusLineBlue#  %#StatusLine#" or ""
     local parent = vim.fn.expand("%:p:h:t")
     local file = vim.fn.expand("%:p:t")
+    local icon, color = require'nvim-web-devicons'.get_icon_color(vim.fn.expand("%:t"), vim.fn.expand("%:e"))
+
+    icon = icon or ""
+
+    vim.api.nvim_set_hl(0, "StatusLineColor", {fg = color, bg = "#1B1B1E" })
 
     return string.format("%s%s/%s ", modified, parent, file)
   end,
@@ -129,9 +140,9 @@ local git = {
 
     return table.concat({
       "[" .. git_info.head .. "]",
-      format_git("%#StatusLineGreen# ", git_info.added),
-      format_git("%#StatusLineYellow# ", git_info.changed),
-      format_git("%#StatusLineRed# ", git_info.removed),
+      format_git("%#StatusLineGreen#  %#StatusLine#", git_info.added),
+      format_git("%#StatusLineYellow#  %#StatusLine#", git_info.changed),
+      format_git("%#StatusLineRed#  %#StatusLine#", git_info.removed),
     })
   end,
 
@@ -140,10 +151,10 @@ local git = {
 
 local components = {
   [1] = mode,
-  [2] = line,
-  [3] = macro,
-  [4] = search,
-  [5] = file,
+  [2] = macro,
+  [3] = search,
+  [4] = file,
+  [5] = line,
   [6] = diagnostics,
   [7] = right_align,
   [8] = root,
@@ -195,6 +206,7 @@ M.active = function()
     statusline = statusline .. format
 
     ::continue::
+
   end
 
   return highlights.background .. statusline .. "% "
