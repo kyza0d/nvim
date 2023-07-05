@@ -1,6 +1,6 @@
 local handler = function(virtText, lnum, endLnum, width, truncate)
   local newVirtText = {}
-  local suffix = (' 󱞧  %d lines hidden'):format(endLnum - lnum)
+  local suffix = (' %d lines hidden'):format(endLnum - lnum)
   local sufWidth = vim.fn.strdisplaywidth(suffix)
   local targetWidth = width - sufWidth
   local curWidth = 0
@@ -16,7 +16,7 @@ local handler = function(virtText, lnum, endLnum, width, truncate)
       table.insert(newVirtText, { chunkText, hlGroup })
       chunkWidth = vim.fn.strdisplaywidth(chunkText)
       -- str width returned from truncate() may less than 2nd argument, need padding
-      if curWidth + chunkWidth < targetWidth then suffix = suffix .. (' '):rep(targetWidth - curWidth - chunkWidth) end
+      if curWidth + chunkWidth < targetWidth then suffix = suffix .. (''):rep(targetWidth - curWidth - chunkWidth) end
       break
     end
     curWidth = curWidth + chunkWidth

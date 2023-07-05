@@ -13,13 +13,14 @@ local wal_colors = {
 }
 
 local StatusLine = {
-  fg = colors.fg_2,
-  bg = colors.bg_negative_1,
+  fg = colors.fg_1,
+  fg_dim = colors.fg_2,
+  bg = colors.bg_2,
 }
 
 local Neotree = {
   fg = colors.fg_2,
-  bg = colors.bg_0,
+  bg = colors.bg_1,
   cursorline = colors.bg_3,
 }
 
@@ -32,8 +33,8 @@ local cursor_line = {
 
 local status_line = {
   StatusLineCaps = { fg = colors.bg_negative_1, bg = colors.bg_0 },
-  StatusLine = { fg = StatusLine.fg, bg = StatusLine.bg },
-  StatusLineNC = { fg = colors.fg_4, bg = StatusLine.bg },
+  CustomStatusLine = { fg = StatusLine.fg, bg = StatusLine.bg },
+  CustomStatusLineNC = { fg = colors.fg_4, bg = StatusLine.bg },
   StatusLineGreen = { fg = colors.green, bg = StatusLine.bg },
   StatusLineBlue = { fg = colors.blue, bg = StatusLine.bg },
   StatusLineYellow = { fg = colors.yellow, bg = StatusLine.bg },
@@ -42,16 +43,17 @@ local status_line = {
   StatusLineWarning = { fg = colors.yellow, bg = StatusLine.bg },
   StatusLineInfo = { fg = colors.blue, bg = StatusLine.bg },
   StatusLineHint = { fg = colors.purple, bg = StatusLine.bg },
-  StatusLineMode = { fg = StatusLine.fg, bg = StatusLine.bg, bold = true },
-  NormalMode = { fg = colors.bg_negative_1, bg = colors.blue, bold = true },
-  InsertMode = { fg = colors.bg_negative_1, bg = colors.purple, bold = true },
-  VisualMode = { fg = colors.bg_negative_1, bg = colors.red, bold = true },
-  LineMode = { fg = colors.bg_negative_1, bg = colors.red, bold = true },
-  BlockMode = { fg = colors.bg_negative_1, bg = colors.orange, bold = true },
-  ReplaceMode = { fg = colors.bg_negative_1, bg = colors.purple, bold = true },
-  SelectMode = { fg = colors.bg_negative_1, bg = colors.yellow, bold = true },
-  CommandMode = { fg = colors.bg_negative_1, bg = colors.yellow, bold = true },
-  TerminalMode = { fg = colors.bg_negative_1, bg = colors.green, bold = true },
+  StatusLineDim = { fg = StatusLine.fg_dim, bg = StatusLine.bg },
+  StatusLineMode = { fg = StatusLine.fg, bg = StatusLine.bg },
+  NormalMode = { fg = colors.bg_negative_1, bg = colors.blue },
+  InsertMode = { fg = colors.bg_negative_1, bg = colors.purple },
+  VisualMode = { fg = colors.bg_negative_1, bg = colors.red },
+  LineMode = { fg = colors.bg_negative_1, bg = colors.red },
+  BlockMode = { fg = colors.bg_negative_1, bg = colors.orange },
+  ReplaceMode = { fg = colors.bg_negative_1, bg = colors.purple },
+  SelectMode = { fg = colors.bg_negative_1, bg = colors.yellow },
+  CommandMode = { fg = colors.bg_negative_1, bg = colors.yellow },
+  TerminalMode = { fg = colors.bg_negative_1, bg = colors.green },
   Reverse = { reverse = true },
 }
 
@@ -60,7 +62,7 @@ local whichkey = {
 }
 
 local treesitter = {
-  -- ["@comment"] = { italic = true, fg = colors.green },
+  -- ['@comment'] = { italic = true, fg = colors.fg_3 },
   ['@neorg.headings.1.title'] = { fg = colors.orange, bold = true },
   ['@punctuation.bracket'] = { fg = colors.fg_3 },
   ['@constructor'] = { clear = true },
@@ -70,8 +72,8 @@ local treesitter = {
 }
 
 local bufferline = {
-  BufferLineFill = { bg = colors.bg_0, fg = colors.fg_4 },
-  BufferLineBackground = { bg = colors.bg_0, fg = colors.fg_3, sp = colors.fg_4 },
+  BufferLineFill = { bg = colors.fg_3, fg = colors.fg_4 },
+  BufferLineBackground = { bg = colors.fg_3, fg = colors.fg_3, sp = colors.fg_4 },
   BufferLineBufferVisible = { bg = colors.bg_0, fg = colors.fg_4, sp = colors.fg_4 },
   BufferLineIndicatorVisible = { bg = colors.bg_0, fg = colors.fg_4 },
   TabLineSel = { bg = colors.bg_0, fg = colors.bg_0, bold = true },
@@ -82,9 +84,9 @@ local bufferline = {
 
 local neotree = {
   ProjectRoot = { bg = Neotree.bg, fg = colors.blue },
-  NeoTreeDirectoryName = { fg = colors.fg_2 },
+  NeoTreeDirectoryName = { fg = colors.blue },
   NeoTreeDirectoryIcon = { fg = colors.blue },
-  NeoTreeIndentMarker = { fg = colors.bg_4 },
+  NeoTreeIndentMarker = { fg = colors.fg_4 },
   FloatBorder = { fg = colors.fg_4, bg = 'none' },
   NeoTreeFloatBorder = { fg = colors.fg_4, bg = 'none' },
   NeoTreeFloatTitle = { fg = colors.fg_4, italic = true },
@@ -98,9 +100,9 @@ local neotree = {
   NeoTreeVertSplit = { link = 'VertSplit' },
   NeoTreeFilterTerm = { link = 'SpecialChar' },
   NeoTreePreview = { link = 'Search' },
-  NeoTreeGitAdded = { link = 'GitSignsAdd' },
-  NeoTreeGitDeleted = { link = 'GitSignsDelete' },
-  NeoTreeGitModified = { link = 'GitSignsChange' },
+  NeoTreeGitAdded = { bg = colors.bg_0, fg = colors.green },
+  NeoTreeGitDeleted = { bg = colors.bg_0, fg = colors.red },
+  NeoTreeGitModified = { bg = colors.bg_0, fg = colors.yellow },
 
   NeoTreeTitleBar = { fg = colors.fg_1, bg = colors.bg_0 },
   NeoTreeDimText = { fg = colors.bg_0 },
@@ -131,9 +133,22 @@ local other = {
   NavBuddyName = { links = 'Visual' },
   NavBuddyNormalFloat = { bg = colors.bg, fg = colors.fg_2 },
 
-  BufferLineFill = { bg = colors.bg_negative_2, fg = colors.fg_3 },
-  BufferLineBackground = { bg = colors.bg_negative_2, fg = colors.fg_4 },
-  BufferLineClose = { fg = colors.red, bg = colors.bg_negative_2 },
+  BufferLineBufferSelected = {
+    bg = colors.bg_0,
+    fg = colors.fg_1,
+    -- sp = colors.blue,
+    -- underline = true,
+    -- italic = true,
+  },
+  BufferLineIndicatorSelected = {
+    bg = colors.bg_0,
+    fg = colors.fg_1,
+    -- sp = colors.blue,
+    -- underline = true,
+  },
+
+  BufferLineBufferVisible = { bg = colors.bg_negative_1, fg = colors.fg_4, sp = colors.fg_4 },
+
   LspInlayHint = { fg = colors.fg_4 },
 }
 
@@ -141,7 +156,7 @@ local other = {
 local highlights = {
 	status_line, cursor_line, treesitter,
 	neotree, dashboard, whichkey,
-	wal_colors, other,
+	wal_colors,  other,
 }
 
 local result = {}

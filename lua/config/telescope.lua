@@ -11,6 +11,12 @@ require('telescope').setup({
 
     path_display = { 'absolute' },
 
+    mappings = {
+      i = {
+        ['<C-[>'] = require('telescope.actions').close,
+      },
+    },
+
     layout_config = {
       width = 0.8,
       height = 0.7,

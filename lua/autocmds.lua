@@ -70,7 +70,7 @@ create_autocmd('Filetype', {
   group = group,
 })
 
--- Remember colorscheme on change
+-- -- Remember colorscheme on change
 create_autocmd('ColorScheme', {
   callback = function() require('utils.colorscheme').save() end,
   group = group,

@@ -9,7 +9,7 @@ local options = {
   numberwidth = 5,
   cursorline = true,
   laststatus = 3,
-  cmdheight = 0,
+  cmdheight = 1,
   pumheight = 12,
   termguicolors = true,
   mouse = 'a',
@@ -24,8 +24,10 @@ local options = {
   signcolumn = 'yes',
 
   statuscolumn = concat({
-    '%= %{v:lnum} %s ',
-    "%#StatusColumnBorder#%{foldlevel(v:lnum) > 0 ? (foldlevel(v:lnum) > foldlevel(v:lnum - 1) ? (foldclosed(v:lnum) == -1 ? '󰅀  ' : '󰅂 ' ) : '   ') : '   '}",
+    '%= ',
+    '%= %{v:lnum} ',
+    -- "%#StatusColumnBorder#%{foldlevel(v:lnum) > 0 ? (foldlevel(v:lnum) > foldlevel(v:lnum - 1) ? (foldclosed(v:lnum) == -1 ? '󰅀  ' : '󰅂 ' ) : '   ') : '   '}",
+    "%#StatusColumnBorder#%{foldlevel(v:lnum) > 0 ? (foldlevel(v:lnum) > foldlevel(v:lnum - 1) ? (foldclosed(v:lnum) == -1 ? '-  ' : '+ ' ) : '   ') : '   '}",
     "%#FoldIndicator#%{(foldclosed(v:lnum) == -1 ? '' : '▎' )}",
   }),
 
@@ -71,8 +73,8 @@ local options = {
   -- Update times
   ------------------------------
 
-  timeoutlen = 400,
-  updatetime = 200,
+  timeoutlen = 200,
+  updatetime = 100,
 
   ------------------------------
   -- GUI options
@@ -87,7 +89,7 @@ for k, v in pairs(options) do
 end
 
 vim.opt.fillchars:append({
-  vert = '│',
+  vert = ' ',
   vertright = '├',
   vertleft = '┤',
   horiz = '─',
@@ -106,39 +108,37 @@ local icons = {
     chevron = '  ',
     keyboard = '',
     git_branch = '󰘬 ',
-    indent = '▏',
+    indent = '│',
   },
 
   completion = {
-    Class = '  ',
-    Color = '  ',
-    Constant = '  ',
-    Constructor = '  ',
-    Enum = '   ',
-    EnumMember = '  ',
-    Event = '  ',
-    Field = '  ',
-    Folder = '  ',
-    Function = '  ',
-    Interface = '  ',
-    Keyword = '  ',
-    Method = '  ',
-    Module = '  ',
-    Array = '  ',
-    Operator = '  ',
-    Property = '  ',
-    Reference = '  ',
-    Snippet = '  ',
-    Struct = '  ',
-    Text = '  ',
-    TypeParameter = '  ',
-    Unit = '   ',
-    Value = '  ',
-    Variable = '  ',
-    Dict = '  ',
-    Signature = '  ',
-    Directory = '  ',
-    File = '  ',
+    Class = ' 󰴜  ',
+    Color = '   ',
+    Constant = ' 󰐤  ',
+    Constructor = '   ',
+    Enum = '    ',
+    EnumMember = '   ',
+    Event = '   ',
+    Field = ' 󰸫  ',
+    Folder = '   ',
+    Function = ' 󰒔  ',
+    Interface = ' 󰑕  ',
+    Keyword = ' 󰎃  ',
+    Method = ' 󰥤  ',
+    Module = ' 󱃖  ',
+    Array = ' 󱃗  ',
+    Operator = ' 󰦓  ',
+    Property = ' 󰥤  ',
+    Reference = '   ',
+    Snippet = ' 󰿦  ',
+    Struct = '   ',
+    Text = ' 󰺮  ',
+    TypeParameter = ' 󰀧  ',
+    Unit = '    ',
+    Value = '   ',
+    Variable = ' 󰥤  ',
+    Directory = '   ',
+    File = '   ',
   },
 
   navic = {
@@ -171,22 +171,26 @@ local icons = {
   },
 
   neotree = {
-    folder_open = '󰅀 󰷏 ',
-    folder_closed = '󰅂 󰉖 ',
-    folder_empty = '󰅀 󰉖 ',
-    folder_empty_open = ' ',
+    folder_open = '',
+    folder_closed = '',
+    folder_empty = '',
+    folder_empty_open = '',
+    -- folder_open = ' 󰅀  ',
+    -- folder_closed = ' 󰅂  ',
+    -- folder_empty = ' 󰅀  ',
+    -- folder_empty_open = ' ',
     file = ' ',
     symlink = ' ',
     symlink_open = ' ',
     default = ' ',
     default_open = ' ',
     indent_marker = '│',
-    last_indent_marker = '└',
+    last_indent_marker = '│',
   },
 }
 
 vim.g.neovide_refresh_rate = 60
-vim.g.disable_icons = false
+vim.g.disable_icons = true
 
 if vim.g.disable_icons then
   vim.opt.fillchars:append({

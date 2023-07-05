@@ -1,9 +1,5 @@
 local icons = require('options')
 
-----------------------------------------------
--- Plugins
-----------------------------------------------
-
 return {
   ----------------------------------------------
   -- Motions / Keystrokes
@@ -18,9 +14,13 @@ return {
 
   -- Surround motions --
   {
-    'tpope/vim-surround',
-    -- event = "BufReadPost",
+    'kylechui/nvim-surround',
     event = 'VeryLazy',
+    config = function()
+      require('nvim-surround').setup({
+        -- Configuration here, or leave empty to use defaults
+      })
+    end,
   },
 
   -- Align motions --
@@ -30,8 +30,26 @@ return {
   -- UI, Appearance
   ----------------------------------------------
 
-  -- { dir = "/home/evan/Plugins/summer-time/", lazy = false },
-  -- { dir = "/home/evan/Plugins/byte-theme/", lazy = false },
+  {
+    'Pocco81/true-zen.nvim',
+    opts = {
+      modes = { -- configurations per mode
+        minimalist = {
+          options = {
+            statuscolumn = '  ',
+            number = false,
+            -- statusline = "%{%v:lua.require('statusline').active()%}",
+            laststatus = 0,
+            cmdheight = 0,
+          },
+        },
+      },
+    },
+    event = 'VeryLazy',
+  },
+
+  { dir = '/home/evan/Plugins/summer-time/', lazy = false },
+  { dir = '/home/evan/Plugins/byte-theme/', lazy = false },
 
   {
     dir = '/home/evan/Plugins/neowal/',
@@ -42,8 +60,16 @@ return {
 
   -- Colorscheme engine --
 
+  -- {
+  --   dir = '/home/evan/Plugins/color-space.nvim/',
+  --   enable = true,
+  --   priority = 1001,
+  --   config = function() require('config.color-space') end,
+  -- },
+
   {
     dir = '/home/evan/Plugins/harmony.nvim/',
+    enabled = true,
     priority = 1001,
     config = function() require('config.harmony') end,
   },
@@ -51,6 +77,7 @@ return {
   -- Indent Lines --
   {
     'lukas-reineke/indent-blankline.nvim',
+    enabled = false,
     event = 'BufReadPost',
     init = function()
       vim.g.indent_blankline_char = icons.editor.indent
@@ -60,7 +87,7 @@ return {
     end,
     opts = {
       show_current_context = true,
-      show_current_context_start = true,
+      show_current_context_start = false,
     },
   },
 
@@ -70,7 +97,7 @@ return {
     event = 'BufReadPost',
     opts = {
       window = {
-        blend = 0, -- &winblend for the window
+        blend = 0,
       },
       text = { spinner = 'dots_ellipsis' },
     },
@@ -79,6 +106,7 @@ return {
   -- Filetype icons --
   {
     'nvim-tree/nvim-web-devicons',
+    enabled = true,
     config = function() require('config.devicons') end,
   },
 
@@ -96,7 +124,7 @@ return {
   },
 
   ---------------------------------------------
-  -- LSP, Completion, Formatter/Linters
+  -- LSP, Formatter/Linters
   ----------------------------------------------
 
   {
@@ -128,13 +156,13 @@ return {
 
   {
     'lvimuser/lsp-inlayhints.nvim',
+    enabled = false,
     init = function()
       create_augroup('LspAttach_inlayhints', {})
       create_autocmd('LspAttach', {
         group = 'LspAttach_inlayhints',
         callback = function(args)
           if not (args.data and args.data.client_id) then return end
-
           local bufnr = args.buf
           local client = vim.lsp.get_client_by_id(args.data.client_id)
           require('lsp-inlayhints').on_attach(client, bufnr)
@@ -144,9 +172,9 @@ return {
     opts = {
       inlay_hints = {
         highlight = 'Comment',
-        labels_separator = ' | ',
-        parameter_hints = { prefix = '󰊕 ' },
-        type_hints = { prefix = '󱞩  ', remove_colon_start = true },
+        labels_separator = ', ',
+        parameter_hints = { prefix = '' },
+        type_hints = { prefix = ': ', remove_colon_start = true },
       },
     },
   },
@@ -174,30 +202,6 @@ return {
       'MunifTanjim/nui.nvim',
       'SmiteshP/nvim-navic',
     },
-  },
-
-  -- Completion menu --
-  {
-    'hrsh7th/nvim-cmp',
-    event = { 'CmdlineEnter', 'InsertEnter' },
-    dependencies = {
-      'hrsh7th/cmp-buffer',
-      'hrsh7th/cmp-cmdline',
-      'hrsh7th/cmp-emoji',
-      'hrsh7th/cmp-nvim-lsp',
-      'hrsh7th/cmp-path',
-      'hrsh7th/cmp-nvim-lua',
-      'lukas-reineke/cmp-rg',
-      { 'uga-rosa/cmp-dictionary' },
-      { 'abecodes/tabout.nvim', opts = { completion = false } },
-    },
-    config = function() require('config.nvim-cmp') end,
-  },
-
-  -- Snippet engine ----------------------------
-  {
-    'L3MON4D3/LuaSnip',
-    dependencies = { 'rafamadriz/friendly-snippets', 'saadparwaiz1/cmp_luasnip' },
   },
 
   -- Goto definitions/references window --------
@@ -263,24 +267,25 @@ return {
   -- Bufferline --------------------
   {
     'akinsho/bufferline.nvim',
+    enabled = true,
     event = 'BufReadPre',
     dependencies = 'moll/vim-bbye',
     opts = require('config.bufferline'),
   },
 
-  -- VS Code like winbar ------0--
+  -- VS Code like winbar ---------
   {
     'utilyre/barbecue.nvim',
-    enabled = true,
+    enabled = false,
     event = 'BufReadPre',
     dependencies = {
       'SmiteshP/nvim-navic',
     },
     opts = {
       exclude_filetypes = { 'toggleterm', 'yuck' },
-      kinds = icons.navic,
+      kinds = false,
       symbols = {
-        separator = '󰅂',
+        separator = '|',
         kinds = icons.navic,
       },
     },
@@ -299,7 +304,7 @@ return {
     event = 'VeryLazy',
     opts = {
       current_line_blame = true, -- Toggle with `:Gitsigns toggle_current_line_blame`
-      current_line_blame_formatter = '<author>, <author_time:%Y-%m-%d> - <summary>',
+      current_line_blame_formatter = '@<author>, <summary>',
 
       signs = {
         add = { text = '┇' },
@@ -386,6 +391,9 @@ return {
     },
   },
 
+  -----------------------------------------------
+  -- Source/AI Auto completion
+  -----------------------------------------------
   {
     'windwp/nvim-autopairs',
     event = 'InsertEnter',
@@ -408,6 +416,54 @@ return {
     end,
   },
 
+  -- Completion menu --
+  {
+    'hrsh7th/nvim-cmp',
+    event = { 'CmdlineEnter', 'InsertEnter' },
+    dependencies = {
+      'hrsh7th/cmp-buffer',
+      'hrsh7th/cmp-cmdline',
+      'hrsh7th/cmp-emoji',
+      'hrsh7th/cmp-nvim-lsp',
+      'hrsh7th/cmp-path',
+      'hrsh7th/cmp-nvim-lua',
+      'lukas-reineke/cmp-rg',
+      'uga-rosa/cmp-dictionary',
+    },
+    config = function() require('config.nvim-cmp') end,
+  },
+
+  -- Snippet engine ----------------------------
+  {
+    'L3MON4D3/LuaSnip',
+    dependencies = { 'rafamadriz/friendly-snippets', 'saadparwaiz1/cmp_luasnip' },
+  },
+
+  -- {
+  --   'jackMort/ChatGPT.nvim',
+  --   event = 'VeryLazy',
+  --   config = function()
+  --     require('chatgpt').setup({
+  --       api_key_cmd = os.getenv('OPENAI_API_KEY'),
+  --     })
+  --   end,
+  --   dependencies = {
+  --     'MunifTanjim/nui.nvim',
+  --     'nvim-lua/plenary.nvim',
+  --     'nvim-telescope/telescope.nvim',
+  --   },
+  -- },
+
+  {
+    'svermeulen/text-to-colorscheme',
+    lazy = false,
+    opts = require('config.text-to-colorscheme'),
+  },
+
+  ----------------------------------------------
+  -- Utilites
+  ----------------------------------------------
+
   {
     'andweeb/presence.nvim',
     event = 'BufReadPre',
@@ -416,10 +472,6 @@ return {
       auto_update = true,
     },
   },
-
-  ----------------------------------------------
-  -- Utilites
-  ----------------------------------------------
 
   -- Extra tree-sitter information --
   {

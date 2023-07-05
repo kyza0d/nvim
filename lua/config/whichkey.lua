@@ -113,6 +113,7 @@ local cr_mappings = {
   n = { '<cmd>Navbuddy<cr>', 'Navbuddy' },
   a = { ':norm @a<CR>', "Preform 'a' macro", silent = false },
   h = { ':Telescope help_tags<cr>', 'Search' },
+  z = { '<cmd>TZMinimalist<cr>', 'Zen mode' },
   [','] = { ':foldclose<cr>', 'Fold Close', silent = false },
   ['.'] = { ':foldopen<cr>', 'Fold Open', silent = false },
   ['/'] = { ':Telescope live_grep<cr>', 'Grep' },
@@ -177,7 +178,7 @@ require('which-key').setup({
   icons = {
     breadcrumb = '',
     -- separator = "->",
-    separator = '',
+    separator = '',
     group = '',
   },
 })

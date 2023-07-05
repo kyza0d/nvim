@@ -39,7 +39,8 @@ local mode = {
   function()
     local current_mode = vim.api.nvim_get_mode().mode
     return string.format(
-      "%%#%s#🮉%%#StatusLineMode# %s %%#StatusLine#",
+      "%%#%s# %s %%#StatusLineMode# %%#CustomStatusLine#",
+      -- "%%#%s#%%#StatusLineMode# %s %%#StatusLine#",
       modes[current_mode][2],
       modes[current_mode][1]:upper()
     )
@@ -80,16 +81,16 @@ local search = {
 
 local file = {
   function()
-    local modified = vim.bo.modified and "%#StatusLineBlue#  %#StatusLine#" or ""
+    local modified = vim.bo.modified and "%#StatusLineBlue#*%#CustomStatusLine# " or ""
     local parent = vim.fn.expand("%:p:h:t")
     local file = vim.fn.expand("%:p:t")
-    local icon, color = require'nvim-web-devicons'.get_icon_color(vim.fn.expand("%:t"), vim.fn.expand("%:e"))
+    -- local icon, color = require'nvim-web-devicons'.get_icon_color(vim.fn.expand("%:t"), vim.fn.expand("%:e"))
 
-    icon = icon or ""
+    -- icon = icon or ""
 
-    vim.api.nvim_set_hl(0, "StatusLineColor", {fg = color, bg = "#1B1B1E" })
+    -- vim.api.nvim_set_hl(0, "StatusLineColor", {fg = color, bg = "#1B1B1E" })
 
-    return string.format("%s%s/%s ", modified, parent, file)
+    return string.format("%%#StatusLineDim#%s/%s %s%%#CustomStatusLine#", parent, file, modified)
   end,
 }
 
@@ -105,14 +106,14 @@ local diagnostics = {
     end
 
     local function format_diagnostic(highlight, status)
-      return count[status] ~= 0 and string.format("%%#%s%%#StatusLine#%s ", highlight, count[status]) or ""
+      return count[status] ~= 0 and string.format("%%#%s%%#CustomStatusLine#%s ", highlight, count[status]) or ""
     end
 
     return concat(
-      format_diagnostic("StatusLineError# 󰅚  ", "errors"),
-      format_diagnostic("StatusLineWarning# 󱇏  ", "warnings"),
-      format_diagnostic("StatusLineInfo# 󱋉  ", "hints"),
-      format_diagnostic("StatusLineHint# 󰗖  ", "info")
+      format_diagnostic("StatusLineError#E: ", "errors"),
+      format_diagnostic("StatusLineWarning#W: ", "warnings"),
+      format_diagnostic("StatusLineInfo#H: ", "hints"),
+      format_diagnostic("StatusLineHint#I: ", "info")
     )
   end,
 }
@@ -140,9 +141,9 @@ local git = {
 
     return table.concat({
       "[" .. git_info.head .. "]",
-      format_git("%#StatusLineGreen#  %#StatusLine#", git_info.added),
-      format_git("%#StatusLineYellow#  %#StatusLine#", git_info.changed),
-      format_git("%#StatusLineRed#  %#StatusLine#", git_info.removed),
+      format_git("%#StatusLineGreen#+ %#CustomStatusLine#", git_info.added),
+      format_git("%#StatusLineYellow#~ %#CustomStatusLine#", git_info.changed),
+      format_git("%#StatusLineRed#- %#CustomStatusLine#", git_info.removed),
     })
   end,
 
@@ -176,7 +177,7 @@ M.active = function()
 
   local highlights = {
     seperator = "%#StatusLineSeperator#",
-    background = "%#StatusLine#",
+    background = "%#CustomStatusLine#",
   }
 
   for i = 1, #active do

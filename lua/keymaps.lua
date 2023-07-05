@@ -6,16 +6,16 @@
 keymap('i', '<C-J>', "copilot#Accept('<CR>')", { silent = true, expr = true })
 
 -- nvim-neo-tree/neo-tree.nvim
-keymap('n', '<C-n>', ':Neotree left toggle filesystem<cr>')
+keymap('n', '<C-n>', ':Neotree toggle filesystem<cr>')
 
 -- nvim-telescope/telescope.nvim
 keymap('n', '<C-p>', ":lua require('telescope.builtin').find_files()<cr>")
 
 -- akinsho/bufferline.nvim
-keymap('n', '<S-l>', '<cmd>silent BufferLineCycleNext<cr>')
-keymap('n', '<S-h>', '<cmd>silent BufferLineCyclePrev<cr>')
-keymap('n', '<C-S-h>', '<cmd>silent BufferLineMovePrev<cr>')
-keymap('n', '<C-S-l>', '<cmd>silent BufferLineMoveNext<cr>')
+keymap('n', '<S-l>', '<cmd>bn<cr>', { silent = true })
+keymap('n', '<S-h>', '<cmd>bp<cr>', { silent = true })
+keymap('n', '<C-S-h>', ':silent BufferLineMovePrev<cr>')
+keymap('n', '<C-S-l>', ':silent BufferLineMoveNext<cr>')
 
 -- echasnovski/mini.comment
 keymap('n', '<C-/>', 'gcc')
@@ -80,6 +80,7 @@ keymap('n', ']]', ':foldopen<cr>', { nowait = true, noremap = true })
 
 -- Quit Buffer
 keymap('n', '<S-q>', ':Bd<cr>', { desc = 'Save and quit', silent = false })
+-- keymap('n', '<S-q>', ':bd<cr>', { desc = 'Save and quit', silent = false })
 
 -- Quit Neovim
 keymap('n', 'Z', 'ZZ', { desc = 'Save and quit', silent = false })

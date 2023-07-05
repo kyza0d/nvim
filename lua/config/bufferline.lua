@@ -13,16 +13,16 @@ return {
     right_mouse_command = 'Bdelete! %d',
 
     indicator = {
-      style = 'underline',
+      style = 'none',
     },
 
     show_buffer_close_icons = false,
-    show_buffer_icons = true,
+    show_buffer_icons = false,
     show_close_icon = false,
 
     enforce_regular_tabs = false,
 
-    modified_icon = '',
+    modified_icon = '*',
     buffer_close_icon = '',
 
     left_trunc_marker = '',
@@ -36,8 +36,8 @@ return {
         filetype = 'neo-tree',
         text_align = 'left',
         highlight = 'ProjectRoot',
-        padding = 1,
-        text = string.format('%s %s', icons.book_alt, root()),
+        padding = 0,
+        text = root(),
       },
     },
   },

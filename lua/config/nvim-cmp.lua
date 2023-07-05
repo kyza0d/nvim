@@ -19,15 +19,15 @@ local function tab(fallback)
   cmp.confirm()
 end
 
-local menu_min_width, menu_max_width = 25, math.min(50, math.floor(vim.o.columns * 0.5))
-
-local window_opts = {
-  winhighlight = 'FloatBorder:FloatBorder',
-}
-
 cmp.setup({
   window = {
-    documentation = cmp.config.window.bordered(window_opts),
+    documentation = {
+      border = 'single',
+    },
+    completion = {
+      side_padding = 1,
+      border = 'none',
+    },
   },
 
   snippet = {
@@ -37,8 +37,8 @@ cmp.setup({
   mapping = cmp.mapping.preset.insert({
     ['<C-b>'] = cmp.mapping(cmp.mapping.scroll_docs(-4), { 'i' }),
     ['<C-f>'] = cmp.mapping(cmp.mapping.scroll_docs(4), { 'i' }),
-    ['<C-space>'] = cmp.mapping.complete(),
-    ['<CR>'] = cmp.mapping.confirm({ select = false }),
+    ['<CR>'] = cmp.mapping.confirm({ select = true }),
+    ['<C-Space>'] = cmp.mapping.complete(),
     ['<C-n>'] = cmp.mapping(cmp.mapping.select_next_item(), { 'i', 'c' }),
     ['<C-p>'] = cmp.mapping(cmp.mapping.select_prev_item(), { 'i', 'c' }),
     ['<S-Tab>'] = cmp.mapping(shift_tab, { 'i', 's' }),
@@ -46,37 +46,7 @@ cmp.setup({
   }),
 
   completion = {
-    completeopt = 'menu, menuone, noinsert',
-  },
-
-  formatting = {
-    deprecated = true,
-    fields = { 'kind', 'abbr', 'menu' },
-    format = lspkind.cmp_format({
-      mode = 'symbol',
-
-      maxwidth = menu_max_width,
-      before = function(_, vim_item)
-        local label, length = vim_item.abbr, api.nvim_strwidth(vim_item.abbr)
-        if length < menu_min_width then vim_item.abbr = label .. string.rep(' ', menu_min_width - length) end
-        return vim_item
-      end,
-
-      menu = {
-        nvim_lsp = 'lsp',
-        nvim_lua = 'lua',
-        emoji = 'emoji',
-        path = 'path',
-        luasnip = 'snippet',
-        dictionary = 'dictionary',
-        buffer = 'buffer',
-        spell = 'spell',
-        rg = 'ripgrep',
-        git = 'git',
-      },
-
-      symbol_map = icons,
-    }),
+    completeopt = 'menu,menuone,noinsert',
   },
 
   -----------------------------------------
@@ -89,7 +59,7 @@ cmp.setup({
     { name = 'path' },
     { name = 'emoji' },
     { name = 'nvim_lua' },
-    { name = 'dictionary', keyword_length = 5 },
+    { name = 'dictionary', keyword_length = 3 },
     { name = 'rg', keyword_length = 4, option = { additional_arguments = '--max-depth 8' } },
     {
       name = 'buffer',

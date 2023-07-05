@@ -12,5 +12,5 @@ return {
     vim.opt_local.foldcolumn = '0'
     vim.opt_local.statuscolumn = ''
   end,
-  on_close = function() vim.opt_local.laststatus = 3 end,
+  -- on_close = function() vim.opt_local.laststatus = 3 end,
 }
