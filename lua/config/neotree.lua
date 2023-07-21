@@ -57,7 +57,7 @@ require('neo-tree').setup({
   },
 
   window = {
-    position = 'right',
+    position = 'left',
     width = 36,
     mappings = {
       ['l'] = 'open',

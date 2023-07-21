@@ -7,9 +7,9 @@ local options = {
   ------------------------------
 
   numberwidth = 5,
-  cursorline = true,
+  cursorline = false,
   laststatus = 3,
-  cmdheight = 1,
+  cmdheight = 0,
   pumheight = 12,
   termguicolors = true,
   mouse = 'a',
@@ -24,11 +24,12 @@ local options = {
   signcolumn = 'yes',
 
   statuscolumn = concat({
-    '%= ',
+    -- '%= ',
     '%= %{v:lnum} ',
     -- "%#StatusColumnBorder#%{foldlevel(v:lnum) > 0 ? (foldlevel(v:lnum) > foldlevel(v:lnum - 1) ? (foldclosed(v:lnum) == -1 ? '󰅀  ' : '󰅂 ' ) : '   ') : '   '}",
-    "%#StatusColumnBorder#%{foldlevel(v:lnum) > 0 ? (foldlevel(v:lnum) > foldlevel(v:lnum - 1) ? (foldclosed(v:lnum) == -1 ? '-  ' : '+ ' ) : '   ') : '   '}",
-    "%#FoldIndicator#%{(foldclosed(v:lnum) == -1 ? '' : '▎' )}",
+    -- "%#StatusColumnBorder#%{foldlevel(v:lnum) > 0 ? (foldlevel(v:lnum) > foldlevel(v:lnum - 1) ? (foldclosed(v:lnum) == -1 ? '  ' : ' ' ) : '  ') : '  '}",
+    -- "%#FoldIndicator#%{(foldclosed(v:lnum) == -1 ? '' : ' ' )}",
+    -- "%#FoldIndicator#%{(foldclosed(v:lnum) == -1 ? '' : '▎' )}",
   }),
 
   ------------------------------

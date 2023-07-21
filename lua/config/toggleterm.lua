@@ -9,8 +9,8 @@ return {
     enabled = true,
   },
   on_open = function()
-    vim.opt_local.foldcolumn = '0'
     vim.opt_local.statuscolumn = ''
+    vim.opt_local.cursorline = false
   end,
   -- on_close = function() vim.opt_local.laststatus = 3 end,
 }

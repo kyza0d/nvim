@@ -15,7 +15,7 @@ local wal_colors = {
 local StatusLine = {
   fg = colors.fg_1,
   fg_dim = colors.fg_2,
-  bg = colors.bg_2,
+  bg = colors.bg_3,
 }
 
 local Neotree = {
@@ -45,15 +45,24 @@ local status_line = {
   StatusLineHint = { fg = colors.purple, bg = StatusLine.bg },
   StatusLineDim = { fg = StatusLine.fg_dim, bg = StatusLine.bg },
   StatusLineMode = { fg = StatusLine.fg, bg = StatusLine.bg },
-  NormalMode = { fg = colors.bg_negative_1, bg = colors.blue },
-  InsertMode = { fg = colors.bg_negative_1, bg = colors.purple },
-  VisualMode = { fg = colors.bg_negative_1, bg = colors.red },
-  LineMode = { fg = colors.bg_negative_1, bg = colors.red },
-  BlockMode = { fg = colors.bg_negative_1, bg = colors.orange },
-  ReplaceMode = { fg = colors.bg_negative_1, bg = colors.purple },
-  SelectMode = { fg = colors.bg_negative_1, bg = colors.yellow },
-  CommandMode = { fg = colors.bg_negative_1, bg = colors.yellow },
-  TerminalMode = { fg = colors.bg_negative_1, bg = colors.green },
+  -- NormalMode = { fg = colors.fg, bg = StatusLine.bg },
+  -- InsertMode = { fg = colors.fg, bg = StatusLine.bg },
+  -- VisualMode = { fg = colors.fg, bg = StatusLine.bg },
+  -- LineMode = { fg = colors.fg, bg = StatusLine.bg },
+  -- BlockMode = { fg = colors.fg, bg = StatusLine.bg },
+  -- ReplaceMode = { fg = colors.fg, bg = StatusLine.bg },
+  -- SelectMode = { fg = colors.fg, bg = StatusLine.bg },
+  -- CommandMode = { fg = colors.fg, bg = StatusLine.bg },
+  -- TerminalMode = { fg = colors.fg, bg = StatusLine.bg },
+  NormalMode = { fg = colors.blue, bg = StatusLine.bg },
+  InsertMode = { fg = colors.purple, bg = StatusLine.bg },
+  VisualMode = { fg = colors.red, bg = StatusLine.bg },
+  LineMode = { fg = colors.red, bg = StatusLine.bg },
+  BlockMode = { fg = colors.orange, bg = StatusLine.bg },
+  ReplaceMode = { fg = colors.purple, bg = StatusLine.bg },
+  SelectMode = { fg = colors.yellow, bg = StatusLine.bg },
+  CommandMode = { fg = colors.yellow, bg = StatusLine.bg },
+  TerminalMode = { fg = colors.green, bg = StatusLine.bg },
   Reverse = { reverse = true },
 }
 
@@ -62,7 +71,7 @@ local whichkey = {
 }
 
 local treesitter = {
-  -- ['@comment'] = { italic = true, fg = colors.fg_3 },
+  ['@comment'] = { fg = colors.fg_4 },
   ['@neorg.headings.1.title'] = { fg = colors.orange, bold = true },
   ['@punctuation.bracket'] = { fg = colors.fg_3 },
   ['@constructor'] = { clear = true },
@@ -129,6 +138,8 @@ local other = {
   Folded = { bg = colors.bg_1, fg = colors.blue },
   FoldIndicator = { fg = colors.blue, bg = colors.bg_1 },
   FoldColumn = { fg = colors.fg_4 },
+
+  SignColumn = { bg = 'NONE', fg = colors.fg_4 },
 
   NavBuddyName = { links = 'Visual' },
   NavBuddyNormalFloat = { bg = colors.bg, fg = colors.fg_2 },

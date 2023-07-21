@@ -77,7 +77,7 @@ return {
   -- Indent Lines --
   {
     'lukas-reineke/indent-blankline.nvim',
-    enabled = false,
+    enabled = true,
     event = 'BufReadPost',
     init = function()
       vim.g.indent_blankline_char = icons.editor.indent
@@ -156,7 +156,7 @@ return {
 
   {
     'lvimuser/lsp-inlayhints.nvim',
-    enabled = false,
+    enabled = true,
     init = function()
       create_augroup('LspAttach_inlayhints', {})
       create_autocmd('LspAttach', {
@@ -439,20 +439,17 @@ return {
     dependencies = { 'rafamadriz/friendly-snippets', 'saadparwaiz1/cmp_luasnip' },
   },
 
-  -- {
-  --   'jackMort/ChatGPT.nvim',
-  --   event = 'VeryLazy',
-  --   config = function()
-  --     require('chatgpt').setup({
-  --       api_key_cmd = os.getenv('OPENAI_API_KEY'),
-  --     })
-  --   end,
-  --   dependencies = {
-  --     'MunifTanjim/nui.nvim',
-  --     'nvim-lua/plenary.nvim',
-  --     'nvim-telescope/telescope.nvim',
-  --   },
-  -- },
+  {
+    'github/copilot.vim',
+    event = 'InsertEnter',
+    init = function()
+      vim.g.copilot_filetypes = true
+      vim.g.copilot_filetypes = {
+        ['*'] = true,
+        TelescopePrompt = false,
+      }
+    end,
+  },
 
   {
     'svermeulen/text-to-colorscheme',

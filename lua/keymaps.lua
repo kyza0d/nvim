@@ -95,8 +95,9 @@ keymap('v', '<C-d>', '//dgn', { noremap = false })
 
 -- Copying / Pasting
 keymap({ 'n', 'v' }, '<C-c>', '"+y')
-keymap({ 'i', 'c' }, '<C-v>', '<C-r><C-p>+')
+keymap({ 'i' }, '<C-v>', '<C-r><C-p>+')
 keymap({ 'n', 'v' }, '<C-v>', '"+p')
+keymap({ 'c' }, '<C-v>', '<C-r>+', { silent = false })
 keymap({ 'i', 's' }, '<C-p>', '<C-r>0')
 
 -- Block selection

@@ -39,7 +39,8 @@ local mode = {
   function()
     local current_mode = vim.api.nvim_get_mode().mode
     return string.format(
-      "%%#%s# %s %%#StatusLineMode# %%#CustomStatusLine#",
+      -- "%%#%s# %s %%#StatusLineMode# %%#CustomStatusLine#",
+      "%%#%s# %s %%#StatusLineMode#%%#CustomStatusLine#",
       -- "%%#%s#%%#StatusLineMode# %s %%#StatusLine#",
       modes[current_mode][2],
       modes[current_mode][1]:upper()
@@ -85,9 +86,7 @@ local file = {
     local parent = vim.fn.expand("%:p:h:t")
     local file = vim.fn.expand("%:p:t")
     -- local icon, color = require'nvim-web-devicons'.get_icon_color(vim.fn.expand("%:t"), vim.fn.expand("%:e"))
-
     -- icon = icon or ""
-
     -- vim.api.nvim_set_hl(0, "StatusLineColor", {fg = color, bg = "#1B1B1E" })
 
     return string.format("%%#StatusLineDim#%s/%s %s%%#CustomStatusLine#", parent, file, modified)

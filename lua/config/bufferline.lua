@@ -20,7 +20,7 @@ return {
     show_buffer_icons = false,
     show_close_icon = false,
 
-    enforce_regular_tabs = false,
+    enforce_regular_tabs = true,
 
     modified_icon = '*',
     buffer_close_icon = '',
@@ -29,7 +29,7 @@ return {
     right_trunc_marker = '',
 
     truncate_names = false,
-    tab_size = 0,
+    tab_size = 25,
 
     offsets = {
       {
