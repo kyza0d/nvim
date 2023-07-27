@@ -18,6 +18,12 @@ null_ls.setup({
       },
     }),
 
+    null_ls.builtins.formatting.rustfmt.with({
+      filetypes = {
+        'rust',
+      },
+    }),
+
     null_ls.builtins.formatting.prettierd.with({
       filetypes = {
         'html',

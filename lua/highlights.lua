@@ -1,3 +1,7 @@
+--------------------------------------------
+-- Editor Highlights
+--------------------------------------------
+
 local colors = require('harmony').colors
 local neowal = require('neowal').palette
 
@@ -15,20 +19,20 @@ local wal_colors = {
 local StatusLine = {
   fg = colors.fg_1,
   fg_dim = colors.fg_2,
-  bg = colors.bg_3,
+  bg = colors.bg_negative_1,
 }
 
 local Neotree = {
   fg = colors.fg_2,
-  bg = colors.bg_1,
-  cursorline = colors.bg_3,
+  bg = colors.bg_negative_1,
+  cursorline = colors.bg_1,
 }
 
 local cursor_line = {
   CursorLine = { bg = colors.bg_1 },
-  CursorLineNr = { fg = colors.fg_3, bg = colors.bg_0 },
-  CursorLineSign = { bg = colors.bg_0 },
-  CursorLineFold = { bg = colors.bg_0 },
+  CursorLineNr = { fg = colors.fg_3, bg = colors.bg_1 },
+  CursorLineSign = { bg = colors.bg_1 },
+  CursorLineFold = { bg = colors.bg_1 },
 }
 
 local status_line = {
@@ -45,15 +49,6 @@ local status_line = {
   StatusLineHint = { fg = colors.purple, bg = StatusLine.bg },
   StatusLineDim = { fg = StatusLine.fg_dim, bg = StatusLine.bg },
   StatusLineMode = { fg = StatusLine.fg, bg = StatusLine.bg },
-  -- NormalMode = { fg = colors.fg, bg = StatusLine.bg },
-  -- InsertMode = { fg = colors.fg, bg = StatusLine.bg },
-  -- VisualMode = { fg = colors.fg, bg = StatusLine.bg },
-  -- LineMode = { fg = colors.fg, bg = StatusLine.bg },
-  -- BlockMode = { fg = colors.fg, bg = StatusLine.bg },
-  -- ReplaceMode = { fg = colors.fg, bg = StatusLine.bg },
-  -- SelectMode = { fg = colors.fg, bg = StatusLine.bg },
-  -- CommandMode = { fg = colors.fg, bg = StatusLine.bg },
-  -- TerminalMode = { fg = colors.fg, bg = StatusLine.bg },
   NormalMode = { fg = colors.blue, bg = StatusLine.bg },
   InsertMode = { fg = colors.purple, bg = StatusLine.bg },
   VisualMode = { fg = colors.red, bg = StatusLine.bg },
@@ -71,7 +66,7 @@ local whichkey = {
 }
 
 local treesitter = {
-  ['@comment'] = { fg = colors.fg_4 },
+  ['@comment'] = { fg = colors.fg_3 },
   ['@neorg.headings.1.title'] = { fg = colors.orange, bold = true },
   ['@punctuation.bracket'] = { fg = colors.fg_3 },
   ['@constructor'] = { clear = true },
@@ -80,29 +75,18 @@ local treesitter = {
   ['@neorg.markup.strikethrough.delimiter'] = { link = '@neorg.markup.strikethrough' },
 }
 
-local bufferline = {
-  BufferLineFill = { bg = colors.fg_3, fg = colors.fg_4 },
-  BufferLineBackground = { bg = colors.fg_3, fg = colors.fg_3, sp = colors.fg_4 },
-  BufferLineBufferVisible = { bg = colors.bg_0, fg = colors.fg_4, sp = colors.fg_4 },
-  BufferLineIndicatorVisible = { bg = colors.bg_0, fg = colors.fg_4 },
-  TabLineSel = { bg = colors.bg_0, fg = colors.bg_0, bold = true },
-  BufferLineBufferSelected = { bg = colors.bg_2, fg = colors.fg_1, bold = true },
-  BufferLineIndicatorSelected = { bg = colors.bg_2, fg = colors.fg_1, bold = true },
-  BufferLineModifiedSelected = { bg = colors.bg_2, fg = colors.blue, bold = true },
-}
-
 local neotree = {
   ProjectRoot = { bg = Neotree.bg, fg = colors.blue },
   NeoTreeDirectoryName = { fg = colors.blue },
   NeoTreeDirectoryIcon = { fg = colors.blue },
-  NeoTreeIndentMarker = { fg = colors.fg_4 },
+  NeoTreeIndentMarker = { fg = colors.bg_4 },
   FloatBorder = { fg = colors.fg_4, bg = 'none' },
   NeoTreeFloatBorder = { fg = colors.fg_4, bg = 'none' },
   NeoTreeFloatTitle = { fg = colors.fg_4, italic = true },
   NeoTreeNormal = { bg = Neotree.bg },
   NeoTreeNormalNC = { bg = Neotree.bg },
   NeoTreeEndOfBuffer = { bg = Neotree.bg },
-  NeoTreeCursorLine = { bg = Neotree.cursor_line },
+  NeoTreeCursorLine = { bg = Neotree.cursorline },
   NeoTreeSignColumn = { link = 'SignColumn' },
   NeoTreeStatusLine = { link = 'StatusLine' },
   NeoTreeStatusLineNC = { link = 'StatusLineNC' },
@@ -130,7 +114,7 @@ local dashboard = {
 
 local other = {
   ScrollView = { fg = colors.fg_4 },
-  WinSeparator = { fg = colors.bg_4 },
+  WinSeparator = { fg = colors.bg_0, bg = colors.bg_0 },
   Hide = { fg = colors.bg_0 },
 
   EndOfBuffer = { fg = colors.fg_4 },
@@ -144,30 +128,18 @@ local other = {
   NavBuddyName = { links = 'Visual' },
   NavBuddyNormalFloat = { bg = colors.bg, fg = colors.fg_2 },
 
-  BufferLineBufferSelected = {
-    bg = colors.bg_0,
-    fg = colors.fg_1,
-    -- sp = colors.blue,
-    -- underline = true,
-    -- italic = true,
-  },
-  BufferLineIndicatorSelected = {
-    bg = colors.bg_0,
-    fg = colors.fg_1,
-    -- sp = colors.blue,
-    -- underline = true,
-  },
-
-  BufferLineBufferVisible = { bg = colors.bg_negative_1, fg = colors.fg_4, sp = colors.fg_4 },
-
   LspInlayHint = { fg = colors.fg_4 },
 }
 
--- stylua: ignore
 local highlights = {
-	status_line, cursor_line, treesitter,
-	neotree, dashboard, whichkey,
-	wal_colors,  other,
+  status_line,
+  cursor_line,
+  treesitter,
+  neotree,
+  dashboard,
+  whichkey,
+  wal_colors,
+  other,
 }
 
 local result = {}

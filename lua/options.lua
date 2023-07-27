@@ -7,7 +7,7 @@ local options = {
   ------------------------------
 
   numberwidth = 5,
-  cursorline = false,
+  cursorline = true,
   laststatus = 3,
   cmdheight = 0,
   pumheight = 12,
@@ -24,8 +24,8 @@ local options = {
   signcolumn = 'yes',
 
   statuscolumn = concat({
-    -- '%= ',
-    '%= %{v:lnum} ',
+    '%= ',
+    -- '%= %{v:lnum} ',
     -- "%#StatusColumnBorder#%{foldlevel(v:lnum) > 0 ? (foldlevel(v:lnum) > foldlevel(v:lnum - 1) ? (foldclosed(v:lnum) == -1 ? '󰅀  ' : '󰅂 ' ) : '   ') : '   '}",
     -- "%#StatusColumnBorder#%{foldlevel(v:lnum) > 0 ? (foldlevel(v:lnum) > foldlevel(v:lnum - 1) ? (foldclosed(v:lnum) == -1 ? '  ' : ' ' ) : '  ') : '  '}",
     -- "%#FoldIndicator#%{(foldclosed(v:lnum) == -1 ? '' : ' ' )}",
@@ -89,11 +89,21 @@ for k, v in pairs(options) do
   vim.opt[k] = v
 end
 
+-- Set statusline
+create_autocmd({ 'BufEnter' }, {
+  callback = function()
+    if vim.bo.filetype ~= 'neo-tree' then vim.o.statusline = "%{%v:lua.require('statusline').active()%}" end
+  end,
+})
+
 vim.opt.fillchars:append({
-  vert = ' ',
-  vertright = '├',
-  vertleft = '┤',
   horiz = '─',
+  horizup = '┴',
+  horizdown = '┬',
+  vert = '│',
+  vertleft = '┤',
+  vertright = '├',
+  verthoriz = '┼',
   eob = ' ',
 })
 
@@ -195,6 +205,7 @@ vim.g.disable_icons = true
 
 if vim.g.disable_icons then
   vim.opt.fillchars:append({
+
     foldclose = '>',
     foldopen = 'v',
   })

@@ -1,25 +1,18 @@
-local colorscheme_file = '/home/evan/.cache/nvim/colorscheme'
+if vim.g.colors_name then
+  ky.save_cache('colorscheme', vim.g.colors_name)
+else
+  -- Here, you can set a default colorscheme to save into the cache
+  -- if no colorscheme is set at the time this script runs.
+  -- Replace 'default_colorscheme' with the actual name of the default colorscheme.
+  ky.save_cache('colorscheme', 'default')
+end
+
+local function set_colorscheme()
+  local colorscheme = ky.load_cache('colorscheme', 'default')
+  if colorscheme == nil then return end
+  vim.cmd('colorscheme ' .. colorscheme)
+end
 
 return {
-  save = function()
-    local file = io.open(colorscheme_file, 'w')
-
-    if file == nil then return end
-
-    file:seek('set')
-
-    local colorscheme = vim.g.colors_name
-
-    file:write(colorscheme)
-    file:close()
-  end,
-  apply = function()
-    local file = io.open(colorscheme_file, 'r')
-    if file then
-      local colorscheme = file:read()
-
-      vim.cmd('colorscheme ' .. (colorscheme or 'default'))
-      file:close()
-    end
-  end,
+  set_colorscheme = set_colorscheme,
 }

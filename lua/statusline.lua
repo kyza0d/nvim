@@ -1,4 +1,4 @@
-local M = {}
+local statusline = {}
 
 local concat = require("utils.concat")
 
@@ -85,6 +85,7 @@ local file = {
     local modified = vim.bo.modified and "%#StatusLineBlue#*%#CustomStatusLine# " or ""
     local parent = vim.fn.expand("%:p:h:t")
     local file = vim.fn.expand("%:p:t")
+
     -- local icon, color = require'nvim-web-devicons'.get_icon_color(vim.fn.expand("%:t"), vim.fn.expand("%:e"))
     -- icon = icon or ""
     -- vim.api.nvim_set_hl(0, "StatusLineColor", {fg = color, bg = "#1B1B1E" })
@@ -153,8 +154,8 @@ local components = {
   [1] = mode,
   [2] = macro,
   [3] = search,
-  [4] = file,
-  [5] = line,
+  [4] = line,
+  [5] = file,
   [6] = diagnostics,
   [7] = right_align,
   [8] = root,
@@ -171,7 +172,7 @@ end
 
 local active = components
 
-M.active = function()
+statusline.active = function()
   local statusline = ""
 
   local highlights = {
@@ -212,4 +213,4 @@ M.active = function()
   return highlights.background .. statusline .. "% "
 end
 
-return M
+return statusline

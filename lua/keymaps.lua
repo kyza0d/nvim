@@ -1,6 +1,6 @@
--------------------------------
--- Plugin mappings
--------------------------------
+--------------------------------------------
+-- Plugin Mappings
+--------------------------------------------
 
 -- github/copilot.vim
 keymap('i', '<C-J>', "copilot#Accept('<CR>')", { silent = true, expr = true })
@@ -10,12 +10,6 @@ keymap('n', '<C-n>', ':Neotree toggle filesystem<cr>')
 
 -- nvim-telescope/telescope.nvim
 keymap('n', '<C-p>', ":lua require('telescope.builtin').find_files()<cr>")
-
--- akinsho/bufferline.nvim
-keymap('n', '<S-l>', '<cmd>bn<cr>', { silent = true })
-keymap('n', '<S-h>', '<cmd>bp<cr>', { silent = true })
-keymap('n', '<C-S-h>', ':silent BufferLineMovePrev<cr>')
-keymap('n', '<C-S-l>', ':silent BufferLineMoveNext<cr>')
 
 -- echasnovski/mini.comment
 keymap('n', '<C-/>', 'gcc')
@@ -29,9 +23,9 @@ keymap('n', 'gr', '<cmd>Glance references<cr>')
 -- smjonas/inc-rename.nvim
 keymap('n', 'gR', function() return ':IncRename ' .. vim.fn.expand('<cword>') end, { expr = true })
 
--------------------------------
--- LSP
--------------------------------
+--------------------------------------------
+-- Language Server Protocol
+--------------------------------------------
 
 create_autocmd('LspAttach', {
   callback = function()
@@ -63,9 +57,9 @@ create_autocmd('LspAttach', {
   end,
 })
 
--------------------------------
--- Utilities
--------------------------------
+--------------------------------------------
+-- Searching
+--------------------------------------------
 
 -- Search for visually selected text
 -- https://vim.fandom.com/wiki/Search_for_visually_selected_text
@@ -74,24 +68,36 @@ keymap('v', '//', [[y/\V<C-R>=escape(@",'/\')<CR><CR>:set hlsearch<CR>N]])
 -- Toggle highlight
 keymap('n', '\\', ':set invhlsearch<cr>')
 
--- Folding
-keymap('n', '[[', ':foldclose<cr>', { nowait = true, noremap = true })
-keymap('n', ']]', ':foldopen<cr>', { nowait = true, noremap = true })
+--------------------------------------------
+-- Buffer Management
+--------------------------------------------
+
+--- @url https://akinsho/bufferline.nvim
+
+-- Move Buffers
+keymap('n', '<C-S-h>', ':silent BufferLineMovePrev<cr>')
+keymap('n', '<C-S-l>', ':silent BufferLineMoveNext<cr>')
+
+-- Change Buffer
+keymap('n', '<S-l>', '<cmd>bn<cr>', { silent = true })
+keymap('n', '<S-h>', '<cmd>bp<cr>', { silent = true })
+
+-- Alternate buffers
+keymap('n', '<C-CR>', '<C-^>', { desc = 'Switch to last buffer' })
 
 -- Quit Buffer
 keymap('n', '<S-q>', ':Bd<cr>', { desc = 'Save and quit', silent = false })
--- keymap('n', '<S-q>', ':bd<cr>', { desc = 'Save and quit', silent = false })
 
--- Quit Neovim
+--------------------------------------------
+-- Editor Management
+--------------------------------------------
+
+-- Close Editor
 keymap('n', 'Z', 'ZZ', { desc = 'Save and quit', silent = false })
 
 -------------------------------
--- Editing
+-- Text Manipulation
 -------------------------------
-
--- Change / Delete go next
-keymap('v', '<C-n>', '//cgn', { noremap = false })
-keymap('v', '<C-d>', '//dgn', { noremap = false })
 
 -- Copying / Pasting
 keymap({ 'n', 'v' }, '<C-c>', '"+y')
@@ -100,8 +106,9 @@ keymap({ 'n', 'v' }, '<C-v>', '"+p')
 keymap({ 'c' }, '<C-v>', '<C-r>+', { silent = false })
 keymap({ 'i', 's' }, '<C-p>', '<C-r>0')
 
--- Block selection
-keymap({ 'n', 'v' }, '<C-b>', '<C-v>')
+-- Change / Delete go next
+keymap('v', '<C-n>', '//cgn', { noremap = false })
+keymap('v', '<C-d>', '//dgn', { noremap = false })
 
 -- Substitue selected text
 keymap(
@@ -113,9 +120,12 @@ keymap(
 
 keymap('v', '<C-s>', function() return [["_y:%s/\%V<C-R>"//g<Left><Left>]] end, { silent = false, expr = true })
 
--- Command line movement
-keymap('c', '<C-h>', '<Left>', { silent = false })
-keymap('c', '<C-l>', '<Right>', { silent = false })
+-------------------------------
+-- Remaps
+-------------------------------
+
+-- Block selection
+keymap({ 'n', 'v' }, '<C-b>', '<C-v>')
 
 -- Repeat "a" macro on selected lines
 keymap('v', 'a', ':normal @a<cr>', { desc = 'Repeat macro on selected lines' })
@@ -139,5 +149,6 @@ keymap({ 'n', 'v' }, '<C-j>', '%', { desc = 'Move to matching character' })
 keymap('n', '<C-u>', '10<C-y>', { desc = 'Move 10 lines up' })
 keymap('n', '<C-d>', '10<C-e>', { desc = 'Move 10 lines down' })
 
--- Alternate buffers
-keymap('n', '<C-CR>', '<C-^>', { desc = 'Switch to last buffer' })
+-- Command line movement
+keymap('c', '<C-h>', '<Left>', { silent = false })
+keymap('c', '<C-l>', '<Right>', { silent = false })

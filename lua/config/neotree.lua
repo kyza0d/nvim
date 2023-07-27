@@ -16,22 +16,30 @@ require('neo-tree').setup({
 
   enable_diagnostics = true,
 
-  hide_root_node = false,
+  hide_root_node = true,
   retain_hidden_root_indent = true,
 
   default_component_configs = {
+    diagnostics = {
+      symbols = {
+        hint = '• ',
+        info = '• ',
+        warn = '• ',
+        error = '• ',
+      },
+    },
     git_status = {
       symbols = {
         -- Change type
-        added = 'a',
-        modified = '+',
-        deleted = 'x',
-        renamed = '>',
-        untracked = '^',
-        ignored = 'i',
-        unstaged = '?',
-        staged = 's',
-        conflict = 'c',
+        added = '+ ',
+        modified = '~ ',
+        deleted = '- ',
+        renamed = '✘ ',
+        untracked = 'x ',
+        ignored = 'i ',
+        unstaged = '+ ',
+        staged = '✔ ',
+        conflict = '✘ ',
       },
     },
 
@@ -43,7 +51,7 @@ require('neo-tree').setup({
       indent_marker = icons.indent_marker,
       last_indent_marker = icons.last_indent_marker,
 
-      indent_size = 1,
+      indent_size = 2,
       padding = 0,
     },
 

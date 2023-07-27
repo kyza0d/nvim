@@ -26,8 +26,8 @@ require('harmony').setup({
   },
 
   neowal = {
-    bg = { '#101010', '#222222' },
-    fg = { '#dddddd', '#222222' },
+    bg = { '#1A1E22', '#222222' },
+    fg = { '#c9cee0', '#222222' },
   },
 
   tokyonight = {
