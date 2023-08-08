@@ -1,9 +1,13 @@
+--------------------------------------------
+-- Completion
+--------------------------------------------
+
 return {
   -- Completion menu
   --- @url https://github.com/hrsh7th/nvim-cmp
   {
     'hrsh7th/nvim-cmp',
-    event = { 'CmdlineEnter', 'InsertEnter' },
+    -- event = { 'CmdlineEnter', 'InsertEnter' },
     dependencies = {
       'hrsh7th/cmp-buffer',
       'hrsh7th/cmp-cmdline',
@@ -28,7 +32,7 @@ return {
   --- @url https://github.com/github/copilot.vim
   {
     'github/copilot.vim',
-    event = 'InsertEnter',
+    -- event = 'InsertEnter',
     init = function()
       vim.g.copilot_filetypes = true
       vim.g.copilot_filetypes = {
@@ -42,7 +46,7 @@ return {
   --- @url https://github.com/jackMort/ChatGPT.nvim
   {
     'jackMort/ChatGPT.nvim',
-    event = 'VeryLazy',
+    -- event = 'VeryLazy',
     config = function() require('chatgpt').setup() end,
     dependencies = {
       'MunifTanjim/nui.nvim',

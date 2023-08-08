@@ -1,4 +1,5 @@
 -- Personal Neovim configuration
+
 --------------------------------------------
 -- Author: <hi@kyza2.dev>
 --- @url https://github.com/kyza2/nvim

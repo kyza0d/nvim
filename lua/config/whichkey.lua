@@ -89,6 +89,26 @@ local leader = {
   },
 
   ----------------------------------------------
+  -- Project wide-actions
+  ----------------------------------------------
+  s = {
+    name = 'Spectre',
+    s = { "<cmd>lua require('spectre').open()<CR>", 'Open' },
+    w = { "<cmd>lua require('spectre').open_visual({select_word=true})<CR>", 'Search current Word' },
+    p = { "viw:lua require('spectre').open_file_search()<cr>", 'Search in current file' },
+  },
+
+  ----------------------------------------------
+  -- Togglable actions
+  ----------------------------------------------
+  -- t = {
+  --   name = 'Toggle',
+  --   n = { ':lua vim.opt.number = not(vim.opt.number:get())<cr>', 'number' },
+  --   -- n = { ':set number!<cr>', 'number' },
+  --   -- r = { ':set relativenumber!<cr>', 'relativenumber' },
+  -- },
+
+  ----------------------------------------------
   -- Navigate to dotfiles
   ----------------------------------------------
 
@@ -114,8 +134,11 @@ local cr_mappings = {
   a = { ':norm @a<CR>', "Preform 'a' macro", silent = false },
   h = { ':Telescope help_tags<cr>', 'Search' },
   z = { '<cmd>TZMinimalist<cr>', 'Zen mode' },
-  [','] = { ':foldclose<cr>', 'Fold Close', silent = false },
-  ['.'] = { ':foldopen<cr>', 'Fold Open', silent = false },
+  ['1'] = { '<cmd>BufferLineGoToBuffer 1<cr>', 'Buffer 1' },
+  ['2'] = { '<cmd>BufferLineGoToBuffer 2<cr>', 'Buffer 2' },
+  ['3'] = { '<cmd>BufferLineGoToBuffer 3<cr>', 'Buffer 3' },
+  ['4'] = { '<cmd>BufferLineGoToBuffer 4<cr>', 'Buffer 4' },
+  ['5'] = { '<cmd>BufferLineGoToBuffer 5<cr>', 'Buffer 5' },
   ['/'] = { ':Telescope live_grep<cr>', 'Grep' },
 }
 
@@ -142,43 +165,11 @@ require('which-key').register(cr_mappings_visual, {
 })
 
 require('which-key').setup({
-  window = {
-    border = 'none', -- none, single, double, shadow
-    position = 'bottom', -- bottom, top
-    margin = { 0, 0, 0, 0 }, -- extra window margin [top, right, bottom, left]
-    padding = { 2, 3, 2, 3 }, -- extra window padding [top, right, bottom, left]
-  },
-
-  layout = {
-    height = { min = 4, max = 25 }, -- min and max height of the columns
-    width = { min = 20, max = 50 }, -- min and max width of the columns
-    spacing = 10, -- spacing between columns
-    align = 'left', -- align columns left, center or right
-  },
-
-  plugins = {
-    marks = false,
-    registers = false,
-    spelling = {
-      enabled = true,
-      suggestions = 20,
-    },
-
-    presets = {
-      operators = true,
-      motions = true,
-      text_objects = true,
-      windows = true,
-      nav = true,
-      z = true,
-      g = true,
-    },
-  },
-
   icons = {
     breadcrumb = '',
-    -- separator = "->",
-    separator = '',
+    separator = '-',
     group = '',
   },
 })
+
+-- ohe whichkey mapping will have the following format <

@@ -36,6 +36,9 @@ local cursor_line = {
 }
 
 local status_line = {
+  StatusLine = { fg = StatusLine.fg, bg = StatusLine.bg },
+  StatusLineNC = { fg = colors.fg_4, bg = StatusLine.bg },
+
   StatusLineCaps = { fg = colors.bg_negative_1, bg = colors.bg_0 },
   CustomStatusLine = { fg = StatusLine.fg, bg = StatusLine.bg },
   CustomStatusLineNC = { fg = colors.fg_4, bg = StatusLine.bg },
@@ -129,6 +132,10 @@ local other = {
   NavBuddyNormalFloat = { bg = colors.bg, fg = colors.fg_2 },
 
   LspInlayHint = { fg = colors.fg_4 },
+
+  -- BufferLineNumbers = { fg = colors.fg_4, bg = colors.bg_negative_1 },
+  -- BufferLineNumbersSelected = { fg = colors.blue },
+  -- BufferLineNumbersVisible = { fg = colors.fg_4, bg = colors.bg_0 },
 }
 
 local highlights = {

@@ -66,6 +66,6 @@ create_autocmd('FileType', {
 
 -- Colorscheme cache saving
 create_autocmd('ColorScheme', {
-  callback = function() ky.save_cache('colorscheme', vim.g.colors_name) end,
+  callback = function() ky.write_cache('colorscheme', vim.g.colors_name) end,
   group = group,
 })

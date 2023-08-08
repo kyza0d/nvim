@@ -43,12 +43,17 @@ _G.icons = require('options')
 
 _G.ky = {}
 
-ky.save_cache = function(key, value)
+ky.write_cache = function(key, value, group)
   local cache_dir = '/home/evan/.cache/nvim/ky/'
   local cache_file = cache_dir .. key
 
   -- Create cache directory if it doesn't exist
   os.execute('mkdir -p ' .. cache_dir)
+
+  if group then
+    cache_file = cache_dir .. group .. '/' .. key
+    os.execute('mkdir -p ' .. cache_dir .. group)
+  end
 
   -- Save the value into the cache file
   local file = io.open(cache_file, 'w')
@@ -65,6 +70,7 @@ ky.load_cache = function(key, default, fallback)
   local cache_file = cache_dir .. key
 
   local file = io.open(cache_file, 'r')
+
   if file then
     local value = file:read('*a')
     file:close()
@@ -72,4 +78,17 @@ ky.load_cache = function(key, default, fallback)
   else
     return fallback or default
   end
+end
+
+-- Grab from cache to toggle a value
+ky.toggle_value = function(key, value, group)
+  local current = ky.load_cache(key, 'false', 'false')
+
+  if current == 'true' then
+    ky.write_cache(key, 'false', group)
+  else
+    ky.write_cache(key, 'true', group)
+  end
+
+  return ky.load_cache(key, 'false', 'false') == value
 end

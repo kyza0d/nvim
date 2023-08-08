@@ -1,3 +1,7 @@
+--------------------------------------------
+-- Syntax
+--------------------------------------------
+
 return {
   -- Syntax Parser
   --- @url https://github.com/nvim-treesitter/nvim-treesitter
@@ -5,7 +9,7 @@ return {
     'nvim-treesitter/nvim-treesitter',
     build = ':TSUpdate',
     version = false,
-    event = 'BufReadPost',
+    -- event = 'BufReadPost',
     config = function(_, opts) require('nvim-treesitter.configs').setup(opts) end,
     opts = {
       -- stylua: ignore
@@ -73,12 +77,10 @@ return {
     },
   },
 
-  -- Folding
-  --- @url https://github.com/kevinhwang91/nvim-ufo
+  -- Extra tree-sitter information
+  --- @url https://github.com/nvim-treesitter/playground
   {
-    'kevinhwang91/nvim-ufo',
-    dependencies = 'kevinhwang91/promise-async',
-    event = 'BufReadPost',
-    config = function() require('config.nvim-ufo') end,
+    'nvim-treesitter/playground',
+    cmd = { 'TSPlaygroundToggle', 'TSHighlightCapturesUnderCursor' },
   },
 }

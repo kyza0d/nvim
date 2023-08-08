@@ -1,3 +1,7 @@
+--------------------------------------------
+-- Colorschemes
+--------------------------------------------
+
 return {
   -- Colorscheme engine
   --- @url https://github.com/svermeulen/text-to-colorscheme

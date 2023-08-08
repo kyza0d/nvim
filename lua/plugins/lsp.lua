@@ -1,27 +1,14 @@
-return {
-  --------------------------------------------
-  -- LSP, Formatter/Linters
-  --------------------------------------------
+--------------------------------------------
+-- LSP, Formatter/Linters
+--------------------------------------------
 
-  -- LSP Configurations
-  --- @url https://github.com/williamboman/mason-lspconfig.nvim
+return {
+  -- LSP Conifguration
+  --- @url https://github.com/neovim/nvim-lspconfig
   {
-    'williamboman/mason-lspconfig.nvim',
-    event = { 'BufReadPre', 'BufNewFile' },
-    dependencies = {
-      'mason.nvim',
-      'neovim/nvim-lspconfig',
-      'onsails/lspkind.nvim',
-    },
-    opts = {
-      automatic_installation = true,
-      handlers = {
-        function(name)
-          local config = require('servers')(name)
-          if config then require('lspconfig')[name].setup(config) end
-        end,
-      },
-    },
+    'neovim/nvim-lspconfig',
+    -- event = 'BufReadPre',
+    dependencies = { 'onsails/lspkind.nvim' },
   },
 
   -- Extended LSP Capabilities
@@ -39,6 +26,22 @@ return {
     build = ':MasonUpdate',
     dependencies = 'nvim-lua/plenary.nvim',
     opts = { ui = { height = 0.8 } },
+  },
+
+  -- LSP Configurations
+  --- @url https://github.com/williamboman/mason-lspconfig.nvim
+  {
+    'williamboman/mason-lspconfig.nvim',
+    -- event = { 'BufReadPre', 'BufNewFile' },
+    opts = {
+      automatic_installation = true,
+      handlers = {
+        function(name)
+          local config = require('servers')(name)
+          if config then require('lspconfig')[name].setup(config) end
+        end,
+      },
+    },
   },
 
   -- LSP Inlay Hints
@@ -72,33 +75,20 @@ return {
   --- @url https://github.com/b0o/schemastore.nvim
   'b0o/schemastore.nvim',
 
-  -- Goto definitions/references window
-  --- @url https://github.com/dnlhc/glance.nvim
-  {
-    'dnlhc/glance.nvim',
-    opts = { preview_win_opts = { relativenumber = false } },
-    event = 'LspAttach',
-  },
-
   -- Incremental Renames
   --- @url https://github.com/smjonas/inc-rename.nvim
   {
     'smjonas/inc-rename.nvim',
     opts = { hl_group = 'Visual', preview_empty_name = true },
-    event = 'LspAttach',
+    -- event = 'LspAttach',
   },
 
   -- Show LSP progress
   --- @url https://github.com/j-hui/fidget.nvim
   {
     'j-hui/fidget.nvim',
-    event = 'BufReadPost',
+    -- event = 'BufReadPost',
     tag = 'legacy',
-    opts = {
-      window = {
-        blend = 0,
-      },
-      text = { spinner = 'dots_ellipsis' },
-    },
+    opts = { text = { spinner = 'dots_ellipsis' } },
   },
 }

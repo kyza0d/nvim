@@ -26,8 +26,8 @@ require('harmony').setup({
   },
 
   neowal = {
-    bg = { '#1A1E22', '#222222' },
-    fg = { '#c9cee0', '#222222' },
+    bg = { vim.g.background, '#222222' },
+    fg = { vim.g.foreground, '#222222' },
   },
 
   tokyonight = {

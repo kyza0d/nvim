@@ -1,7 +1,107 @@
+--------------------------------------------
+-- Editor appearance
+--------------------------------------------
+
 return {
-  --------------------------------------------
-  -- Editor appearance
-  --------------------------------------------
+  -- Dashboard
+  --- @url https://github.com/goolord/alpha-nvim
+  {
+    'goolord/alpha-nvim',
+    -- -- event = 'VimEnter',
+    -- dependencies = { 'nvim-tree/nvim-web-devicons' },
+    -- opts = {},
+  },
+
+  -- Project-wide Find & Replace
+
+  -- Folding
+  --- @url https://github.com/nvim-pack/nvim-spectre
+  {
+    'nvim-pack/nvim-spectre',
+    -- event = 'BufReadPre',
+    config = function() require('config.spectre') end,
+  },
+
+  -- File Explorer
+  --- @url https://github.com/nvim-neo-tree/neo-tree.nvim
+  {
+    'nvim-neo-tree/neo-tree.nvim',
+    lazy = false,
+    config = function() require('config.neotree') end,
+    dependencies = 'MunifTanjim/nui.nvim',
+  },
+
+  -- Bufferline
+  --- @url https://github.com/akinsho/bufferline.nvim
+  {
+    'akinsho/bufferline.nvim',
+    enabled = true,
+    event = 'VeryLazy',
+    dependencies = 'moll/vim-bbye',
+    opts = require('config.bufferline'),
+  },
+
+  -- {
+  --   'tomiis4/BufferTabs.nvim',
+  --   dependencies = {
+  --     'nvim-tree/nvim-web-devicons', -- optional
+  --   },
+  --   lazy = false,
+  --   config = function()
+  --     require('buffertabs').setup({
+  --       ---@type 'none'|'single'|'double'|'rounded'|'solid'|'shadow'|table
+  --       border = 'none',
+
+  --       ---@type boolean
+  --       icons = true,
+
+  --       ---@type string
+  --       hl_group = 'Keyword',
+
+  --       ---@type string
+  --       hl_group_inactive = 'Comment',
+
+  --       ---@type table<string>
+  --       exclude = { 'NvimTree', 'help', 'dashboard', 'lir', 'alpha' },
+
+  --       ---@type 'row'|'column'
+  --       display = 'row',
+
+  --       ---@type 'left'|'right'|'center'
+  --       horizontal = 'center',
+
+  --       ---@type 'top'|'bottom'|'center'
+  --       vertical = 'bottom',
+  --     })
+  --   end,
+  -- },
+
+  -- Winbar
+  --- @url https://github.com/utilyre/barbecue.nvim
+  {
+    'utilyre/barbecue.nvim',
+    enabled = false,
+    -- event = 'BufReadPre',
+    dependencies = {
+      'SmiteshP/nvim-navic',
+    },
+    opts = {
+      exclude_filetypes = { 'toggleterm', 'yuck' },
+      kinds = false,
+      symbols = {
+        separator = '|',
+        kinds = icons.navic,
+      },
+    },
+  },
+
+  -- Terminal
+  --- @url https://github.com/akinsho/toggleterm.nvim
+  {
+    'akinsho/toggleterm.nvim',
+    keys = { '<C-\\>' },
+    opts = require('config.toggleterm'),
+  },
 
   -- Distraction-free writing
   --- @url https://github.com/Pocco81/true-zen.nvim
@@ -17,46 +117,6 @@ return {
         },
       },
     },
-    event = 'VeryLazy',
-  },
-
-  -- Indent Lines
-  --- @url https://github.com/lukas-reineke/indent-blankline.nvim
-  {
-    'lukas-reineke/indent-blankline.nvim',
-    enabled = false,
-    event = 'BufReadPost',
-    init = function()
-      vim.g.indent_blankline_char = icons.editor.indent
-      vim.g.indent_blankline_context_char = icons.editor.indent
-      vim.g.indent_blankline_filetype_exclude = { 'toggleterm', 'telescope' }
-      vim.g.indent_blankline_show_trailing_blankline_indent = true
-    end,
-    opts = {
-      show_current_context = true,
-      show_current_context_start = false,
-    },
-  },
-
-  -- Filetype icons
-  --- @url https://github.com/nvim-tree/nvim-web-devicons
-  {
-    'nvim-tree/nvim-web-devicons',
-    enabled = true,
-    config = function() require('config.devicons') end,
-  },
-
-  -- Render colors in files
-  --- @url https://github.com/NvChad/nvim-colorizer.lua
-  {
-    'NvChad/nvim-colorizer.lua',
-    event = 'BufReadPre',
-    opts = {
-      filetypes = { '*' },
-      user_default_options = {
-        mode = 'background', -- Set the display mode.
-        names = false, -- "Name" codes like Blue or blue
-      },
-    },
+    -- event = 'VeryLazy',
   },
 }

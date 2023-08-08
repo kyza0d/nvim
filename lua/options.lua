@@ -2,14 +2,13 @@ local concat = require('utils.concat')
 
 local options = {
 
-  ------------------------------
   -- Appearance
-  ------------------------------
 
   numberwidth = 5,
   cursorline = true,
-  laststatus = 3,
+  laststatus = 2,
   cmdheight = 0,
+  clipboard = 'unnamedplus',
   pumheight = 12,
   termguicolors = true,
   mouse = 'a',
@@ -24,17 +23,16 @@ local options = {
   signcolumn = 'yes',
 
   statuscolumn = concat({
-    '%= ',
-    -- '%= %{v:lnum} ',
+
+    -- '%= ',
+    '%= %{v:lnum} ',
     -- "%#StatusColumnBorder#%{foldlevel(v:lnum) > 0 ? (foldlevel(v:lnum) > foldlevel(v:lnum - 1) ? (foldclosed(v:lnum) == -1 ? '󰅀  ' : '󰅂 ' ) : '   ') : '   '}",
-    -- "%#StatusColumnBorder#%{foldlevel(v:lnum) > 0 ? (foldlevel(v:lnum) > foldlevel(v:lnum - 1) ? (foldclosed(v:lnum) == -1 ? '  ' : ' ' ) : '  ') : '  '}",
-    -- "%#FoldIndicator#%{(foldclosed(v:lnum) == -1 ? '' : ' ' )}",
+    "%#StatusColumnBorder#%{foldlevel(v:lnum) > 0 ? (foldlevel(v:lnum) > foldlevel(v:lnum - 1) ? (foldclosed(v:lnum) == -1 ? '  ' : ' ' ) : '  ') : '  '}",
+    "%#FoldIndicator#%{(foldclosed(v:lnum) == -1 ? '' : ' ' )}",
     -- "%#FoldIndicator#%{(foldclosed(v:lnum) == -1 ? '' : '▎' )}",
   }),
 
-  ------------------------------
   -- Indenting
-  ------------------------------
 
   tabstop = 2,
   softtabstop = 2,
@@ -46,23 +44,17 @@ local options = {
   wrap = true,
   linebreak = true,
 
-  ------------------------------
   -- Folding
-  ------------------------------
 
   foldenable = true,
   foldlevel = 99,
 
-  ------------------------------
   -- Searching
-  ------------------------------
 
   ignorecase = true,
   smartcase = true,
 
-  ------------------------------
   -- Memory and file
-  ------------------------------
 
   shell = '/usr/bin/zsh',
   hidden = true,
@@ -70,19 +62,15 @@ local options = {
   swapfile = false,
   backup = false,
 
-  ------------------------------
   -- Update times
-  ------------------------------
 
   timeoutlen = 200,
   updatetime = 100,
 
-  ------------------------------
   -- GUI options
-  ------------------------------
 
-  -- guifont = "JetBrainsMono NFM SemiBold:h10.5",
-  -- linespace = 2,
+  guifont = 'JetBrainsMono SemiBold:h10.5',
+  linespace = 2,
 }
 
 for k, v in pairs(options) do
@@ -201,19 +189,22 @@ local icons = {
 }
 
 vim.g.neovide_refresh_rate = 60
-vim.g.disable_icons = true
+vim.g.disable_icons = false
 
 if vim.g.disable_icons then
   vim.opt.fillchars:append({
-
     foldclose = '>',
     foldopen = 'v',
   })
+
   for _, t in ipairs(icons) do
     for k in pairs(t) do
       t[k] = ''
     end
   end
+
+  icons.editor.indent = '│'
+  icons.editor.chevron = ' > '
 end
 
 return icons

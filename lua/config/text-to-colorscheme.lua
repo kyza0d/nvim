@@ -612,6 +612,23 @@ return {
         '#f7d8a8',
       },
     },
+
+    {
+      name = 'lost-in-cyber-space',
+      background_mode = 'dark',
+      background = '#000000',
+      foreground = '#00d900',
+      accents = {
+        '#ff00ff',
+        '#00ffff',
+        '#ff0000',
+        '#ffff00',
+        '#00d900',
+        '#0000ff',
+        '#ffffff',
+      },
+    },
   },
-  default_palette = 'plastic-dark',
+
+  default_palette = 'city-lights',
 }

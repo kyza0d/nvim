@@ -82,6 +82,12 @@ local search = {
 
 local file = {
   function()
+    local git_info = vim.b.gitsigns_status_dict
+
+    if not git_info or git_info.head == "" then
+      return ""
+    end
+
     local modified = vim.bo.modified and "%#StatusLineBlue#*%#CustomStatusLine# " or ""
     local parent = vim.fn.expand("%:p:h:t")
     local file = vim.fn.expand("%:p:t")
@@ -90,7 +96,7 @@ local file = {
     -- icon = icon or ""
     -- vim.api.nvim_set_hl(0, "StatusLineColor", {fg = color, bg = "#1B1B1E" })
 
-    return string.format("%%#StatusLineDim#%s/%s %s%%#CustomStatusLine#", parent, file, modified)
+    return string.format("%%#StatusLineDim#%s/%s %s%%#CustomStatusLine#%s ", parent, file,"[" ..  git_info.head .. "]", modified)
   end,
 }
 
@@ -135,15 +141,14 @@ local git = {
       return ""
     end
 
-    local function format_git(icon, status)
+    local function git(icon, status)
       return status ~= 0 and status ~= nil and string.format(" %s%s", icon, status) or ""
     end
 
     return table.concat({
-      "[" .. git_info.head .. "]",
-      format_git("%#StatusLineGreen#+ %#CustomStatusLine#", git_info.added),
-      format_git("%#StatusLineYellow#~ %#CustomStatusLine#", git_info.changed),
-      format_git("%#StatusLineRed#- %#CustomStatusLine#", git_info.removed),
+      git("%#StatusLineGreen#• %#CustomStatusLine#", git_info.added),
+      git("%#StatusLineYellow#• %#CustomStatusLine#", git_info.changed),
+      git("%#StatusLineRed#• %#CustomStatusLine#", git_info.removed),
     })
   end,
 
@@ -154,11 +159,11 @@ local components = {
   [1] = mode,
   [2] = macro,
   [3] = search,
-  [4] = line,
-  [5] = file,
-  [6] = diagnostics,
-  [7] = right_align,
-  [8] = root,
+  [4] = root,
+  [5] = line,
+  [6] = file,
+  [7] = diagnostics,
+  [8] = right_align,
   [9] = git,
 }
 
