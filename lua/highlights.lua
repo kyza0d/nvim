@@ -16,15 +16,9 @@ local wal_colors = {
   Color8 = { fg = neowal.color8 },
 }
 
-local StatusLine = {
-  fg = colors.fg_1,
-  fg_dim = colors.fg_2,
-  bg = colors.bg_negative_1,
-}
-
 local Neotree = {
   fg = colors.fg_2,
-  bg = colors.bg_negative_1,
+  bg = colors.bg_0,
   cursorline = colors.bg_1,
 }
 
@@ -35,10 +29,17 @@ local cursor_line = {
   CursorLineFold = { bg = colors.bg_1 },
 }
 
+local StatusLine = {
+  fg = colors.fg_3,
+  fg_dim = colors.fg_2,
+  bg = colors.bg_negative_1,
+}
+
 local status_line = {
   StatusLine = { fg = StatusLine.fg, bg = StatusLine.bg },
   StatusLineNC = { fg = colors.fg_4, bg = StatusLine.bg },
 
+  StatusLineCustom = { fg = StatusLine.fg, bg = StatusLine.bg },
   StatusLineCaps = { fg = colors.bg_negative_1, bg = colors.bg_0 },
   CustomStatusLine = { fg = StatusLine.fg, bg = StatusLine.bg },
   CustomStatusLineNC = { fg = colors.fg_4, bg = StatusLine.bg },
@@ -64,18 +65,38 @@ local status_line = {
   Reverse = { reverse = true },
 }
 
+-- for key, value in pairs(status_line) do
+--   value.strikethrough = true
+--   value.underline = true
+--   value.sp = colors.fg_3
+-- end
+
 local whichkey = {
-  ['WhichKeyFloat'] = { link = 'BufferLineFill' },
+  ['WhichKeyFloat'] = { bg = colors.bg_0, fg = colors.fg_3 },
 }
 
 local treesitter = {
-  ['@comment'] = { fg = colors.fg_3 },
+  ['Comment'] = { fg = colors.fg_3, italic = true },
+  ['@comment'] = { fg = colors.fg_3, italic = true },
   ['@neorg.headings.1.title'] = { fg = colors.orange, bold = true },
   ['@punctuation.bracket'] = { fg = colors.fg_3 },
   ['@constructor'] = { clear = true },
   ['@operator'] = { fg = colors.fg_3 },
   ['@neorg.tags.ranged_verbatim.code_block'] = { bg = colors.bg_negative_1 },
   ['@neorg.markup.strikethrough.delimiter'] = { link = '@neorg.markup.strikethrough' },
+}
+
+local telescope = {
+  TelescopeMatching = { fg = colors.accent },
+
+  TelescopeNormal = { fg = colors.fg_2, bg = colors.bg_1 },
+  TelescopeBorder = { fg = colors.bg_2, bg = colors.blue },
+
+  TelescopeSelection = { link = 'PmenuSel' },
+  TelescopeSelectionCaret = { fg = colors.accent, bg = colors.bg_2 },
+
+  TelescopeResultsNormal = { fg = colors.fg_3, bg = colors.bg_0 },
+  TelescopePreviewNormal = { fg = colors.fg_3, bg = colors.bg_0 },
 }
 
 local neotree = {
@@ -106,8 +127,9 @@ local neotree = {
   NeoTreeModified = { fg = colors.yellow },
   NeoTreeTabActive = { fg = colors.fg_1, bg = colors.bg_0, bold = true },
   NeoTreeTabInactive = { fg = colors.fg_3, bg = colors.bg_0 },
-  NeoTreeTabSeparatorInactive = { fg = colors.bg_0, bg = colors.bg_0 },
-  NeoTreeTabSeparatorActive = { fg = colors.bg_0, bg = colors.bg_0 },
+
+  NeoTreeTabSeparatorInactive = { fg = colors.fg_3, bg = colors.bg_0 },
+  NeoTreeTabSeparatorActive = { fg = colors.fg_3, bg = colors.bg_0 },
 }
 
 local dashboard = {
@@ -117,8 +139,9 @@ local dashboard = {
 
 local other = {
   ScrollView = { fg = colors.fg_4 },
-  WinSeparator = { fg = colors.bg_0, bg = colors.bg_0 },
+  WinSeparator = { fg = colors.bg_4, bg = colors.bg_0 },
   Hide = { fg = colors.bg_0 },
+  Visual = { fg = colors.bg_0, bg = colors.blue },
 
   EndOfBuffer = { fg = colors.fg_4 },
 
@@ -132,16 +155,109 @@ local other = {
   NavBuddyNormalFloat = { bg = colors.bg, fg = colors.fg_2 },
 
   LspInlayHint = { fg = colors.fg_4 },
-
-  -- BufferLineNumbers = { fg = colors.fg_4, bg = colors.bg_negative_1 },
-  -- BufferLineNumbersSelected = { fg = colors.blue },
-  -- BufferLineNumbersVisible = { fg = colors.fg_4, bg = colors.bg_0 },
 }
+
+local buffer_line = {
+  BufferLineTab = { fg = colors.fg_3, bg = colors.bg_0, sp = colors.fg_3, underline = true, strikethrough = true },
+  BufferLineBuffer = { fg = colors.fg_3, bg = colors.bg_0, sp = colors.fg_3, underline = true, strikethrough = true },
+
+  BufferLineModifiedVisible = {
+    fg = colors.fg_3,
+    bg = colors.bg_2,
+    sp = colors.fg_3,
+    underline = true,
+    -- strikethrough = true,
+  },
+
+  BufferLineModifiedSelected = {
+    fg = colors.blue,
+    bg = colors.bg_3,
+    sp = colors.fg_3,
+    underline = true,
+    -- strikethrough = true,
+  },
+  BufferLineModified = {
+    fg = colors.blue,
+    bg = colors.bg_0,
+    sp = colors.fg_3,
+    underline = true,
+    -- strikethrough = true,
+  },
+
+  BufferLineBackground = {
+    fg = colors.fg_3,
+    bg = colors.bg_1,
+    -- sp = colors.fg_3,
+    -- underline = true,
+    -- strikethrough = true,
+  },
+
+  BufferLineOffsetSeparator = { fg = colors.fg_3, bg = colors.fg_3, sp = colors.fg_3 },
+  BufferLineTabSeparator = { fg = colors.fg_3, bg = colors.bg_0, sp = colors.fg_3 },
+  BufferLineSeparator = { fg = colors.fg_3, bg = colors.bg_0, sp = colors.fg_3 },
+
+  BufferLineNumbers = { fg = colors.fg_3, bg = colors.bg_0, sp = colors.fg_3, underline = true },
+
+  BufferLineIndicatorVisible = { fg = colors.fg_3, bg = colors.bg_0, sp = colors.fg_3 },
+
+  BufferLineIndicatorSelected = {
+    fg = colors.blue,
+    bg = colors.bg_3,
+    sp = colors.blue,
+    underline = true,
+    -- strikethrough = true,
+  },
+  BufferLineBufferSelected = {
+    fg = colors.fg_3,
+    bg = colors.bg_3,
+    -- sp = colors.fg_3,
+    sp = colors.blue,
+    underline = true,
+  },
+
+  BufferLineNumbersSelected = {
+    fg = colors.fg_3,
+    -- sp = colors.fg_3,
+    -- underline = true,
+    -- strikethrough = true,
+  },
+
+  BufferLineFill = { fg = colors.fg_3, bg = colors.bg_negative_1, sp = colors.fg_3 },
+
+  BufferLineBufferVisible = {
+    fg = colors.fg_3,
+    bg = colors.bg_0,
+    -- sp = colors.fg_3,
+    -- underline = true,
+    -- strikethrough = true,
+  },
+  BufferLineNumbersVisible = {
+    fg = colors.fg_3,
+    bg = colors.bg_0,
+    -- underline = true,
+    -- sp = colors.fg_3,
+    -- strikethrough = true,
+  },
+
+  BufferLineIndicatorVisible = {
+    fg = colors.fg_3,
+    bg = colors.bg_0,
+    -- sp = colors.fg_3,
+    -- underline = true,
+    -- strikethrough = true,
+  },
+}
+
+-- for key, value in pairs(buffer_line) do
+--   value.strikethrough = true
+-- end
 
 local highlights = {
   status_line,
   cursor_line,
+  buffer_line,
   treesitter,
+  telescope,
   neotree,
   dashboard,
   whichkey,

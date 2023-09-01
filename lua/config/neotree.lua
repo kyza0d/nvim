@@ -12,8 +12,7 @@ require('neo-tree').setup({
     },
   },
 
-  enable_git_status = true,
-
+  enable_git_status = false,
   enable_diagnostics = true,
 
   hide_root_node = true,
@@ -48,8 +47,10 @@ require('neo-tree').setup({
     },
 
     indent = {
-      indent_marker = icons.indent_marker,
-      last_indent_marker = icons.last_indent_marker,
+      indent_marker = ' ',
+      last_indent_marker = '',
+      -- indent_marker = icons.indent_marker,
+      -- last_indent_marker = icons.last_indent_marker,
 
       indent_size = 2,
       padding = 0,
@@ -76,16 +77,15 @@ require('neo-tree').setup({
   filesystem = {
     components = {
       icon = function(config, node)
-        local icon = config.default or ' '
+        local icon = ''
         local padding = ''
         local highlight = config.highlight or highlights.FILE_ICON
 
         if node.type == 'directory' then
-          highlight = 'NeoTreeIndentMarker'
           if node:is_expanded() then
-            icon = '├─' .. icons.folder_open
+            icon = icons.folder_open
           else
-            icon = '├─' .. icons.folder_closed
+            icon = icons.folder_closed
           end
         end
 

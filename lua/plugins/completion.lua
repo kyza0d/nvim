@@ -7,7 +7,7 @@ return {
   --- @url https://github.com/hrsh7th/nvim-cmp
   {
     'hrsh7th/nvim-cmp',
-    -- event = { 'CmdlineEnter', 'InsertEnter' },
+    event = { 'CmdlineEnter', 'InsertEnter' },
     dependencies = {
       'hrsh7th/cmp-buffer',
       'hrsh7th/cmp-cmdline',

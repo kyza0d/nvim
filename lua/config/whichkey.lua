@@ -1,3 +1,5 @@
+vim.g.fullscreen = false
+
 local leader = {
 
   ----------------------------------------------
@@ -121,6 +123,23 @@ local leader = {
 local cr_mappings = {
   d = { '<cmd>WhichKey <leader>od<cr>', 'Dotfiles' },
   s = { '<cmd>Telescope lsp_workspace_symbols<cr>', 'Workspace Symbols' },
+  f = {
+    function()
+      vim.g.fullscreen = not vim.g.fullscreen
+
+      vim.fn.system("bspc node -t '~fullscreen'")
+      vim.fn.system("notify-send 'Neovim fullscreened (CR + f) to exit' -r 5555")
+      vim.g.neovide_transparency = 1.0
+
+      if not vim.g.fullscreen then
+        local alpha = function() return string.format('%x', math.floor(255 * 0.8)) end
+        vim.g.neovide_background_color = '#0f1117' .. alpha()
+        vim.g.neovide_transparency = 0.92
+        vim.g.transparency = 0.92
+      end
+    end,
+    'Fullscreen',
+  },
   b = { '<cmd>Telescope buffers<cr>', 'buffers' },
   l = {
     name = 'List',
@@ -169,6 +188,10 @@ require('which-key').setup({
     breadcrumb = '',
     separator = '-',
     group = '',
+  },
+
+  window = {
+    border = 'single', -- none, single, double, shadow
   },
 })
 

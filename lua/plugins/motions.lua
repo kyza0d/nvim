@@ -18,16 +18,4 @@ return {
     config = function() require('tmux').setup({}) end,
     -- event = 'VeryLazy',
   },
-
-  -- Surround motions
-  --- @url https://github.com/kylechui/nvim-surround
-  {
-    'kylechui/nvim-surround',
-    config = function() require('nvim-surround').setup({}) end,
-    -- event = 'VeryLazy',
-  },
-
-  -- Align motions
-  --- @url https://github.com/Vonr/align.nvim
-  'Vonr/align.nvim',
 }

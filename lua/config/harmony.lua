@@ -1,5 +1,6 @@
 local highlights = require('highlights')
-local colors = require('harmony').color
+
+local colors = require('harmony').colors
 
 local t2c_colors = require('text-to-colorscheme')
 local t2c_utils = require('text-to-colorscheme.internal.color_util')
@@ -10,6 +11,7 @@ local t2c_foreground = t2c_utils.hsv_to_hex(t2c_hsv_palette.foreground)
 require('harmony').setup({
   ['*'] = {
     bg = { '#2C3338', '#ffffff' },
+    -- bg = { '#000000', '#ffffff' },
     fg = { '#dddddd', '#222222' },
 
     highlights = highlights,
@@ -17,6 +19,7 @@ require('harmony').setup({
 
   ['text-to-colorscheme'] = {
     bg = t2c_background,
+    -- bg = '#000000',
     fg = t2c_foreground,
   },
 
@@ -26,7 +29,8 @@ require('harmony').setup({
   },
 
   neowal = {
-    bg = { vim.g.background, '#222222' },
+    bg = { vim.g.color0, '#222222' },
+    -- bg = { '#000000', '#222222' },
     fg = { vim.g.foreground, '#222222' },
   },
 

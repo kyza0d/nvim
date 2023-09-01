@@ -44,7 +44,7 @@ _G.icons = require('options')
 _G.ky = {}
 
 ky.write_cache = function(key, value, group)
-  local cache_dir = '/home/evan/.cache/nvim/ky/'
+  local cache_dir = '/home/kyza/.cache/nvim/ky/'
   local cache_file = cache_dir .. key
 
   -- Create cache directory if it doesn't exist
@@ -63,7 +63,7 @@ ky.write_cache = function(key, value, group)
 end
 
 ky.load_cache = function(key, default, fallback)
-  local cache_dir = '/home/evan/.cache/nvim/ky/'
+  local cache_dir = '/home/kyza/.cache/nvim/ky/'
 
   if not vim.fn.isdirectory(cache_dir) then os.execute('mkdir -p ' .. cache_dir) end
 

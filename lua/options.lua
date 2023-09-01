@@ -4,11 +4,8 @@ local options = {
 
   -- Appearance
 
-  numberwidth = 5,
-  cursorline = true,
-  laststatus = 2,
+  laststatus = 3,
   cmdheight = 0,
-  clipboard = 'unnamedplus',
   pumheight = 12,
   termguicolors = true,
   mouse = 'a',
@@ -16,24 +13,20 @@ local options = {
   showmode = false,
 
   title = true,
-  titlestring = 'nvim:%{expand("%:p:h:t")}' .. '/%{expand("%:p:t")}',
 
-  number = false,
-  relativenumber = false,
-  signcolumn = 'yes',
+  number = true,
+  numberwidth = 1,
+  signcolumn = 'no',
+
+  titlestring = 'nvim: @%{expand("%:p:h:t")}' .. '/%{expand("%:p:t")}',
 
   statuscolumn = concat({
-
-    -- '%= ',
-    '%= %{v:lnum} ',
-    -- "%#StatusColumnBorder#%{foldlevel(v:lnum) > 0 ? (foldlevel(v:lnum) > foldlevel(v:lnum - 1) ? (foldclosed(v:lnum) == -1 ? '󰅀  ' : '󰅂 ' ) : '   ') : '   '}",
-    "%#StatusColumnBorder#%{foldlevel(v:lnum) > 0 ? (foldlevel(v:lnum) > foldlevel(v:lnum - 1) ? (foldclosed(v:lnum) == -1 ? '  ' : ' ' ) : '  ') : '  '}",
+    '%@SignCb@%s%=%T%@NumCb@ %l %T',
+    "%#StatusColumnBorder#%{foldlevel(v:lnum) > 0 ? (foldlevel(v:lnum) > foldlevel(v:lnum - 1) ? (foldclosed(v:lnum) == -1 ? '󰅀  ' : '󰅂 ' ) : '   ') : '   '}",
     "%#FoldIndicator#%{(foldclosed(v:lnum) == -1 ? '' : ' ' )}",
-    -- "%#FoldIndicator#%{(foldclosed(v:lnum) == -1 ? '' : '▎' )}",
   }),
 
   -- Indenting
-
   tabstop = 2,
   softtabstop = 2,
   shiftwidth = 2,
@@ -45,32 +38,33 @@ local options = {
   linebreak = true,
 
   -- Folding
-
   foldenable = true,
   foldlevel = 99,
 
   -- Searching
-
   ignorecase = true,
   smartcase = true,
 
   -- Memory and file
-
   shell = '/usr/bin/zsh',
   hidden = true,
-  lazyredraw = true,
+  lazyredraw = false,
   swapfile = false,
   backup = false,
 
   -- Update times
-
   timeoutlen = 200,
   updatetime = 100,
 
   -- GUI options
 
-  guifont = 'JetBrainsMono SemiBold:h10.5',
-  linespace = 2,
+  -- guifont = 'Iosevka Comfy Wide Motion:h10.4',
+  -- guifont = 'Greybeard 14px:h11.7',
+  -- guifont = 'Iosevka Comfy Wide Motion:h10.7',
+  -- guifont = 'Pitagon Sans Mono:h10.6',
+  guifont = 'Cartograph CF:h11.5',
+
+  linespace = 8,
 }
 
 for k, v in pairs(options) do
@@ -85,13 +79,14 @@ create_autocmd({ 'BufEnter' }, {
 })
 
 vim.opt.fillchars:append({
-  horiz = '─',
-  horizup = '┴',
-  horizdown = '┬',
-  vert = '│',
-  vertleft = '┤',
-  vertright = '├',
-  verthoriz = '┼',
+  -- horiz = '─',
+  -- horiz = '▔',
+  -- horizup = '▔',
+  -- horizdown = '▔',
+  -- vert = '▏',
+  -- vertleft = '▏',
+  -- vertright = '▏',
+  -- verthoriz = '▏',
   eob = ' ',
 })
 
@@ -111,33 +106,33 @@ local icons = {
   },
 
   completion = {
-    Class = ' 󰴜  ',
-    Color = '   ',
-    Constant = ' 󰐤  ',
-    Constructor = '   ',
-    Enum = '    ',
-    EnumMember = '   ',
-    Event = '   ',
-    Field = ' 󰸫  ',
-    Folder = '   ',
-    Function = ' 󰒔  ',
-    Interface = ' 󰑕  ',
-    Keyword = ' 󰎃  ',
-    Method = ' 󰥤  ',
-    Module = ' 󱃖  ',
-    Array = ' 󱃗  ',
-    Operator = ' 󰦓  ',
-    Property = ' 󰥤  ',
-    Reference = '   ',
-    Snippet = ' 󰿦  ',
-    Struct = '   ',
-    Text = ' 󰺮  ',
-    TypeParameter = ' 󰀧  ',
-    Unit = '    ',
-    Value = '   ',
-    Variable = ' 󰥤  ',
-    Directory = '   ',
-    File = '   ',
+    Class = ' 󰴜 ',
+    Color = '  ',
+    Constant = ' 󰐤 ',
+    Constructor = '  ',
+    Enum = '   ',
+    EnumMember = '  ',
+    Event = '  ',
+    Field = ' 󰸫 ',
+    Folder = '  ',
+    Function = ' 󰒔 ',
+    Interface = ' 󰑕 ',
+    Keyword = ' 󰎃 ',
+    Method = ' 󰥤 ',
+    Module = ' 󱃖 ',
+    Array = ' 󱃗 ',
+    Operator = ' 󰦓 ',
+    Property = ' 󰥤 ',
+    Reference = '  ',
+    Snippet = ' 󰿦 ',
+    Struct = '  ',
+    Text = ' 󰺮 ',
+    TypeParameter = ' 󰀧 ',
+    Unit = '   ',
+    Value = '  ',
+    Variable = ' 󰥤 ',
+    Directory = '  ',
+    File = '  ',
   },
 
   navic = {
@@ -170,26 +165,20 @@ local icons = {
   },
 
   neotree = {
-    folder_open = '',
-    folder_closed = '',
-    folder_empty = '',
-    folder_empty_open = '',
-    -- folder_open = ' 󰅀  ',
-    -- folder_closed = ' 󰅂  ',
-    -- folder_empty = ' 󰅀  ',
-    -- folder_empty_open = ' ',
+    folder_open = '󰅀 ',
+    folder_closed = '󰅂  ',
+    folder_empty = '󰅀 ',
     file = ' ',
     symlink = ' ',
     symlink_open = ' ',
     default = ' ',
     default_open = ' ',
-    indent_marker = '│',
-    last_indent_marker = '│',
+    indent_marker = '🭳',
+    last_indent_marker = '🭳',
   },
 }
 
-vim.g.neovide_refresh_rate = 60
-vim.g.disable_icons = false
+if vim.g.neovide then vim.g.disable_icons = true end
 
 if vim.g.disable_icons then
   vim.opt.fillchars:append({

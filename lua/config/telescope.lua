@@ -3,19 +3,20 @@ require('telescope').setup({
     file_ignore_patterns = { 'node_modules', 'package-lock.json', 'yarn.lock', 'dist' },
     sorting_strategy = 'ascending',
 
+    -- borderchars = { '-', '|', '-', '|', '+', '+', '+', '+' },
     borderchars = { '─', '│', '─', '│', '┌', '┐', '┘', '└' },
 
     selection_caret = ' ',
-    prompt_prefix = ' ',
+    prompt_prefix = ' => ',
     entry_prefix = ' ',
 
     path_display = { 'absolute' },
 
-    -- mappings = {
-    --   i = {
-    --     ['<C-[>'] = require('telescope.actions').close,
-    --   },
-    -- },
+    mappings = {
+      i = {
+        ['<C-[>'] = require('telescope.actions').close,
+      },
+    },
 
     layout_config = {
       width = 0.8,

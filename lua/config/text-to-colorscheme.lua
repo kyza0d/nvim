@@ -1,7 +1,7 @@
 return {
   ai = {
     openai_api_key = os.getenv('OPENAI_API_KEY'),
-    gpt_model = 'gpt-3.5-turbo-0613',
+    gpt_model = 'gpt-4',
   },
 
   italic = {
@@ -16,7 +16,7 @@ return {
       name = 'lush-green',
       background_mode = 'dark',
       background = '#0f1a0e',
-      foreground = '#b8c5b4',
+      foreground = '#ccdbf9',
       accents = {
         '#419544',
         '#76a63f',
@@ -215,7 +215,7 @@ return {
       name = 'north-star',
       background_mode = 'dark',
       background = '#0c0f1c',
-      foreground = '#d8dde8',
+      foreground = '#c0d2f9',
       accents = {
         '#ff6ac1',
         '#6ac1ff',
@@ -285,6 +285,22 @@ return {
         '#56b6c2',
         '#e06c75',
         '#be5046',
+      },
+    },
+
+    {
+      name = 'city-lights (saturated)',
+      background_mode = 'dark',
+      background = '#141a25',
+      foreground = '#94a5c6',
+      accents = {
+        '#40a5f9',
+        '#76ac51',
+        '#eebb5c',
+        '#c65ae6',
+        '#3bb9c9',
+        '#e94d59',
+        '#c5382b',
       },
     },
 
@@ -630,5 +646,53 @@ return {
     },
   },
 
-  default_palette = 'city-lights',
+  {
+    name = 'plasma-blue-neon',
+    background_mode = 'dark',
+    background = '#0b0f20',
+    foreground = '#c0c5ce',
+    accents = {
+      '#6a8fd8',
+      '#b68ad8',
+      '#d88a6a',
+      '#75b85a',
+      '#6ad8d8',
+      '#d86ad8',
+      '#d86a6a',
+    },
+  },
+
+  {
+    name = 'plasma',
+    background_mode = 'dark',
+    background = '#0d1117',
+    foreground = '#c9d1d9',
+    accents = {
+      '#ff6e6e',
+      '#ffa657',
+      '#fadc6d',
+      '#2cb382',
+      '#6ea6ff',
+      '#a371f7',
+      '#f472b6',
+    },
+  },
+
+  {
+    name = 'pale-blue-night',
+    background_mode = 'dark',
+    background = '#1b2b34',
+    foreground = '#d8dee9',
+    accents = {
+      '#81a1c1',
+      '#88c0d0',
+      '#7aa09f',
+      '#8ba277',
+      '#b48ead',
+      '#d08770',
+      '#bf616a',
+    },
+  },
+
+  default_palette = 'north-star',
 }

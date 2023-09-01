@@ -9,8 +9,10 @@ return {
     'nvim-treesitter/nvim-treesitter',
     build = ':TSUpdate',
     version = false,
-    -- event = 'BufReadPost',
+    -- event = 'BufEnterPre',
+    lazy = false,
     config = function(_, opts) require('nvim-treesitter.configs').setup(opts) end,
+
     opts = {
       -- stylua: ignore
       ensure_installed = {
@@ -22,6 +24,15 @@ return {
       highlight = { enable = true },
       indent = { enable = true },
       playground = { enable = true },
+      incremental_selection = {
+        enable = true,
+        keymaps = {
+          init_selection = '<C-k>',
+          node_incremental = '<C-k>',
+          node_decremental = '<C-j>',
+        },
+      },
+
       context_commentstring = {
         enable = true,
         enable_autocmd = false,
@@ -82,5 +93,21 @@ return {
   {
     'nvim-treesitter/playground',
     cmd = { 'TSPlaygroundToggle', 'TSHighlightCapturesUnderCursor' },
+  },
+
+  {
+    'kevinhwang91/nvim-ufo',
+    config = function() require('config.nvim-ufo') end,
+    event = 'BufReadPre',
+    dependencies = 'kevinhwang91/promise-async',
+    opts = {},
+  },
+
+  {
+    'razak17/tailwind-fold.nvim',
+    opts = {},
+    dependencies = { 'nvim-treesitter/nvim-treesitter' },
+    ft = { 'html', 'svelte', 'astro', 'vue', 'typescriptreact' },
+    pin = true,
   },
 }

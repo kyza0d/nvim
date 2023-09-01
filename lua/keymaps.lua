@@ -1,141 +1,124 @@
---------------------------------------------
--- Plugin Mappings
---------------------------------------------
+-------------------------------
+-- Plugin mappings
+-------------------------------
 
 -- github/copilot.vim
-keymap('i', '<C-J>', "copilot#Accept('<CR>')", { silent = true, expr = true, desc = 'Accept Copilot suggestion' })
+keymap('i', '<C-J>', "copilot#Accept('<CR>')", { silent = true, expr = true })
 
 -- nvim-neo-tree/neo-tree.nvim
-keymap('n', '<C-n>', ':Neotree toggle filesystem<cr>', { desc = 'Toggle Neotree filesystem' })
+keymap('n', '<C-n>', ':Neotree toggle filesystem<cr>')
 
 -- nvim-telescope/telescope.nvim
-keymap('n', '<C-p>', ":lua require('telescope.builtin').find_files()<cr>", { desc = 'Search files with Telescope' })
+keymap('n', '<C-p>', ":lua require('telescope.builtin').find_files()<cr>")
+
+-- akinsho/bufferline.nvim
+keymap('n', '<S-l>', '<cmd>bn<cr>', { silent = true })
+keymap('n', '<S-h>', '<cmd>bp<cr>', { silent = true })
+keymap('n', '<C-S-h>', ':silent BufferLineMovePrev<cr>')
+keymap('n', '<C-S-l>', ':silent BufferLineMoveNext<cr>')
+keymap('n', '1<CR>', ':silent BufferLineGoToBuffer 1<cr>')
+keymap('n', '2<CR>', ':silent BufferLineGoToBuffer 2<cr>')
+keymap('n', '3<CR>', ':silent BufferLineGoToBuffer 3<cr>')
+keymap('n', '4<CR>', ':silent BufferLineGoToBuffer 4<cr>')
+keymap('n', '5<CR>', ':silent BufferLineGoToBuffer 5<cr>')
 
 -- echasnovski/mini.comment
-keymap('n', '<C-/>', 'gcc', { desc = 'Toggle comment' })
+keymap('n', '<C-/>', 'gcc')
 
 -- Vonr/align.nvim
-keymap(
-  'x',
-  'as',
-  function() require('align').align_to_char(1, true) end,
-  { desc = 'Align selected text to a character' }
-)
+keymap('x', 'as', function() require('align').align_to_char(1, true) end)
 
 -- dnlhc/glance.nvim
-keymap('n', 'gr', '<cmd>Glance references<cr>', { desc = 'Glance at references' })
+keymap('n', 'gr', '<cmd>Glance references<cr>')
 
 -- smjonas/inc-rename.nvim
-keymap(
-  'n',
-  'gR',
-  function() return ':IncRename ' .. vim.fn.expand('<cword>') end,
-  { expr = true, desc = 'Incrementally rename' }
-)
+keymap('n', 'gR', function() return ':IncRename ' .. vim.fn.expand('<cword>') end, { expr = true })
 
---------------------------------------------
--- Movement
---------------------------------------------
+-------------------------------
+-- LSP
+-------------------------------
 
--- Folding
-keymap('n', '<C-[>', ':foldclose<cr>', { desc = 'Close fold' })
-keymap('n', '<C-]>', ':foldopen<cr>', { desc = 'Open fold' })
+create_autocmd('LspAttach', {
+  callback = function()
+    -- Preform code action
+    keymap('n', '>', function() vim.lsp.buf.code_action() end, { buffer = true })
 
--- Command line movement
-keymap('c', '<C-l>', '<Right>', { silent = false, desc = 'Move right in command line' })
+    keymap('n', 'gd', function()
+      vim.lsp.buf.definition({
+        on_list = function(options)
+          vim.fn.setqflist({}, ' ', options)
+          vim.api.nvim_command('cfirst')
+        end,
+      })
+    end, { buffer = true })
 
---------------------------------------------
--- Language Server Protocol
---------------------------------------------
+    -- Show hover
+    -- Show diagnostic
+    keymap('n', '<C-S-k>', function() vim.diagnostic.open_float() end, { buffer = true })
+    keymap('n', 'K', function() vim.lsp.buf.hover() end, { buffer = true })
 
--- create_autocmd('LspAttach', {
---   callback = function()
---     -- Perform code action
---     keymap('n', '>', function() vim.lsp.buf.code_action() end, { buffer = true, desc = 'Perform LSP code action' })
---
---     keymap('n', 'gd', function()
---       vim.lsp.buf.definition({
---         on_list = function(options)
---           vim.fn.setqflist({}, ' ', options)
---           vim.api.nvim_command('cfirst')
---         end,
---       })
---     end, { buffer = true, desc = 'Go to LSP definition' })
---
---     -- Show hover
---     keymap('n', '<S-k>', function() vim.lsp.buf.hover() end, { buffer = true, desc = 'Show LSP hover' })
+    -- Goto references
+    -- dnlhc/glance.nvim
+    keymap('n', 'gr', '<cmd>Glance references<cr>')
 
--- (Remaining LSP key mappings)
+    -- Rename under cursor
+    -- smjonas/inc-rename.nvim
+    keymap('n', 'gR', function() return fmt(':IncRename %s', fn.expand('<cword>')) end, { expr = true, silent = true })
+  end,
+})
 
---------------------------------------------
--- Searching
---------------------------------------------
+-------------------------------
+-- Utilities
+-------------------------------
 
 -- Search for visually selected text
-keymap('v', '//', [[y/\V<C-R>=escape(@",'/\')<CR><CR>:set hlsearch<CR>N]], { desc = 'Search selected text' })
+-- https://vim.fandom.com/wiki/Search_for_visually_selected_text
+keymap('v', '//', [[y/\V<C-R>=escape(@",'/\')<CR><CR>:set hlsearch<CR>N]])
 
 -- Toggle highlight
-keymap('n', '\\', ':set invhlsearch<cr>', { desc = 'Toggle search highlight' })
+keymap('n', '\\', ':set invhlsearch<cr>')
 
---------------------------------------------
--- Buffer Management
---------------------------------------------
-
--- Change Buffer
-keymap('n', '<S-l>', '<cmd>bn<cr>', { silent = true, desc = 'Move to next buffer' })
-keymap('n', '<S-h>', '<cmd>bp<cr>', { silent = true, desc = 'Move to previous buffer' })
-
--- Alternate buffers
-keymap('n', '<C-CR>', '<C-^>', { desc = 'Switch to alternate buffer' })
-
--- Move Buffers
-keymap('n', '<C-S-h>', ':silent BufferLineMovePrev<cr>', { desc = 'Move buffer left' })
-keymap('n', '<C-S-l>', ':silent BufferLineMoveNext<cr>', { desc = 'Move buffer right' })
+-- Folding
+keymap('n', '[[', ':foldclose<cr>', { nowait = true, noremap = true })
+keymap('n', ']]', ':foldopen<cr>', { nowait = true, noremap = true })
 
 -- Quit Buffer
--- (Description already provided)
+keymap('n', '<S-q>', ':Bd<cr>', { desc = 'Save and quit', silent = false })
+-- keymap('n', '<S-q>', ':bd<cr>', { desc = 'Save and quit', silent = false })
 
--- Navigate Buffers
-keymap({ 'n', 'v' }, '<cr>1', '<cmd>BufferLineGoToBuffer 1<cr>', { nowait = true, desc = 'Go to Buffer 1' })
-
---------------------------------------------
--- Editor Management
---------------------------------------------
-
--- Close Editor
--- (Description already provided)
+-- Quit Neovim
+keymap('n', 'Z', 'ZZ', { desc = 'Save and quit', silent = false })
 
 -------------------------------
--- Text Manipulation
+-- Editing
 -------------------------------
-
--- Copying / Pasting
--- (Descriptions can be added like 'Copy to clipboard', 'Paste from clipboard', etc.)
 
 -- Change / Delete go next
-keymap('v', '<C-n>', '//cgn', { noremap = false, desc = 'Change to next match' })
-keymap('v', '<C-d>', '//dgn', { noremap = false, desc = 'Delete next match' })
+keymap('v', '<C-n>', '//cgn', { noremap = false })
+keymap('v', '<C-d>', '//dgn', { noremap = false })
 
--- Substitute selected text
+-- Copying / Pasting
+keymap({ 'n', 'v' }, '<C-c>', '"+y')
+keymap({ 'i', 'c' }, '<C-v>', '<C-r><C-p>+')
+keymap({ 'n', 'v' }, '<C-v>', '"+p')
+keymap({ 'i', 's' }, '<C-p>', '<C-r>0')
+
+-- Block selection
+keymap({ 'n', 'v' }, '<C-b>', '<C-v>')
+
+-- Substitue selected text
 keymap(
   'n',
   '<C-s>',
   function() return string.format(':s/%s//g<Left><Left>', vim.fn.expand('<cword>')) end,
-  { silent = false, expr = true, desc = 'Substitute word under cursor' }
-)
-keymap(
-  'v',
-  '<C-s>',
-  function() return [["_y:%s/\%V<C-R>"//g<Left><Left>]] end,
-  { silent = false, expr = true, desc = 'Substitute selected text' }
+  { silent = false, expr = true }
 )
 
--------------------------------
--- Remaps
--------------------------------
+keymap('v', '<C-s>', function() return [["_y:%s/\%V<C-R>"//g<Left><Left>]] end, { silent = false, expr = true })
 
--- Block selection
-keymap({ 'n', 'v' }, '<C-b>', '<C-v>', { desc = 'Select block of text' })
+-- Command line movement
+keymap('c', '<C-h>', '<Left>', { silent = false })
+keymap('c', '<C-l>', '<Right>', { silent = false })
 
 -- Repeat "a" macro on selected lines
 keymap('v', 'a', ':normal @a<cr>', { desc = 'Repeat macro on selected lines' })
@@ -143,3 +126,25 @@ keymap('v', 'a', ':normal @a<cr>', { desc = 'Repeat macro on selected lines' })
 -- Insert new lines
 keymap('i', '<C-CR>', '<C-o>o', { desc = 'Insert new line below' })
 keymap('i', '<C-S-CR>', '<C-o>O', { desc = 'Insert new line above' })
+
+-------------------------------
+-- Movement
+-------------------------------
+
+-- Start / end of line
+keymap({ 'n', 'v' }, '<C-l>', '$', { desc = 'end of line' })
+keymap({ 'n', 'v' }, '<C-h>', '^', { desc = 'start of line' })
+keymap({ 'n', 'v' }, '<C-j>', ':call cursor(0, len(getline("."))/2)<cr>', { desc = 'middle of line' })
+
+-- Incremental selection
+-- keymap( 'n', '<C-k>', '<cmd>norm v<C-k><cmd>', { expr = true, silent = false, desc = 'Incremental selection', noremap = false })
+
+-- Move to matching character
+-- keymap({ 'n', 'v' }, '<C-j>', '%', { desc = 'Move to matching character' })
+
+-- Vertical movement
+keymap('n', '<C-u>', '4<C-y>', { desc = 'Move 10 lines up' })
+keymap('n', '<C-d>', '4<C-e>', { desc = 'Move 10 lines down' })
+
+-- Alternate buffers
+keymap('n', '<C-CR>', '<C-^>', { desc = 'Switch to last buffer' })

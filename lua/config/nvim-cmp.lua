@@ -1,4 +1,6 @@
 local cmp = require('cmp')
+local types = require('cmp.types')
+local str = require('cmp.utils.str')
 
 local luasnip = require('luasnip')
 local lspkind = require('lspkind')
@@ -25,13 +27,35 @@ cmp.setup({
       border = 'single',
     },
     completion = {
-      side_padding = 1,
+      side_padding = 0,
       border = 'none',
     },
   },
 
   snippet = {
     expand = function(args) luasnip.lsp_expand(args.body) end,
+  },
+
+  formatting = {
+    fields = { 'kind', 'abbr', 'menu' },
+    format = lspkind.cmp_format({
+      mode = 'symbol',
+      symbol_map = icons,
+      menu = {
+        nvim_lsp = 'lsp',
+        nvim_lua = 'lua',
+        emoji = 'emoji',
+        path = 'path',
+        luasnip = 'snippet',
+        dictionary = 'dictionary',
+        buffer = 'buffer',
+        spell = 'spell',
+        rg = 'ripgrep',
+        git = 'git',
+      },
+      maxwidth = 50,
+      ellipsis_char = '...',
+    }),
   },
 
   mapping = cmp.mapping.preset.insert({

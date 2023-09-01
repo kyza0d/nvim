@@ -38,13 +38,9 @@ local modes = {
 local mode = {
   function()
     local current_mode = vim.api.nvim_get_mode().mode
-    return string.format(
-      -- "%%#%s# %s %%#StatusLineMode# %%#CustomStatusLine#",
-      "%%#%s# %s %%#StatusLineMode#%%#CustomStatusLine#",
-      -- "%%#%s#%%#StatusLineMode# %s %%#StatusLine#",
-      modes[current_mode][2],
-      modes[current_mode][1]:upper()
-    )
+    -- return string.format( "%%#%s#  %%#StatusLineMode# %%#CustomStatusLine#", modes[current_mode][2])
+    return string.format( "%%#StatusLineBlue#▎%%#%s# %s %%#StatusLineMode# %%#CustomStatusLine#", modes[current_mode][2], modes[current_mode][1]:upper())
+    -- return string.format( "▏%s %%#CustomStatusLine#", modes[current_mode][1]:upper())
   end,
 }
 
@@ -146,6 +142,9 @@ local git = {
     end
 
     return table.concat({
+      -- git("•", git_info.added),
+      -- git("•", git_info.changed),
+      -- git("•", git_info.removed),
       git("%#StatusLineGreen#• %#CustomStatusLine#", git_info.added),
       git("%#StatusLineYellow#• %#CustomStatusLine#", git_info.changed),
       git("%#StatusLineRed#• %#CustomStatusLine#", git_info.removed),
@@ -215,6 +214,7 @@ statusline.active = function()
 
   end
 
+  -- return highlights.background .. statusline .. "% ▕"
   return highlights.background .. statusline .. "% "
 end
 

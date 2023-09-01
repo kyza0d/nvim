@@ -9,7 +9,11 @@ return {
     'nvim-telescope/telescope.nvim',
     lazy = false,
     config = function() require('config.telescope') end,
-    dependencies = { 'nvim-lua/plenary.nvim', 'nvim-telescope/telescope-symbols.nvim' },
+    dependencies = {
+      'nvim-lua/plenary.nvim',
+      'nvim-telescope/telescope-symbols.nvim',
+      'nvim-telescope/telescope-project.nvim',
+    },
   },
 
   -- Goto definitions/references window

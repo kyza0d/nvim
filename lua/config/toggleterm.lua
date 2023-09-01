@@ -1,13 +1,10 @@
 return {
   open_mapping = '<C-\\>',
-  shade_terminals = true,
+  shade_terminals = false,
   direction = 'horizontal',
   size = function()
-    return vim.o.lines * 0.50 -- 60% of terminal
+    return vim.o.lines * 0.30 -- 30% of terminal
   end,
-  winbar = {
-    enabled = true,
-  },
   on_open = function()
     vim.opt_local.statuscolumn = ''
     vim.opt_local.cursorline = false

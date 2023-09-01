@@ -7,7 +7,6 @@ return {
   --- @url https://github.com/neovim/nvim-lspconfig
   {
     'neovim/nvim-lspconfig',
-    -- event = 'BufReadPre',
     dependencies = { 'onsails/lspkind.nvim' },
   },
 
@@ -32,7 +31,7 @@ return {
   --- @url https://github.com/williamboman/mason-lspconfig.nvim
   {
     'williamboman/mason-lspconfig.nvim',
-    -- event = { 'BufReadPre', 'BufNewFile' },
+    event = { 'BufReadPre', 'BufNewFile' },
     opts = {
       automatic_installation = true,
       handlers = {
@@ -48,6 +47,7 @@ return {
   --- @url https://github.com/lvimuser/lsp-inlayhints.nvim
   {
     'lvimuser/lsp-inlayhints.nvim',
+    event = 'VeryLazy',
     enabled = true,
     init = function()
       create_augroup('LspAttach_inlayhints', {})
@@ -80,15 +80,15 @@ return {
   {
     'smjonas/inc-rename.nvim',
     opts = { hl_group = 'Visual', preview_empty_name = true },
-    -- event = 'LspAttach',
+    event = 'LspAttach',
   },
 
   -- Show LSP progress
   --- @url https://github.com/j-hui/fidget.nvim
-  {
-    'j-hui/fidget.nvim',
-    -- event = 'BufReadPost',
-    tag = 'legacy',
-    opts = { text = { spinner = 'dots_ellipsis' } },
-  },
+  -- {
+  --   'j-hui/fidget.nvim',
+  --   event = 'BufReadPost',
+  --   tag = 'legacy',
+  --   opts = { text = { spinner = 'dots_ellipsis' } },
+  -- },
 }

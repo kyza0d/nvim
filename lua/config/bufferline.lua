@@ -6,31 +6,42 @@
 
 return {
   options = {
+    -- custom_areas = {
+    --   left = function()
+    --     return {
+    --       {
+    --         text = '%#Normal# ',
+    --       },
+    --     }
+    --   end,
+    -- },
+
+    -- separator_style = { '▏ ▕', '▏ ▕' },
     separator_style = { '', '' },
 
     right_mouse_command = 'Bdelete! %d',
 
     indicator = {
+      icon = ' ', -- this should be omitted if indicator style is not 'icon'
       style = 'icon',
-      icon = '▎',
     },
 
-    -- numbers = function(opts) return string.format('%s.', opts.ordinal) end,
+    -- numbers = function(opts) return string.format('%s', opts.ordinal) end,
 
     show_buffer_close_icons = false,
-    show_buffer_icons = true,
+    show_buffer_icons = false,
     show_close_icon = true,
 
-    enforce_regular_tabs = true,
+    enforce_regular_tabs = false,
 
-    modified_icon = '*',
-    buffer_close_icon = '',
+    modified_icon = '+',
+    buffer_close_icon = 'x',
 
     left_trunc_marker = '',
     right_trunc_marker = '',
 
-    -- truncate_names = false,
-    -- tab_size = 0,
+    truncate_names = false,
+    tab_size = 17,
 
     offsets = {
       {
@@ -38,30 +49,7 @@ return {
         text_align = 'left',
         highlight = 'ProjectRoot',
         padding = 0,
-        -- text = root(),
       },
-    },
-  },
-  highlights = {
-    buffer_selected = {
-      fg = vim.g.color1,
-      bg = vim.g.background,
-      italic = false,
-    },
-
-    -- numbers = {
-    --   fg = colors.fg_1,
-    --   bg = colors.bg_0,
-    -- },
-    -- numbers_visible = {
-    --   fg = colors.fg_1,
-    --   bg = colors.bg_0,
-    -- },
-    numbers_selected = {
-      fg = '#ffffff',
-      -- bg = colors.bg_0,
-      bold = true,
-      italic = false,
     },
   },
 }

@@ -8,10 +8,10 @@ return {
   {
     'lukas-reineke/indent-blankline.nvim',
     enabled = true,
-    -- event = 'BufReadPost',
+    event = 'BufReadPost',
     init = function()
-      vim.g.indent_blankline_char = '|'
-      vim.g.indent_blankline_context_char = '|'
+      vim.g.indent_blankline_char = '│'
+      vim.g.indent_blankline_context_char = '│'
       vim.g.indent_blankline_filetype_exclude = { 'toggleterm', 'telescope' }
       vim.g.indent_blankline_show_trailing_blankline_indent = true
     end,
@@ -21,11 +21,18 @@ return {
     },
   },
 
+  {
+    'glepnir/dashboard-nvim',
+    enabled = false,
+    event = 'VimEnter',
+    config = function() require('config.dashboard') end,
+    dependencies = { { 'nvim-tree/nvim-web-devicons' } },
+  },
+
   -- Filetype icons
   --- @url https://github.com/nvim-tree/nvim-web-devicons
   {
     'nvim-tree/nvim-web-devicons',
-    enabled = true,
     config = function() require('config.devicons') end,
   },
 
