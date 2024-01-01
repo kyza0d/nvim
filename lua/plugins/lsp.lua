@@ -3,22 +3,26 @@
 --------------------------------------------
 
 return {
-  -- LSP Conifguration
-  --- @url https://github.com/neovim/nvim-lspconfig
   {
-    'neovim/nvim-lspconfig',
-    dependencies = { 'onsails/lspkind.nvim' },
+    'RRethy/vim-illuminate',
+    opts = {
+      delay = 300,
+      large_file_cutoff = 2000,
+      filetypes_denylist = {
+        'popup',
+      },
+      large_file_overrides = {
+        providers = { 'lsp' },
+      },
+    },
+    config = function(_, opts) require('illuminate').configure(opts) end,
+    event = 'CursorHold',
   },
-
-  -- Extended LSP Capabilities
-  --- @url https://github.com/jose-elias-alvarez/null-ls.nvim
   {
-    'jose-elias-alvarez/null-ls.nvim',
-    init = function() require('config.null-ls') end,
+    'smjonas/inc-rename.nvim',
+    opts = { hl_group = 'Visual', preview_empty_name = true },
+    event = 'VeryLazy',
   },
-
-  -- LSP Server Installer
-  --- @url https://github.com/williamboman/mason.nvim
   {
     'williamboman/mason.nvim',
     cmd = 'Mason',
@@ -26,12 +30,27 @@ return {
     dependencies = 'nvim-lua/plenary.nvim',
     opts = { ui = { height = 0.8 } },
   },
-
-  -- LSP Configurations
-  --- @url https://github.com/williamboman/mason-lspconfig.nvim
   {
     'williamboman/mason-lspconfig.nvim',
     event = { 'BufReadPre', 'BufNewFile' },
+    dependencies = {
+      'mason.nvim',
+      {
+        'neovim/nvim-lspconfig',
+        dependencies = {
+          {
+            'folke/neodev.nvim',
+            ft = 'lua',
+            opts = { library = { plugins = { 'nvim-dap-ui' } } },
+          },
+          {
+            'folke/neoconf.nvim',
+            cmd = { 'Neoconf' },
+            opts = { local_settings = '.nvim.json', global_settings = 'nvim.json' },
+          },
+        },
+      },
+    },
     opts = {
       automatic_installation = true,
       handlers = {
@@ -42,9 +61,80 @@ return {
       },
     },
   },
+  {
+    'dnlhc/glance.nvim',
+    event = 'LspAttach',
+    init = function()
+      local glance = require('glance')
+      local actions = glance.actions
 
-  -- LSP Inlay Hints
-  --- @url https://github.com/lvimuser/lsp-inlayhints.nvim
+      glance.setup({
+        height = 20,
+        list = {
+          position = 'right',
+          width = 0.40,
+        },
+        preview_win_opts = {
+          cursorline = false,
+          number = false,
+        },
+
+        mappings = {
+          list = {
+            ['j'] = actions.next,
+            ['k'] = actions.previous,
+            ['l'] = actions.open_fold,
+            ['h'] = actions.close_fold,
+            ['<Tab>'] = actions.enter_win('preview'),
+            ['<C-u>'] = actions.preview_scroll_win(5),
+            ['<C-d>'] = actions.preview_scroll_win(-5),
+            ['<CR>'] = actions.jump,
+          },
+          preview = {
+            ['q'] = actions.close,
+            ['<Tab>'] = actions.enter_win('list'), -- Focus list window
+          },
+        },
+      })
+    end,
+  },
+
+  {
+    'stevearc/conform.nvim',
+    event = { 'BufWritePre' },
+    cmd = { 'ConformInfo' },
+    keys = {
+      {
+        -- Customize or remove this keymap to your liking
+        '<leader>f',
+        function() require('conform').format({ async = true, lsp_fallback = true }) end,
+        mode = '',
+        desc = 'Format buffer',
+      },
+    },
+    -- Everything in opts will be passed to setup()
+    opts = {
+      formatters_by_ft = {
+        lua = { 'stylua' },
+        python = { 'isort', 'black' },
+        javascript = { { 'prettierd', 'prettier' } },
+        json = { { 'prettierd', 'prettier' } },
+      },
+      format_on_save = { timeout_ms = 500, lsp_fallback = true },
+    },
+
+    init = function()
+      -- If you want the formatexpr, here is the place to set it
+      vim.o.formatexpr = "v:lua.require'conform'.formatexpr()"
+    end,
+
+    -- This function is optional, but if you want to customize formatters do it here
+    config = function(_, opts)
+      local util = require('conform.util')
+      util.add_formatter_args(require('conform.formatters.shfmt'), { '-i', '2' })
+      require('conform').setup(opts)
+    end,
+  },
   {
     'lvimuser/lsp-inlayhints.nvim',
     event = 'VeryLazy',
@@ -70,25 +160,4 @@ return {
       },
     },
   },
-
-  -- Schemas for JSON files
-  --- @url https://github.com/b0o/schemastore.nvim
-  'b0o/schemastore.nvim',
-
-  -- Incremental Renames
-  --- @url https://github.com/smjonas/inc-rename.nvim
-  {
-    'smjonas/inc-rename.nvim',
-    opts = { hl_group = 'Visual', preview_empty_name = true },
-    event = 'LspAttach',
-  },
-
-  -- Show LSP progress
-  --- @url https://github.com/j-hui/fidget.nvim
-  -- {
-  --   'j-hui/fidget.nvim',
-  --   event = 'BufReadPost',
-  --   tag = 'legacy',
-  --   opts = { text = { spinner = 'dots_ellipsis' } },
-  -- },
 }

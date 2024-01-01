@@ -3,28 +3,20 @@
 --------------------------------------------
 
 return {
-
-  -- Measure startup time
-  --- @url https://github.com/dstein64/vim-startuptime
   {
     'dstein64/vim-startuptime',
     cmd = 'StartupTime',
   },
-
   {
-    'folke/persistence.nvim',
-    module = 'persistence',
-    opts = {
-      options = { 'buffers' }, -- sessionoptions used for saving
-    },
+    'nvim-colortils/colortils.nvim',
+    cmd = 'Colorutils',
+    event = 'VeryLazy',
+    opts = {},
   },
-
-  -- Preview markdown files
-  --- @url https://github.com/iamcco/markdown-preview.nvim
   {
     'iamcco/markdown-preview.nvim',
+    cmd = 'MarkdownPreview',
     build = 'cd app && yarn install',
     ft = 'markdown',
-    cmd = 'MarkdownPreview',
   },
 }

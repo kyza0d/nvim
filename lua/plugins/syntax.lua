@@ -3,14 +3,12 @@
 --------------------------------------------
 
 return {
-  -- Syntax Parser
-  --- @url https://github.com/nvim-treesitter/nvim-treesitter
   {
     'nvim-treesitter/nvim-treesitter',
     build = ':TSUpdate',
     version = false,
-    -- event = 'BufEnterPre',
-    lazy = false,
+    event = 'VeryLazy',
+    dependencies = { { 'nvim-treesitter/nvim-treesitter-textobjects' } },
     config = function(_, opts) require('nvim-treesitter.configs').setup(opts) end,
 
     opts = {
@@ -21,93 +19,127 @@ return {
         "typescript", "jsdoc", "json", "jsonc",
         "regex", "rust", "scss", "toml", "vim",
       },
-      highlight = { enable = true },
-      indent = { enable = true },
-      playground = { enable = true },
+
       incremental_selection = {
         enable = true,
+        disable = { 'help' },
         keymaps = {
-          init_selection = '<C-k>',
-          node_incremental = '<C-k>',
-          node_decremental = '<C-j>',
+          init_selection = '<C-j>',
+          node_incremental = '<C-j>',
+          node_decremental = '<C-k>',
         },
       },
+
+      textobjects = {
+        select = {
+          enable = true,
+          lookahead = true,
+          keymaps = {
+            ['af'] = { query = '@function.outer', desc = 'ts: all function' },
+            ['if'] = { query = '@function.inner', desc = 'ts: inner function' },
+            ['ac'] = { query = '@class.outer', desc = 'ts: all class' },
+            ['ic'] = { query = '@class.inner', desc = 'ts: inner class' },
+            ['ia'] = { query = '@arguments.inner', desc = 'ts: inner argument' },
+          },
+        },
+        move = {
+          enable = true,
+          set_jumps = false, -- whether to set jumps in the jumplist
+          goto_next_start = { ['[m'] = '@function.outer' },
+          goto_next_end = { [']m'] = '@function.outer' },
+        },
+      },
+
+      indent = { enable = true },
+      playground = { enable = true },
 
       context_commentstring = {
         enable = true,
         enable_autocmd = false,
       },
-    },
-  },
 
-  -- Better text objects
-  --- @url https://github.com/echasnovski/mini.ai
-  {
-    'echasnovski/mini.ai',
-    keys = {
-      { 'a', mode = { 'x', 'o' } },
-      { 'i', mode = { 'x', 'o' } },
-    },
-    dependencies = {
-      {
-        'nvim-treesitter/nvim-treesitter-textobjects',
-        init = function() require('lazy.core.loader').disable_rtp_plugin('nvim-treesitter-textobjects') end,
-      },
-    },
-    opts = function()
-      local ai = require('mini.ai')
-      return {
-        n_lines = 500,
-        custom_textobjects = {
-          o = ai.gen_spec.treesitter({
-            a = { '@block.outer', '@conditional.outer', '@loop.outer' },
-            i = { '@block.inner', '@conditional.inner', '@loop.inner' },
-          }, {}),
-          f = ai.gen_spec.treesitter({ a = '@function.outer', i = '@function.inner' }, {}),
-          c = ai.gen_spec.treesitter({ a = '@class.outer', i = '@class.inner' }, {}),
-        },
-      }
-    end,
-    config = function(_, opts)
-      local ai = require('mini.ai')
-      ai.setup(opts)
-    end,
-  },
+      highlight = {
+        enable = true,
 
-  -- Comments
-  --- @url https://github.com/echasnovski/mini.comment
-  {
-    'echasnovski/mini.comment',
-    event = 'VeryLazy',
-    dependencies = 'JoosepAlviste/nvim-ts-context-commentstring',
-    config = function(_, opts) require('mini.comment').setup(opts) end,
-    opts = {
-      hooks = {
-        pre = function() require('ts_context_commentstring.internal').update_commentstring({}) end,
+        disable = function(lang, buf)
+          local max_filesize = 100 * 1024 -- 100 KB
+          local ok, stats = pcall(vim.loop.fs_stat, vim.api.nvim_buf_get_name(buf))
+          if ok and stats and stats.size > max_filesize then return true end
+        end,
       },
     },
   },
 
-  -- Extra tree-sitter information
-  --- @url https://github.com/nvim-treesitter/playground
   {
     'nvim-treesitter/playground',
-    cmd = { 'TSPlaygroundToggle', 'TSHighlightCapturesUnderCursor' },
+    cmd = { 'TSPlaygroundToggle', 'TSCaptureUnderCursor' },
+    dependencies = { 'nvim-treesitter' },
   },
 
   {
     'kevinhwang91/nvim-ufo',
-    config = function() require('config.nvim-ufo') end,
-    event = 'BufReadPre',
-    dependencies = 'kevinhwang91/promise-async',
+    event = 'VeryLazy',
+    dependencies = { 'kevinhwang91/promise-async' },
+    keys = {
+      { 'zR', function() require('ufo').openAllFolds() end, 'open all folds' },
+      { 'zM', function() require('ufo').closeAllFolds() end, 'close all folds' },
+      { 'zP', function() require('ufo').peekFoldedLinesUnderCursor() end, 'preview fold' },
+    },
+    opts = function()
+      local ft_map = { rust = 'lsp' }
+      require('ufo').setup({
+        open_fold_hl_timeout = 0,
+        preview = { win_config = { winhighlight = 'Normal:Normal,FloatBorder:Normal' } },
+        enable_get_fold_virt_text = true,
+        close_fold_kinds = { 'imports', 'comment' },
+        provider_selector = function(_, ft) return ft_map[ft] or { 'treesitter', 'indent' } end,
+      })
+    end,
+  },
+
+  {
+    'chrisgrieser/nvim-origami',
+    event = 'BufReadPost',
     opts = {},
   },
 
   {
-    'razak17/tailwind-fold.nvim',
-    opts = {},
-    dependencies = { 'nvim-treesitter/nvim-treesitter' },
-    ft = { 'html', 'svelte', 'astro', 'vue', 'typescriptreact' },
-    pin = true,
+    'laytan/tailwind-sorter.nvim',
+    dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-lua/plenary.nvim' },
+    event = 'BufWritePost',
+    opts = { on_save_enabled = true },
+    config = true,
+  },
+
+  {
+    'utilyre/barbecue.nvim',
+    event = 'VeryLazy',
+    opts = {
+      show_navic = true,
+      show_dirname = false,
+      show_modified = false,
+      exclude_filetypes = { 'netrw', 'toggleterm', 'Trouble', 'neorg', 'markdown' },
+      kinds = ky.icons.symbol_kinds,
+    },
+    dependencies = {
+      {
+        'SmiteshP/nvim-navic',
+        opts = { separator = '  ', highlight = false },
+      },
+    },
+  },
+  {
+    'numToStr/Comment.nvim',
+    keys = { 'gcc', { 'gc', mode = { 'x', 'n', 'o' } } },
+    opts = function(_, opts)
+      local ok, integration = pcall(require, 'ts_context_commentstring.integrations.comment_nvim')
+      if ok then opts.pre_hook = integration.create_pre_hook() end
+    end,
+  },
+  {
+    'echasnovski/mini.ai',
+    enabled = false,
+    event = 'VeryLazy',
+    config = function() require('mini.ai').setup({ mappings = { around_last = '', inside_last = '' } }) end,
   },
 }

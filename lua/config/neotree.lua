@@ -1,130 +1,74 @@
-local icons = require('options').neotree
+local icons = require('icons').neotree
 
-local highlights = require('neo-tree.ui.highlights')
+local sources = { 'filesystem', 'git_status', 'diagnostics', 'buffers' }
 
 require('neo-tree').setup({
-  popup_border_style = 'single',
-
+  popup_border_style = 'rounded',
+  sources = sources,
+  source_selector = {
+    winbar = true,
+    statusline = false,
+    show_separator_on_edge = true,
+    separator = { left = ' ', right = ' ' },
+    tabs_layout = 'start',
+    sources = {
+      { source = 'filesystem', display_name = '󰙅 ' },
+      { source = 'git_status', display_name = '󰘬 ' },
+      { source = 'diagnostics', display_name = ' ' },
+      { source = 'buffers', display_name = '  ' },
+    },
+  },
+  commands = {
+    filesystem = function() vim.api.nvim_cmd({ cmd = 'Neotree', args = { 'current', 'source=filesystem' } }, {}) end,
+    buffers = function() vim.api.nvim_cmd({ cmd = 'Neotree', args = { 'current', 'source=buffers' } }, {}) end,
+    git_status = function() vim.api.nvim_cmd({ cmd = 'Neotree', args = { 'current', 'source=git_status' } }, {}) end,
+    diagnostics = function() vim.api.nvim_cmd({ cmd = 'Neotree', args = { 'current', 'source=diagnostics' } }, {}) end,
+  },
   event_handlers = {
     {
       event = 'neo_tree_window_after_open',
       handler = function() vim.opt_local.statuscolumn = '' end,
     },
   },
-
+  hide_root_node = false,
   enable_git_status = false,
-  enable_diagnostics = true,
-
-  hide_root_node = true,
-  retain_hidden_root_indent = true,
-
+  retain_hidden_root_indent = false,
   default_component_configs = {
-    diagnostics = {
-      symbols = {
-        hint = '• ',
-        info = '• ',
-        warn = '• ',
-        error = '• ',
-      },
-    },
-    git_status = {
-      symbols = {
-        -- Change type
-        added = '+ ',
-        modified = '~ ',
-        deleted = '- ',
-        renamed = '✘ ',
-        untracked = 'x ',
-        ignored = 'i ',
-        unstaged = '+ ',
-        staged = '✔ ',
-        conflict = '✘ ',
-      },
-    },
-
-    container = {
-      enable_character_fade = false,
-    },
-
+    diagnostics = { symbols = { hint = icons.hint, warn = icons.warn, info = icons.info, error = icons.error } },
     indent = {
-      indent_marker = ' ',
-      last_indent_marker = '',
-      -- indent_marker = icons.indent_marker,
-      -- last_indent_marker = icons.last_indent_marker,
-
-      indent_size = 2,
+      indent_size = 3,
       padding = 0,
+      indent_marker = icons.indent_marker,
+      last_indent_marker = icons.last_indent_marker,
     },
-
-    name = {
-      use_git_status_colors = true,
+    icon = {
+      folder_closed = icons.folders.closed,
+      folder_open = icons.folders.expanded,
+      folder_empty = icons.folders.empty,
+      default = '*',
     },
-
-    modified = {
-      symbol = '',
-    },
+    name = { trailing_slash = true, use_git_status_colors = false },
   },
-
   window = {
-    position = 'left',
-    width = 26,
+    width = 40,
+    mapping_options = { noremap = true, nowait = true },
     mappings = {
+      ['<CR>'] = '',
+      ['<C-n>'] = 'close_window',
+
       ['l'] = 'open',
       ['h'] = 'close_node',
+      ['v'] = 'open_vsplit',
+      ['K'] = 'expand_all_nodes',
+
+      ['1'] = sources[1],
+      ['2'] = sources[2],
+      ['3'] = sources[3],
+      ['4'] = sources[4],
     },
   },
-
   filesystem = {
-    components = {
-      icon = function(config, node)
-        local icon = ''
-        local padding = ''
-        local highlight = config.highlight or highlights.FILE_ICON
-
-        if node.type == 'directory' then
-          if node:is_expanded() then
-            icon = icons.folder_open
-          else
-            icon = icons.folder_closed
-          end
-        end
-
-        if node.type == 'file' then
-          local success, web_devicons = pcall(require, 'nvim-web-devicons')
-          if success then
-            local devicon, hl = web_devicons.get_icon(node.name, node.ext)
-            icon = devicon or icon
-            highlight = hl or highlight
-          end
-        end
-        return {
-          text = icon .. padding,
-          highlight = highlight,
-        }
-      end,
-      name = function(config, node)
-        local name = node.name
-        local highlight = config.highlight or highlights.FILE_NAME
-        if node.type == 'directory' then
-          highlight = highlights.DIRECTORY_NAME
-          name = name .. '/'
-        end
-        if node:get_depth() == 1 then highlight = highlights.ROOT_NAME end
-        return {
-          text = name,
-          highlight = highlight,
-        }
-      end,
-    },
-
-    filtered_items = {
-      visible = true,
-      hide_dotfiles = true,
-      hide_gitignored = true,
-      never_show = {
-        '.DS_Store',
-      },
-    },
-    follow_current_file = true,
+    filtered_items = { hide_dotfiles = false },
+    follow_current_file = { enabled = true, leave_dirs_open = true },
   },
 })

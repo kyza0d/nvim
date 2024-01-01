@@ -1,34 +1,59 @@
 --------------------------------------------
 -- Pickers
 --------------------------------------------
+local icons = require('icons').diagnostics
 
 return {
-  -- File Finder
-  --- @url https://github.com/nvim-telescope/telescope.nvim
   {
     'nvim-telescope/telescope.nvim',
-    lazy = false,
-    config = function() require('config.telescope') end,
+    module = 'telescope',
+    init = function() require('config.telescope') end,
     dependencies = {
-      'nvim-lua/plenary.nvim',
       'nvim-telescope/telescope-symbols.nvim',
       'nvim-telescope/telescope-project.nvim',
+      'debugloop/telescope-undo.nvim',
+      'nvim-lua/plenary.nvim',
     },
   },
-
-  -- Goto definitions/references window
-  --- @url https://github.com/dnlhc/glance.nvim
   {
-    'dnlhc/glance.nvim',
-    opts = { preview_win_opts = { relativenumber = false } },
-    -- event = 'LspAttach',
+    'folke/which-key.nvim',
+    opts = require('config.whichkey'),
+    config = function(_, opts)
+      local keys = require('config.whichkey.keys')
+      require('which-key').register(keys.leader, {
+        mode = 'n',
+        silent = true,
+        prefix = '<Space>',
+      })
+      require('which-key').register(keys.cr, {
+        mode = 'n',
+        prefix = '<CR>',
+      })
+      require('which-key').setup(opts)
+    end,
+    keys = { '<Leader>', '<CR>' },
   },
 
-  -- Details Window
-  --- @url https://github.com/folke/trouble.nvim
   {
     'folke/trouble.nvim',
     cmd = 'Trouble',
-    opts = {},
+    opts = {
+      fold_open = ' ',
+      fold_closed = ' ',
+      multiline = false,
+      icons = false,
+      group = false,
+      indent_lines = false,
+      padding = false,
+      action_keys = {
+        jump_close = { '<cr>' },
+      },
+      signs = {
+        error = icons.ERROR,
+        warning = icons.WARN,
+        hint = icons.HINT,
+        information = icons.INFO,
+      },
+    },
   },
 }

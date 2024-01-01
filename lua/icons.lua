@@ -1,0 +1,182 @@
+return {
+  filetypes = {
+    tsx = {
+      icon = '󰜈',
+      color = '#519aba',
+      name = 'TyepscriptReact',
+    },
+    zsh = {
+      icon = '',
+      color = '#428850',
+      name = 'Zsh',
+    },
+    norg = {
+      icon = '',
+      color = '#aaaaaa',
+      name = 'Norg',
+    },
+    ['svg'] = {
+      icon = '󰜡',
+      color = '#FDB03A',
+      cterm_color = '220',
+      name = 'svg',
+    },
+    ['prisma'] = {
+      icon = '',
+      color = '#0FBFCF',
+      cterm_color = '220',
+      name = 'prisma',
+    },
+    ['json'] = {
+      icon = '󰘦',
+      color = '#CBCB41',
+      cterm_color = '220',
+      name = 'json',
+    },
+    ['map'] = {
+      icon = '',
+      color = '#748e54',
+      cterm_color = '220',
+      name = 'map',
+    },
+    ['svelte'] = {
+      icon = '',
+      color = '#ef510b',
+      cterm_color = '220',
+      name = 'svelte',
+    },
+    ['yaml'] = {
+      icon = '󰰳',
+      color = '#ef510b',
+      cterm_color = '220',
+      name = 'yaml',
+    },
+  },
+
+  editor = {
+    file = ' ',
+    book = ' ',
+    book_alt = '',
+    error = ' ',
+    warning = ' ',
+    hint = ' ',
+    info = ' ',
+    chevron = '  ',
+    keyboard = '',
+    git_branch = '󰘬 ',
+    indent = '│',
+  },
+
+  git = {
+    add = ' ',
+    branch = ' ',
+    commit = ' ',
+  },
+
+  diagnostics = {
+    ERROR = '',
+    WARN = '',
+    HINT = '',
+    INFO = '',
+  },
+
+  --- LSP symbol kinds.
+  symbol_kinds = {
+    File = ' ',
+    Module = ' ',
+    Namespace = ' ',
+    Package = ' ',
+    Class = ' ',
+    Method = ' ',
+    Property = ' ',
+    Field = ' ',
+    Constructor = ' ',
+    Enum = ' ',
+    Interface = ' ',
+    Function = ' ',
+    Variable = ' ',
+    Constant = ' ',
+    String = ' ',
+    Number = ' ',
+    Boolean = ' ',
+    Array = ' ',
+    Object = ' ',
+    Key = ' ',
+    Null = ' ',
+    EnumMember = ' ',
+    Struct = ' ',
+    Event = ' ',
+    Operator = ' ',
+    TypeParameter = ' ',
+  },
+
+  completion = {
+    Text = '  ',
+    Method = '  ',
+    Function = '  ',
+    Constructor = '  ',
+    Field = '  ',
+    Variable = '  ',
+    Class = '  ',
+    Interface = '  ',
+    Module = '  ',
+    Property = '  ',
+    Unit = '  ',
+    Value = '  ',
+    Enum = '  ',
+    Keyword = '  ',
+    Snippet = '  ',
+    Color = '  ',
+    File = '  ',
+    Reference = '  ',
+    Folder = '  ',
+    EnumMember = '  ',
+    Constant = '  ',
+    Struct = '  ',
+    Event = '  ',
+    Operator = '  ',
+    TypeParameter = '  ',
+  },
+
+  todo_comments = {
+    fixme = '',
+    todo = '',
+    bug = '',
+    error = '󰅝',
+    warning = '',
+    hint = '',
+    info = '',
+  },
+
+  neotree = {
+    folders = {
+      expanded = '   ',
+      closed = '   ',
+      empty = '   ',
+    },
+
+    indent_marker = '│',
+    last_indent_marker = '└╸',
+
+    error = '  ',
+    warn = '  ',
+    info = '  ',
+    hint = '  ',
+  },
+
+  misc = {
+    pointer = '➤',
+    search = '',
+    bug = '',
+    git = '',
+    vertical_bar = '│',
+  },
+
+  --- For folding.
+  arrows = {
+    right = '',
+    left = '',
+    up = '',
+    down = '',
+  },
+}

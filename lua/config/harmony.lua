@@ -2,77 +2,41 @@ local highlights = require('highlights')
 
 local colors = require('harmony').colors
 
-local t2c_colors = require('text-to-colorscheme')
-local t2c_utils = require('text-to-colorscheme.internal.color_util')
-local t2c_hsv_palette = t2c_colors.get_palette()
-local t2c_background = t2c_utils.hsv_to_hex(t2c_hsv_palette.background)
-local t2c_foreground = t2c_utils.hsv_to_hex(t2c_hsv_palette.foreground)
+-- vim.cmd([[set background=light]])
 
 require('harmony').setup({
   ['*'] = {
     bg = { '#2C3338', '#ffffff' },
-    -- bg = { '#000000', '#ffffff' },
     fg = { '#dddddd', '#222222' },
 
     highlights = highlights,
   },
 
-  ['text-to-colorscheme'] = {
-    bg = t2c_background,
-    -- bg = '#000000',
-    fg = t2c_foreground,
+  default = {
+    bg = '#14161B',
+    fg = '#d2dbef',
   },
 
-  byte = {
-    bg = { '#111111', '#222222' },
-    fg = { '#dddddd', '#222222' },
+  ['summer-time'] = {
+    bg = '#232326',
+    fg = '#e5e5e5',
   },
 
-  neowal = {
-    bg = { vim.g.color0, '#222222' },
-    -- bg = { '#000000', '#222222' },
-    fg = { vim.g.foreground, '#222222' },
+  horizon = {
+    bg = '#1C1E26',
+    fg = '#cccccc',
   },
-
   tokyonight = {
-    bg = '#161820',
-    fg = '#c9cee0',
-  },
-
-  embark = {
-    bg = '#151423',
-    fg = '#ccc9e5',
-  },
-
-  ['catppuccin-mocha'] = {
-    bg = '#232338',
-    fg = '#c9cee0',
-  },
-
-  palenightfall = {
-    bg = '#1d1f2a',
-    fg = '#b7bfe2',
-    highlights = {
-      Conceal = { clear = true },
-    },
-  },
-
-  onedark = {
-    bg = { '#1E232A', '#ffffff' },
-    fg = { '#cdd1d8', '#888888' },
-  },
-
-  sweetie = {
-    bg = '#0D0D16',
-    fg = '#d2cdf2',
+    bg = '#12131E',
+    fg = '#c2c6ed',
   },
 })
 
-local group = create_augroup('Harmony', {
-  clear = true,
-})
-
-create_autocmd('ColorScheme', {
-  command = 'source ~/.config/nvim/lua/config/harmony.lua',
-  group = group,
-})
+-- local group = create_augroup('Harmony', {
+--   clear = true,
+-- })
+--
+-- create_autocmd('ColorScheme', {
+--   command = 'source ~/.config/nvim/lua/config/harmony.lua',
+--   group = group,
+-- })

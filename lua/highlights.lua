@@ -1,5 +1,5 @@
 --------------------------------------------
--- Editor Highlights
+-- Editor Highlights -----------------------------------------
 --------------------------------------------
 
 local colors = require('harmony').colors
@@ -16,12 +16,6 @@ local wal_colors = {
   Color8 = { fg = neowal.color8 },
 }
 
-local Neotree = {
-  fg = colors.fg_2,
-  bg = colors.bg_0,
-  cursorline = colors.bg_1,
-}
-
 local cursor_line = {
   CursorLine = { bg = colors.bg_1 },
   CursorLineNr = { fg = colors.fg_3, bg = colors.bg_1 },
@@ -29,55 +23,34 @@ local cursor_line = {
   CursorLineFold = { bg = colors.bg_1 },
 }
 
-local StatusLine = {
-  fg = colors.fg_3,
+local statusline_palette = {
+  fg = colors.fg_2,
   fg_dim = colors.fg_2,
-  bg = colors.bg_negative_1,
+  bg = colors.bg_2,
 }
 
 local status_line = {
-  StatusLine = { fg = StatusLine.fg, bg = StatusLine.bg },
-  StatusLineNC = { fg = colors.fg_4, bg = StatusLine.bg },
-
-  StatusLineCustom = { fg = StatusLine.fg, bg = StatusLine.bg },
-  StatusLineCaps = { fg = colors.bg_negative_1, bg = colors.bg_0 },
-  CustomStatusLine = { fg = StatusLine.fg, bg = StatusLine.bg },
-  CustomStatusLineNC = { fg = colors.fg_4, bg = StatusLine.bg },
-  StatusLineGreen = { fg = colors.green, bg = StatusLine.bg },
-  StatusLineBlue = { fg = colors.blue, bg = StatusLine.bg },
-  StatusLineYellow = { fg = colors.yellow, bg = StatusLine.bg },
-  StatusLineRed = { fg = colors.red, bg = StatusLine.bg },
-  StatusLineError = { fg = colors.red, bg = StatusLine.bg },
-  StatusLineWarning = { fg = colors.yellow, bg = StatusLine.bg },
-  StatusLineInfo = { fg = colors.blue, bg = StatusLine.bg },
-  StatusLineHint = { fg = colors.purple, bg = StatusLine.bg },
-  StatusLineDim = { fg = StatusLine.fg_dim, bg = StatusLine.bg },
-  StatusLineMode = { fg = StatusLine.fg, bg = StatusLine.bg },
-  NormalMode = { fg = colors.blue, bg = StatusLine.bg },
-  InsertMode = { fg = colors.purple, bg = StatusLine.bg },
-  VisualMode = { fg = colors.red, bg = StatusLine.bg },
-  LineMode = { fg = colors.red, bg = StatusLine.bg },
-  BlockMode = { fg = colors.orange, bg = StatusLine.bg },
-  ReplaceMode = { fg = colors.purple, bg = StatusLine.bg },
-  SelectMode = { fg = colors.yellow, bg = StatusLine.bg },
-  CommandMode = { fg = colors.yellow, bg = StatusLine.bg },
-  TerminalMode = { fg = colors.green, bg = StatusLine.bg },
-  Reverse = { reverse = true },
+  StatusLine = { fg = statusline_palette.fg, bg = statusline_palette.bg },
+  StatusLineCustom = { fg = statusline_palette.fg, bg = statusline_palette.bg },
+  StatusLineNC = { fg = statusline_palette.fg, bg = statusline_palette.bg },
+  StatusLineSpinner = { fg = colors.blue, bg = statusline_palette.bg },
+  StatusLineModeNormal = { bg = statusline_palette.bg, fg = colors.blue, bold = true },
+  StatusLineModeVisual = { bg = statusline_palette.bg, fg = colors.purple, bold = true },
+  StatusLineModeCommand = { bg = statusline_palette.bg, fg = colors.green, bold = true },
+  StatusLineModeInsert = { bg = statusline_palette.bg, fg = colors.green, bold = true },
+  StatusLineModePending = { bg = statusline_palette.bg, fg = colors.fg_3, bold = true },
 }
 
--- for key, value in pairs(status_line) do
---   value.strikethrough = true
---   value.underline = true
---   value.sp = colors.fg_3
--- end
-
 local whichkey = {
-  ['WhichKeyFloat'] = { bg = colors.bg_0, fg = colors.fg_3 },
+  ['WhichKeyFloat'] = { bg = colors.bg_3, fg = colors.fg_3 },
+  ['WhichKeyGroup'] = { fg = colors.green },
+  ['WhichKeySeparator'] = { fg = colors.fg_3 },
+  ['WhichKey'] = { fg = colors.blue },
 }
 
 local treesitter = {
-  ['Comment'] = { fg = colors.fg_3, italic = true },
-  ['@comment'] = { fg = colors.fg_3, italic = true },
+  ['Comment'] = { fg = colors.fg_4, italic = true },
+  ['@comment'] = { fg = colors.fg_4, italic = true },
   ['@neorg.headings.1.title'] = { fg = colors.orange, bold = true },
   ['@punctuation.bracket'] = { fg = colors.fg_3 },
   ['@constructor'] = { clear = true },
@@ -89,47 +62,59 @@ local treesitter = {
 local telescope = {
   TelescopeMatching = { fg = colors.accent },
 
-  TelescopeNormal = { fg = colors.fg_2, bg = colors.bg_1 },
+  TelescopeNormal = { fg = colors.fg_1, bg = colors.bg_1 },
   TelescopeBorder = { fg = colors.bg_2, bg = colors.blue },
 
   TelescopeSelection = { link = 'PmenuSel' },
   TelescopeSelectionCaret = { fg = colors.accent, bg = colors.bg_2 },
 
   TelescopeResultsNormal = { fg = colors.fg_3, bg = colors.bg_0 },
-  TelescopePreviewNormal = { fg = colors.fg_3, bg = colors.bg_0 },
+  TelescopePreviewNormal = { fg = colors.fg_1, bg = colors.bg_0 },
+}
+
+local neotree_palette = {
+  fg = colors.fg_3,
+  bg = colors.bg_negative_1,
+  cursorline = colors.bg_1,
 }
 
 local neotree = {
-  ProjectRoot = { bg = Neotree.bg, fg = colors.blue },
-  NeoTreeDirectoryName = { fg = colors.blue },
-  NeoTreeDirectoryIcon = { fg = colors.blue },
-  NeoTreeIndentMarker = { fg = colors.bg_4 },
-  FloatBorder = { fg = colors.fg_4, bg = 'none' },
-  NeoTreeFloatBorder = { fg = colors.fg_4, bg = 'none' },
-  NeoTreeFloatTitle = { fg = colors.fg_4, italic = true },
-  NeoTreeNormal = { bg = Neotree.bg },
-  NeoTreeNormalNC = { bg = Neotree.bg },
-  NeoTreeEndOfBuffer = { bg = Neotree.bg },
-  NeoTreeCursorLine = { bg = Neotree.cursorline },
+  ProjectRoot = { bold = true, bg = neotree_palette.bg },
+  NeoTreeNormal = { bg = neotree_palette.bg },
+  NeoTreeNormalNC = { bg = neotree_palette.bg },
+  NeoTreeEndOfBuffer = { bg = neotree_palette.bg },
+  NeoTreeCursorLine = { bg = neotree_palette.cursorline },
   NeoTreeSignColumn = { link = 'SignColumn' },
   NeoTreeStatusLine = { link = 'StatusLine' },
   NeoTreeStatusLineNC = { link = 'StatusLineNC' },
   NeoTreeVertSplit = { link = 'VertSplit' },
+  NeoTreeWinSeparator = { link = 'WinSeparator' },
+  NeoTreeBufferNumber = { link = 'SpecialChar' },
   NeoTreeFilterTerm = { link = 'SpecialChar' },
   NeoTreePreview = { link = 'Search' },
-  NeoTreeGitAdded = { bg = colors.bg_0, fg = colors.green },
-  NeoTreeGitDeleted = { bg = colors.bg_0, fg = colors.red },
-  NeoTreeGitModified = { bg = colors.bg_0, fg = colors.yellow },
 
-  NeoTreeTitleBar = { fg = colors.fg_1, bg = colors.bg_0 },
-  NeoTreeDimText = { fg = colors.bg_0 },
+  NeoTreeDirectoryName = { fg = neotree_palette.fg },
+  -- NeoTreeDirectoryIcon = { fg = '#E9C383' },
+  NeoTreeDirectoryIcon = { fg = colors.fg_3 },
+
+  NeoTreeFloatBorder = { fg = colors.bg_3 },
+  NeoTreeFloatTitle = { fg = colors.fg_1 },
+  NeoTreeTitleBar = { fg = colors.fg_1, bg = colors.bg_3 },
+  NeoTreeDimText = { fg = colors.bg_2 },
   NeoTreeDotfile = { fg = colors.fg_4 },
   NeoTreeModified = { fg = colors.yellow },
-  NeoTreeTabActive = { fg = colors.fg_1, bg = colors.bg_0, bold = true },
-  NeoTreeTabInactive = { fg = colors.fg_3, bg = colors.bg_0 },
+  NeoTreeTabActive = { fg = colors.fg_1, bg = neotree_palette.bg, bold = true },
+  NeoTreeTabSeparatorActive = { fg = neotree_palette.bg, bg = neotree_palette.bg },
+  NeoTreeTabInactive = { fg = neotree_palette.fg, bg = neotree_palette.bg },
+  NeoTreeTabSeparatorInactive = { fg = neotree_palette.bg, bg = neotree_palette.bg },
+  NeoTreeIndentMarker = { fg = colors.bg_2 },
 
-  NeoTreeTabSeparatorInactive = { fg = colors.fg_3, bg = colors.bg_0 },
-  NeoTreeTabSeparatorActive = { fg = colors.fg_3, bg = colors.bg_0 },
+  NeoTreeFileName = { fg = neotree_palette.fg },
+  NeoTreeFileNameOpened = { bold = true },
+  NeoTreeMessage = { fg = colors.fg_4 },
+  NeoTreeGitConflict = { fg = colors.orange },
+  NeoTreeRootName = { fg = colors.fg_1, italic = false, bold = false },
+  NeoTreeGitUntracked = { fg = colors.fg_1 },
 }
 
 local dashboard = {
@@ -137,131 +122,105 @@ local dashboard = {
   DashboardBackground = { bg = colors.bg_3 },
 }
 
-local other = {
-  ScrollView = { fg = colors.fg_4 },
-  WinSeparator = { fg = colors.bg_4, bg = colors.bg_0 },
-  Hide = { fg = colors.bg_0 },
-  Visual = { fg = colors.bg_0, bg = colors.blue },
+local headlines = {
+  Headline = { bg = colors.bg_negative_1 },
+  Headline1 = { bg = colors.bg_negative_1 },
+}
 
-  EndOfBuffer = { fg = colors.fg_4 },
+local gitsigns = {
+  GitSignsAdd = { fg = colors.green, bg = colors.bg_0 },
+  GitSignsChange = { fg = colors.yellow, bg = colors.bg_0 },
+  GitSignsDelete = { fg = colors.red, bg = colors.bg_0 },
+}
+
+local other = {
+  Normal = { bg = colors.bg_0 },
+  NormalNC = { bg = colors.bg_0 },
+
+  -- Normal = { bg = colors.bg_0 },
+  -- NormalNC = { bg = colors.bg_0 },
+  -- WinSeparator = { fg = colors.bg_4, bg = colors.bg_negative_1 },
+  -- EndOfBuffer = { fg = colors.fg_4, bg = colors.bg_negative_1 },
+  LineNr = { fg = colors.fg_4 },
+
+  -- Search = { bg = '#4c3e20' },
+  -- Conceal = { fg = colors.fg_3 },
+  -- CurSearch = { bg = '#66532b' },
+
+  ScrollView = { fg = colors.fg_4 },
+  Hide = { fg = colors.bg_0 },
 
   Folded = { bg = colors.bg_1, fg = colors.blue },
-  FoldIndicator = { fg = colors.blue, bg = colors.bg_1 },
+  FoldedIndicator = { bg = colors.bg_1, fg = colors.blue },
   FoldColumn = { fg = colors.fg_4 },
+  Mark = { fg = colors.blue, italic = true },
 
-  SignColumn = { bg = 'NONE', fg = colors.fg_4 },
+  -- SignColumn = { bg = 'NONE', fg = colors.fg_4 },
 
-  NavBuddyName = { links = 'Visual' },
+  -- Search = { bg = '#EF0FFF', fg = '#ffffff' },
+  -- PmenuSel = { fg = '#B4B8C0', bg = '#005F87' },
+  -- Visual = { fg = '#B4B8C0', bg = '#005F87' },
+  -- NavBuddyName = { links = 'Visual' },
   NavBuddyNormalFloat = { bg = colors.bg, fg = colors.fg_2 },
 
   LspInlayHint = { fg = colors.fg_4 },
 }
 
 local buffer_line = {
-  BufferLineTab = { fg = colors.fg_3, bg = colors.bg_0, sp = colors.fg_3, underline = true, strikethrough = true },
-  BufferLineBuffer = { fg = colors.fg_3, bg = colors.bg_0, sp = colors.fg_3, underline = true, strikethrough = true },
+  TabLineSel = { fg = colors.blue, bold = true, underline = true, bg = colors.blue },
 
-  BufferLineModifiedVisible = {
-    fg = colors.fg_3,
-    bg = colors.bg_2,
-    sp = colors.fg_3,
-    underline = true,
-    -- strikethrough = true,
-  },
+  BufferLineTab = { bg = colors.bg_2 },
+  BufferLineBuffer = { bg = colors.bg_3 },
+  BufferLineDuplicate = { bg = colors.bg_3 },
+  BufferLineDuplicateSelected = { bg = colors.bg_3, underline = true, sp = colors.blue },
+  BufferLineIndicatorSelected = { bg = colors.bg_3, fg = colors.blue, underline = true, sp = colors.blue },
+  BufferLineBufferSelected = { bg = colors.bg_3, fg = colors.fg_0, bold = true, underline = true, sp = colors.blue },
+  BufferLineNumbersSelected = { bg = colors.bg_3, fg = colors.fg_3, underline = true, sp = colors.blue },
+  BufferLineModifiedSelected = { bg = colors.bg_3, fg = colors.green, underline = true, sp = colors.blue },
+  BufferLineModifiedVisible = { bg = colors.bg_3 },
+  BufferLineModified = { bg = colors.bg_3 },
+  BufferLineBackground = { bg = colors.bg_3, fg = colors.fg_3 },
+  BufferLineNumbers = { bg = colors.bg_3, fg = colors.fg_4 },
+  BufferLineBufferVisible = { bg = colors.bg_3 },
+  BufferLineNumbersVisible = { bg = colors.bg_3, fg = colors.fg_4 },
+  BufferLineIndicatorVisible = { bg = colors.bg_3 },
 
-  BufferLineModifiedSelected = {
-    fg = colors.blue,
-    bg = colors.bg_3,
-    sp = colors.fg_3,
-    underline = true,
-    -- strikethrough = true,
-  },
-  BufferLineModified = {
-    fg = colors.blue,
-    bg = colors.bg_0,
-    sp = colors.fg_3,
-    underline = true,
-    -- strikethrough = true,
-  },
+  BufferLineFill = { bg = colors.bg_negative_1 },
+  BufferLineOffsetSeparator = { bg = colors.bg_negative_1 },
+  BufferLineSeparator = { bg = colors.bg_negative_1 },
+  BufferLineTabSeparator = { bg = colors.bg_negative_1 },
 
-  BufferLineBackground = {
-    fg = colors.fg_3,
-    bg = colors.bg_1,
-    -- sp = colors.fg_3,
-    -- underline = true,
-    -- strikethrough = true,
-  },
-
-  BufferLineOffsetSeparator = { fg = colors.fg_3, bg = colors.fg_3, sp = colors.fg_3 },
-  BufferLineTabSeparator = { fg = colors.fg_3, bg = colors.bg_0, sp = colors.fg_3 },
-  BufferLineSeparator = { fg = colors.fg_3, bg = colors.bg_0, sp = colors.fg_3 },
-
-  BufferLineNumbers = { fg = colors.fg_3, bg = colors.bg_0, sp = colors.fg_3, underline = true },
-
-  BufferLineIndicatorVisible = { fg = colors.fg_3, bg = colors.bg_0, sp = colors.fg_3 },
-
-  BufferLineIndicatorSelected = {
-    fg = colors.blue,
-    bg = colors.bg_3,
-    sp = colors.blue,
-    underline = true,
-    -- strikethrough = true,
-  },
-  BufferLineBufferSelected = {
-    fg = colors.fg_3,
-    bg = colors.bg_3,
-    -- sp = colors.fg_3,
-    sp = colors.blue,
-    underline = true,
-  },
-
-  BufferLineNumbersSelected = {
-    fg = colors.fg_3,
-    -- sp = colors.fg_3,
-    -- underline = true,
-    -- strikethrough = true,
-  },
-
-  BufferLineFill = { fg = colors.fg_3, bg = colors.bg_negative_1, sp = colors.fg_3 },
-
-  BufferLineBufferVisible = {
-    fg = colors.fg_3,
-    bg = colors.bg_0,
-    -- sp = colors.fg_3,
-    -- underline = true,
-    -- strikethrough = true,
-  },
-  BufferLineNumbersVisible = {
-    fg = colors.fg_3,
-    bg = colors.bg_0,
-    -- underline = true,
-    -- sp = colors.fg_3,
-    -- strikethrough = true,
-  },
-
-  BufferLineIndicatorVisible = {
-    fg = colors.fg_3,
-    bg = colors.bg_0,
-    -- sp = colors.fg_3,
-    -- underline = true,
-    -- strikethrough = true,
-  },
+  BufferLineCloseButtonVisible = { bg = colors.bg_3, fg = colors.fg_2 },
+  BufferLineCloseButton = { bg = colors.bg_3, fg = colors.fg_2 },
+  BufferLineCloseButtonSelected = { bg = colors.bg_3, fg = colors.fg_2, sp = colors.blue, underline = true },
 }
 
--- for key, value in pairs(buffer_line) do
---   value.strikethrough = true
--- end
+local illuminate = {
+  IlluminatedWordWrite = { bg = colors.bg_2 },
+  IlluminatedWordRead = { bg = colors.bg_2 },
+  IlluminatedWordTemporary = { bg = colors.bg_2 },
+  illuminatedCurWord = { bg = colors.bg_2 },
+  illuminatedWord = { bg = colors.bg_2 },
+}
+
+local trouble = {
+  TroubleNormal = { bg = colors.bg_negative_1 },
+}
 
 local highlights = {
   status_line,
-  cursor_line,
   buffer_line,
+  cursor_line,
   treesitter,
   telescope,
   neotree,
   dashboard,
   whichkey,
   wal_colors,
+  headlines,
+  illuminate,
+  gitsigns,
+  trouble,
   other,
 }
 
