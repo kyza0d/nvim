@@ -1,31 +1,63 @@
 return {
   {
+    'vhyrro/luarocks.nvim',
+    priority = 1000,
+    config = true,
+  },
+  -- { "OXY2DEV/markview.nvim", opts =  }
+  {
     'vhyrro/neorg',
-    enabled = false,
     ft = 'norg',
     version = '*',
-    build = ':Neorg sync-parsers',
-    opts = require('config.neorg'),
-  },
-  {
-    'lukas-reineke/headlines.nvim',
-    ft = { 'org', 'norg', 'markdown', 'yaml' },
-    config = function()
-      require('headlines').setup({
-        org = { headline_highlights = false },
-        norg = { headline_highlights = { 'Headline' }, codeblock_highlight = true },
-        markdown = { headline_highlights = { 'Headline1' } },
-      })
-    end,
-    dependencies = {
-      {
-        '3rd/image.nvim',
-        opts = {
-          backend = 'kitty',
-          max_width = 150,
-          max_height_window_percentage = 60,
+    dependencies = { 'luarocks.nvim' },
+    run = ':Neorg sync-parsers',
+    opts = {
+      load = {
+        ['core.integrations.treesitter'] = {
+          config = {
+            configure_parsers = true,
+            install_parsers = true,
+          },
         },
-        ft = { 'norg', 'markdown' },
+        ['core.keybinds'] = {
+          default_keybinds = false,
+        },
+        ['core.ui.calendar'] = {},
+        ['core.qol.toc'] = {},
+        ['core.qol.todo_items'] = {},
+        ['core.concealer'] = {
+          config = {
+            markup_preset = 'conceal',
+            icons = {
+              heading = {
+                -- icons = { '󰎥 ', '󰎨 ', '󰎫 ', '󰎲 ', '󰎯 ', '󰎴 ' },
+                icons = { '', '', '', '', '', '' },
+              },
+              todo = {
+                done = { icon = '✓' },
+                pending = { icon = '🞊' },
+                undone = { icon = '🞨' },
+              },
+            },
+            dim_code_blocks = {
+              width = 'content',
+              padding = {
+                left = 10,
+                right = 10,
+              },
+            },
+          },
+        },
+        ['core.highlights'] = {
+          config = {
+            highlights = {
+              todo_items = {
+                urgent = '+@repeat',
+                recurring = '+@attribute',
+              },
+            },
+          },
+        },
       },
     },
   },

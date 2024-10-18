@@ -1,53 +1,16 @@
---- Personal Neovim configurationini
---- @author kyza_
---- @version 0.0.1
---- @website kyza.dev
+--- author kyza0d
+--- version 0.0.0
+--- website https://kyza.dev
 
---- Based off of several configs 🫡
---- @url https://github.com/akinsho/dotfiles/
---- @url https://github.com/folke/dot/
---- @url https://github.com/b0o/nvim-conf
---- @url https://github.com/glepnir/nvim
---- @url https://github.com/MariaSolOs/dotfiles
-
-package.path = package.path .. ';' .. vim.fn.expand('$HOME') .. '/.luarocks/share/lua/5.1/?/init.lua;'
-package.path = package.path .. ';' .. vim.fn.expand('$HOME') .. '/.luarocks/share/lua/5.1/?.lua;'
-
-if vim.g.vscode then return end
-
-if vim.g.neovide then
-  vim.g.transparency = 1.00
-  vim.g.neovide_transparency = 1.00
-
-  local alpha = function() return string.format('%x', math.floor(255 * (vim.g.transparency or 0.7))) end
-  vim.g.neovide_background_color = '#0f1117' .. alpha()
-
-  vim.g.neovide_refresh_rate = 144
-  vim.g.neovide_scale_factor = 0.9
-
-  vim.g.neovide_scroll_animation_length = 0.1
-
-  vim.g.neovide_cursor_trail_size = 0.84
-  vim.g.neovide_cursor_animation_length = 0.05
-  vim.g.neovide_cursor_antialiasing = true
-
-  vim.g.neovide_cursor_vfx_mode = 'pixiedust'
-  vim.g.neovide_cursor_vfx_particle_density = 10.0
-
-  vim.cmd([[
-      set guicursor=n-c:block-Cursor
-            \,v:block-CursorIM
-            \,i-ci:ve-ver25-Cursor
-            \,r-cr:block-rCursor
-            \,o:hor50
-            \,sm:block-blinkwait175-blinkoff150-blinkon175
-  ]])
-  -- vim.opt.guicursor = 'n-v-c-sm:hor80,i-ci-ve:hor25,r-cr-o:hor20'
-end
-
--- Global namespace
 require('globals')
-reload('options')
+
+require('ui')
+require('options')
+require('icons')
+
+package.path = fmt('%s/.luarocks/share/lua/5.1/?/init.lua;%s/.luarocks/share/lua/5.1/?.lua;', vim.fn.expand('$HOME'), vim.fn.expand('$HOME'))
+
+package.cpath = fmt('%s/.luarocks/lib/lua/5.1/?/so', vim.fn.expand('$HOME'))
 
 -- Set leader to space
 vim.g.mapleader = ' '
@@ -58,6 +21,7 @@ vim.g.maplocalleader = ' '
 
 -- Bootstrap lazy.nvim
 local lazypath = vim.fn.stdpath('data') .. '/lazy/lazy.nvim'
+if vim.g.vscode then return end
 
 -- Clone lazy.nvim if it doesn't exist
 if not vim.loop.fs_stat(lazypath) then
@@ -74,48 +38,24 @@ end
 -- Add lazy.nvim to runtimepath
 vim.opt.rtp:prepend(lazypath)
 
+-- If opening from inside neovim terminal then do not load other plugins
+if vim.env.NVIM then return require('lazy').setup({ { 'willothy/flatten.nvim', config = true } }) end
+
 -- Lazy load plugins
 require('lazy').setup({
   { import = 'plugins' },
   {
-    --------------------------------------------
-    -- ⚠️  Plugins in development
-    --------------------------------------------
-
-    {
-      dir = '/home/kyza/Plugins/scratch.nvim',
-      dependencies = { 'MunifTanjim/nui.nvim' },
-      event = 'BufReadPre',
-      opts = {
-        default_width = 0.60, -- 30% of the window width
-        default_height = 0.48, -- 40% of the window height
-        position = {
-          row = '83%',
-          col = '90%',
-        },
-      },
-    },
-
-    -- -- Colorscheme manager
-    {
-      dir = '/home/kyza/Plugins/harmony.nvim/',
-      config = function() require('config.harmony') end,
-      event = 'ColorScheme',
-      enabled = true,
-    },
-
-    { dir = '/home/kyza/Plugins/summer-time/' },
-    { dir = '/home/kyza/Plugins/neowal/' },
+    { 'andweeb/presence.nvim', event = 'BufRead', opts = {}, enabled = false },
+    { dir = '/home/kyza/Plugins/themes/summer-time/' },
+    { dir = '~/Plugins/themes/ashes.nvim', version = '*' },
+    { dir = '/home/kyza/Plugins/themes/neowal/', opts = {} },
   },
-  -- Themes
 }, {
-  change_detection = {
-    notify = false,
-  },
+  change_detection = { notify = false },
   performance = {
-    cache = {
-      enabled = true,
-    },
+    cache = { enabled = true },
+    defaults = { lazy = true },
+    checker = { enabled = false },
     rtp = {
       -- stylua: ignore
       disabled_plugins = {
@@ -125,31 +65,29 @@ require('lazy').setup({
       },
     },
   },
-  defaults = {
-    lazy = true,
-  },
-  checker = {
-    enabled = false,
-  },
 })
 
-require('neodev').setup({})
+require('keymaps')
+require('autocmds')
+require('lsp')
 
-reload('keymaps')
-reload('autocmds')
-reload('servers')
+-- Unique config for neovide
+if vim.g.neovide then require('neovide') end
 
-require('utils.marks')
+opt.background = 'dark'
+-- ky.pcall('theme failed to load because', vim.cmd.colorscheme, 'caret')
+-- ky.pcall('theme failed to load because', vim.cmd.colorscheme, 'dawnfox')
+ky.pcall('theme failed to load because', vim.cmd.colorscheme, 'text-to-colorscheme')
 
-create_autocmd({ 'BufEnter' }, {
-  callback = function()
-    if vim.bo.filetype ~= 'neo-tree' then vim.o.statusline = "%{%v:lua.reload('config.statusline').render()%}" end
-  end,
-})
+require('statusline').init()
 
--- Load colorscheme
-vim.cmd.colorscheme(ky.read_cache('colorscheme', 'default'))
+--- Based off of several configs 🫡
+--- https://github.com/akinsho/dotfiles/
+--- https://github.com/MariaSolOs/dotfiles
+--- https://github.com/folke/dot/
+--- https://github.com/b0o/nvim-conf
+--- https://github.com/glepnir/nvim
 
--- -- Disable shada
-vim.opt.shadafile = 'NONE'
-vim.opt.shadafile = ''
+--- Resources for finding plugins / inspiration
+--- https://github.com/rockerBOO/awesome-neovim/blob/main/README.md
+--- https://reddit.com/r/neovim

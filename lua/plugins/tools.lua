@@ -1,6 +1,4 @@
---------------------------------------------
--- Editor Tools
---------------------------------------------
+local hl, P = ky.hl, ky.ui.palette
 
 return {
   {
@@ -18,5 +16,10 @@ return {
     cmd = 'MarkdownPreview',
     build = 'cd app && yarn install',
     ft = 'markdown',
+  },
+  {
+    'andweeb/presence.nvim',
+    event = 'BufRead',
+    opts = {},
   },
 }

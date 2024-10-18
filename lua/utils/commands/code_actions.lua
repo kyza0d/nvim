@@ -6,10 +6,7 @@ local event = require('nui.utils.autocmd').event
 --- @param highlight table: A table containing highlight groups.
 --- @return string: A concatenated string of winhighlight options.
 local function make_winhighlight(highlight)
-  return table.concat(
-    vim.tbl_map(function(key) return string.format('%s:%s', key, highlight[key]) end, vim.tbl_keys(highlight)),
-    ','
-  )
+  return table.concat(vim.tbl_map(function(key) return string.format('%s:%s', key, highlight[key]) end, vim.tbl_keys(highlight)), ',')
 end
 
 local winhighlight = make_winhighlight({
@@ -32,9 +29,7 @@ end
 local function prepare_menu_items(response)
   local items = {}
   for i, action in ipairs(response) do
-    if action.title then
-      table.insert(items, Menu.item(string.format(' %s. %s ', i, action.title), { action = action }))
-    end
+    if action.title then table.insert(items, Menu.item(string.format(' %s. %s ', i, action.title), { action = action })) end
   end
   return items
 end
@@ -97,4 +92,4 @@ local function show_code_actions()
   end)
 end
 
-return show_code_actions()
+return show_code_actions

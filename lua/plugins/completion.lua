@@ -1,127 +1,134 @@
---------------------------------------------
--- Completion
---------------------------------------------
+local hl, P = ky.hl, ky.ui.palette
 
 return {
+  init = function()
+    hl.plugin('NeoCodeium', {
+      theme = { ['*'] = {
+        { NeoCodeiumSuggestion = { link = 'Comment' } },
+      } },
+    })
+  end,
+  {
+    'monkoose/neocodeium',
+    opts = {
+      show_label = false,
+      silent = true,
+    },
+    event = 'BufReadPre',
+  },
+  {
+    'yetone/avante.nvim',
+    event = 'VeryLazy',
+    enabled = false,
+    build = ':AvanteBuild source=false',
+    init = function()
+      hl.plugin('Avante', {
+        theme = {
+          ['*'] = {
+            AvanteTitle = { fg = P.magenta, bold = true },
+            AvanteSubtitle = { fg = P.light_yellow, bold = true },
+          },
+        },
+      })
+    end,
+    opts = {
+      hints = { enabled = false },
+      claude = {
+        endpoint = 'https://api.anthropic.com',
+        model = 'claude-3-5-sonnet-20240620',
+        temperature = 0,
+        max_tokens = 4096,
+      },
+      behaviour = {
+        auto_suggestions = true, -- Experimental stage
+        auto_set_keymaps = true,
+      },
+      windows = {
+        width = tonumber(vim.o.columns * 0.25),
+      },
+    },
+    dependencies = {
+      'echasnovski/mini.icons',
+      'nvim-lua/plenary.nvim',
+      {
+        'grapp-dev/nui-components.nvim',
+        dependencies = {
+          'MunifTanjim/nui.nvim',
+        },
+      },
+    },
+  },
+
+  { 'windwp/nvim-ts-autotag', event = { 'InsertEnter' } },
+
   {
     'hrsh7th/nvim-cmp',
     event = { 'CmdlineEnter', 'InsertEnter' },
-    init = function()
-      local cmp_autopairs = require('nvim-autopairs.completion.cmp')
-      local cmp = require('cmp')
-      cmp.event:on('confirm_done', cmp_autopairs.on_confirm_done())
-    end,
     dependencies = {
       'hrsh7th/cmp-buffer',
       'hrsh7th/cmp-cmdline',
-      'hrsh7th/cmp-emoji',
       'hrsh7th/cmp-nvim-lsp',
       'hrsh7th/cmp-path',
-      'hrsh7th/cmp-nvim-lua',
       'saadparwaiz1/cmp_luasnip',
-      'uga-rosa/cmp-dictionary',
     },
     config = function() require('config.nvim-cmp') end,
   },
+
+  -- {
+  --   'saghen/blink.cmp',
+  --   lazy = false,
+  --   dependencies = 'rafamadriz/friendly-snippets',
+  --   version = 'v0.*',
+  --   opts = {
+  --     keymap = {
+  --       accept = '<CR>',
+  --     },
+  --     highlight = {
+  --       use_nvim_cmp_as_default = true,
+  --     },
+  --   },
+  -- },
+
+  { 'onsails/lspkind-nvim', event = { 'CmdlineEnter', 'InsertEnter' } },
+
   {
     'windwp/nvim-autopairs',
-    event = { 'CmdlineEnter', 'InsertEnter' },
+    event = 'InsertEnter',
     dependencies = { 'hrsh7th/nvim-cmp' },
     config = function()
       local autopairs = require('nvim-autopairs')
       local cmp_autopairs = require('nvim-autopairs.completion.cmp')
       require('cmp').event:on('confirm_done', cmp_autopairs.on_confirm_done())
       autopairs.setup({
-        close_triple_quotes = true,
+        close_triple_quotes = false,
+        disable_filetype = { 'neo-tree-popup' },
         check_ts = true,
+        map_cr = true,
       })
     end,
   },
-  { 'onsails/lspkind-nvim', event = { 'CmdlineEnter', 'InsertEnter' } },
+
   {
     'L3MON4D3/LuaSnip',
     event = 'InsertEnter',
     build = 'make install_jsregexp',
     dependencies = { 'rafamadriz/friendly-snippets' },
     config = function()
-      local ls = require('luasnip')
+      local luasnip = require('luasnip')
       local types = require('luasnip.util.types')
-      local extras = require('luasnip.extras')
-      local fmt = require('luasnip.extras.fmt').fmt
 
-      ls.config.set_config({
+      luasnip.config.set_config({
         history = false,
         region_check_events = 'CursorMoved,CursorHold,InsertEnter',
+        enable_autosnippets = true,
         delete_check_events = 'InsertLeave',
         ext_opts = {
-          [types.choiceNode] = {
-            active = {
-              hl_mode = 'combine',
-              virt_text = { { ' ', 'Operator' } },
-            },
-          },
-          [types.insertNode] = {
-            active = {
-              hl_mode = 'combine',
-              virt_text = { { ' ', 'Type' } },
-            },
-          },
-        },
-        enable_autosnippets = true,
-        snip_env = {
-          fmt = fmt,
-          m = extras.match,
-          t = ls.text_node,
-          f = ls.function_node,
-          c = ls.choice_node,
-          d = ls.dynamic_node,
-          i = ls.insert_node,
-          l = extras.lamda,
-          snippet = ls.snippet,
+          [types.choiceNode] = { active = { hl_mode = 'combine', virt_text = { { ' ', 'Operator' } } } },
+          [types.insertNode] = { active = { hl_mode = 'combine', virt_text = { { ' ', 'Type' } } } },
         },
       })
-
       require('luasnip.loaders.from_vscode').lazy_load()
-
-      ls.filetype_extend('typescriptreact', { 'javascript', 'typescript' })
-    end,
-  },
-  {
-    'github/copilot.vim',
-    enabled = false,
-    event = 'InsertEnter',
-    dependencies = { 'nvim-cmp' },
-    init = function() vim.g.copilot_no_tab_map = true end,
-    config = function()
-      local function accept_word()
-        fn['copilot#Accept']('')
-        local output = fn['copilot#TextQueuedForInsertion']()
-        return fn.split(output, [[[ .]\zs]])[1]
-      end
-
-      local function accept_line()
-        fn['copilot#Accept']('')
-        local output = fn['copilot#TextQueuedForInsertion']()
-        return fn.split(output, [[[\n]\zs]])[1]
-      end
-
-      keymap('i', '<Plug>(as-copilot-accept)', "copilot#Accept('<Tab>')", {
-        expr = true,
-        noremap = true,
-        silent = true,
-      })
-
-      keymap('i', '<M-]>', '<Plug>(copilot-next)', { desc = 'next suggestion' })
-      keymap('i', '<M-[>', '<Plug>(copilot-previous)', { desc = 'previous suggestion' })
-      keymap('i', '<M-w>', accept_word, { expr = true, noremap = false, desc = 'accept word' })
-      keymap('i', '<M-l>', accept_line, { expr = true, noremap = false, desc = 'accept line' })
-
-      vim.g.copilot_filetypes = {
-        ['*'] = true,
-        ['neo-tree-popup'] = false,
-        ['nui-popup'] = false,
-        TelescopePrompt = false,
-      }
+      luasnip.filetype_extend('typescriptreact', { 'javascript', 'typescript' })
     end,
   },
 }
