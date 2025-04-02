@@ -14,7 +14,7 @@ local function set_sidebar_highlight()
   })
 end
 
-local sidebar_fts = { 'Avante', 'AvanteInput' }
+local sidebar_fts = { 'Avante', 'AvanteInput', 'AvanteSelectedFiles', 'Trouble' }
 
 local function on_sidebar_enter()
   vim.opt_local.winhighlight:append({
@@ -37,65 +37,35 @@ local function general_overrides()
   local accent_80 = hl.blend({ accent, hl.get('Normal', 'bg') }, -0.1)
 
   hl.all({
-    -- [ Editor Overrides ] ------------------------------
     { Cursor = { bg = P.accent, reverse = false } },
     { iCursor = { bg = P.accent, reverse = false } },
     { lCursor = { bg = P.accent, reverse = false } },
     { vCursor = { bg = P.accent, reverse = false } },
     { tCursor = { bg = P.accent, reverse = false } },
-
-    -- Editor Foreground Element
     { Directory = { fg = { from = 'Normal', alter = -0.45 } } },
-
-    -- [ Searching ] ------------------------------------
     { Search = { clear = true, bg = accent_50 } },
     { CurSearch = { clear = true, bg = accent_80 } },
     { IncSearch = { clear = true, bg = accent_50 } },
     { Visual = { bg = accent_50 } },
-
+    { IndentLine = { fg = { from = 'Normal', attr = 'fg', alter = -0.80 }, bg = 'none' } },
     { LineNr = { fg = { from = 'Normal', attr = 'fg', alter = -0.50 }, bg = 'none' } },
     { WinSeparator = { fg = { from = 'Normal', attr = 'bg', alter = 0.80 } } },
-
     { SignColumn = { bg = 'none' } },
     { FoldStatus = { fg = { from = 'LineNr' } } },
     { EndOfBuffer = { bg = 'none' } },
-
-    -- [ Terminal ] -------------------------------
     { Term = { bg = { from = 'Normal', alter = -0.25 } } },
     { TermBorder = { bg = { from = 'Normal', alter = -0.25 }, fg = { from = 'Whitespace' } } },
-
-    -- [ Completion Menu ] -------------------------------
     { Pmenu = { bg = { from = 'Normal', alter = -0.35 }, fg = 'none' } },
     { PmenuSel = { bg = { from = 'Pmenu', alter = 0.85 }, fg = 'none', bold = false } },
-
     { CursorLine = { bg = { from = 'Normal' } } },
     { CursorLineNr = { bg = { from = 'Normal', alter = 0.30 }, fg = { from = 'Identifier' } } },
     { CursorLineFold = { clear = true } },
     { CursorLineSign = { clear = true } },
-
     { NormalFloat = { bg = { from = 'Normal', alter = -0.12 } } },
-    { TelescopeNormal = { bg = { from = 'Normal', alter = 0.15 }, fg = { from = 'Normal', alter = -0.20 } } },
-    { TelescopePromptNormal = { bg = { from = 'Normal', alter = 0.15 } } },
-    { TelescopeResultsNormal = { bg = { from = 'Normal', alter = 0.15 }, blend = 0 } },
-    { TelescopePreviewNormal = { bg = { from = 'Normal', alter = 0.20 }, blend = 0 } },
-    { TelescopeResultsBorder = { bg = { from = 'Normal', alter = 0.15 }, blend = 0 } },
-    { TelescopePromptBorder = { bg = { from = 'Normal', alter = 0.15 }, blend = 0 } },
-    { TelescopePreviewBorder = { bg = { from = 'Normal', alter = 0.20 }, blend = 0 } },
-    { TelescopePreviewTitle = { bg = { from = 'Normal', alter = 0.20 } } },
-    { TelescopeSelection = { bg = { from = 'Normal', alter = 0.20 }, blend = 0 } },
     { FloatBorder = { bg = { from = 'Normal', alter = -0.08 }, fg = { from = 'Normal', attr = 'bg', alter = 1.20 } } },
     { FloatTitle = { bold = true, fg = 'white', bg = { from = 'FloatBorder' } } },
-
-    -- [ Folding ] ---------------------------------------
     { Folded = { bg = { from = 'Normal', alter = 0.30 } } },
-
-    -- [ Indent Blankline ] ------------------------------
-    { IblIndent = { bg = 'none', fg = { from = 'Normal', attr = 'bg', alter = 0.10 } } },
-    { IblScope = { bg = 'none', fg = { from = 'Normal', attr = 'bg', alter = 1.60 } } },
-
     { QuickFixLine = { link = 'Visual' } },
-
-    -- [ Diff ] ------------------------------------------
     { diffAdded = { fg = 'none', bg = hl.blend({ bg_color, P.green }, -0.25), reverse = false } },
     { diffChanged = { fg = 'none', bg = hl.blend({ bg_color, P.light_yellow }, -0.25), reverse = false } },
     { diffRemoved = { fg = 'none', bg = hl.blend({ bg_color, P.pale_red }, -0.25), reverse = false } },
@@ -109,8 +79,6 @@ local function general_overrides()
     { diffNoEOL = { link = 'WarningMsg' } },
     { diffOnly = { link = 'WarningMsg' } },
     { DevIconDefault = { fg = { from = 'LineNr', alter = 0.24 } } },
-
-    -- [ Diagnostics ] ------------------------------
     { DiagnosticError = { fg = P.pale_red } },
     { DiagnosticWarn = { fg = P.light_yellow } },
     { DiagnosticInfo = { fg = P.pale_blue } },
@@ -120,29 +88,14 @@ local function general_overrides()
     { DiagnosticUnderlineWarn = { sp = P.light_yellow } },
     { DiagnosticUnderlineInfo = { fg = P.light_yellow } },
     { DiagnosticHint = { fg = P.pale_red } },
-
-    -- [ Aerial ] ------------------------------------
     { AerialFunctionIcon = { bg = { from = 'Normal', alter = -0.30 }, fg = P.light_gray } },
     { AerialNormal = { bg = { from = 'Normal', alter = -0.30 } } },
-
-    -- [ Treesitter ] ------------------------------------
     { Comment = { italic = true, fg = { from = 'LineNr', alter = -0.15 } } },
     { ['@comment'] = { link = 'Comment' } },
     { ['@variable'] = { clear = true } },
     { ['@spell'] = { clear = true } },
-
-    -- [ Norg ] ------------------------------------
     { ['@norglist'] = { fg = { from = 'Comment' } } },
-
-    -- [ Bqf ] ------------------------------------
-    { BqfPreviewFloat = { bg = { from = 'Normal' } } },
-    { BqfPreviewBorder = { bg = { from = 'Normal' } } },
-    { BqfPreviewCursorLine = { bg = { from = 'Normal' } } },
-    { BqfPreviewRange = { bg = { from = 'Normal' } } },
-
-    -- [ DevIcon ] ------------------------------------
     { DevIconYarn = { fg = '#2F2963' } },
-
     { MiniIconsAzure = { fg = { from = 'Function' } } },
     { MiniIconsBlue = { fg = { from = 'DiagnosticInfo' } } },
     { MiniIconsCyan = { fg = { from = 'DiagnosticHint' } } },

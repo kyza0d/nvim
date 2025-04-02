@@ -1,15 +1,16 @@
-local hl = ky.hl
-
 ---@diagnostic disable: missing-fields
 return {
-
-  { 'saecki/live-rename.nvim' },
   {
     'williamboman/mason.nvim',
     cmd = 'Mason',
     build = ':MasonUpdate',
     dependencies = 'nvim-lua/plenary.nvim',
     opts = { ui = { height = 0.8 } },
+  },
+  {
+    'pmizio/typescript-tools.nvim',
+    dependencies = { 'nvim-lua/plenary.nvim', 'neovim/nvim-lspconfig' },
+    opts = {},
   },
   {
     'williamboman/mason-lspconfig.nvim',
@@ -36,7 +37,7 @@ return {
       automatic_installation = true,
       handlers = {
         function(name)
-          local config = require('lsp')(name)
+          local config = require('servers')(name)
           if config then require('lspconfig')[name].setup(config) end
         end,
       },
@@ -52,17 +53,14 @@ return {
       glance.setup({
         theme = { enable = true, mode = 'darken' },
         height = 20,
-
         list = {
           position = 'right',
           width = 0.40,
         },
-
         preview_win_opts = {
           cursorline = false,
           number = false,
         },
-
         mappings = {
           list = {
             ['<Down>'] = actions.next,
@@ -75,15 +73,22 @@ return {
           },
           preview = {
             ['q'] = actions.close,
-            ['<Tab>'] = actions.enter_win('list'), -- Focus list window
+            ['<Tab>'] = actions.enter_win('list'),
             ['<Esc>'] = actions.close,
             ['<M-a>'] = actions.enter_win('list'),
           },
         },
       })
     end,
+    keys = {
+      {
+        'gR',
+        '<cmd>Glance references<cr>',
+        desc = 'Glance references',
+        mode = 'n',
+      },
+    },
   },
-
   {
     'stevearc/conform.nvim',
     event = { 'BufWritePre' },
@@ -92,8 +97,8 @@ return {
       formatters_by_ft = {
         lua = { 'stylua' },
         python = { 'isort', 'black' },
-        javascript = { { 'prettierd', 'prettier' } },
-        json = { { 'prettierd', 'prettier' } },
+        javascript = { 'prettierd' },
+        json = { 'prettierd' },
         sh = { 'shfmt' },
         rust = { 'rustfmt' },
       },

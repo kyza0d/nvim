@@ -166,8 +166,8 @@ modules.unique_files = {
   },
   ['trouble'] = {
     name = 'Trouble',
-    hl = colors.hls.dir_parent,
-    icon_hl = colors.hls.dir_parent,
+    hl = colors.hls.panel_st,
+    icon_hl = colors.hls.panel_st_icon,
   },
   ['norg'] = {
     name = function(_, buf)
@@ -182,14 +182,20 @@ modules.unique_files = {
     icon_hl = colors.hls.indicator,
   },
   ['Avante'] = {
-    name = function() return 'Avante' end,
+    name = function() return 'Claude 3.7 Sonnet' end,
     icon = '   ',
     hl = colors.hls.panel_st,
     icon_hl = colors.hls.panel_st_icon,
   },
   ['AvanteInput'] = {
-    name = function() return 'AvanteInput' end,
+    name = function() return 'Editor' end,
     icon = '   ',
+    hl = colors.hls.panel_st,
+    icon_hl = colors.hls.panel_st_icon,
+  },
+  ['AvanteSelectedFiles'] = {
+    name = function() return 'Files' end,
+    icon = '   ',
     hl = colors.hls.panel_st,
     icon_hl = colors.hls.panel_st_icon,
   },

@@ -1,5 +1,9 @@
 local namespace = {
-  ui = {},
+  ui = {
+    statuscolumn = {
+      enable = true,
+    },
+  },
 }
 
 _G.ky = ky or namespace
@@ -12,8 +16,6 @@ _G.opt = vim.opt
 _G.api = vim.api
 _G.fn = vim.fn
 _G.fmt = string.format
-
-_G.is_light = function() return vim.o.background == 'light' end
 
 _G.concat = function(...)
   local args = { ... }
@@ -175,11 +177,20 @@ function ky.augroup(name, ...)
   return id
 end
 
-ky.custom_menus = {
-  code_action = function() require('utils.commands.code_actions')() end,
-  redir = function() require('utils.commands.redir')() end,
-  references = function() require('utils.commands.lsp_references') end,
-}
+function ky.reqcall(require_path)
+  return setmetatable({}, {
+    __index = function(_, k)
+      return function(...) return require(require_path)[k](...) end
+    end,
+  })
+end
+
+function ky.reqidx(require_path)
+  return setmetatable({}, {
+    __index = function(_, key) return require(require_path)[key] end,
+    __newindex = function(_, key, value) require(require_path)[key] = value end,
+  })
+end
 
 function ky.filetype_settings(map)
   local commands = ky.map(function(settings, ft)
@@ -191,7 +202,6 @@ function ky.filetype_settings(map)
       command = function(args)
         ky.foreach(function(value, scope)
           if scope == 'opt' then scope = 'opt_local' end
-          if scope == 'mappings' then return apply_ft_mappings(value, args.buf) end
           if scope == 'plugins' then return ky.ftplugin_conf(value) end
           if type(value) ~= 'table' and vim.is_callable(value) then return value(args) end
           ky.foreach(function(setting, option) vim[scope][option] = setting end, value)

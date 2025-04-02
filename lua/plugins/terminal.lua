@@ -1,5 +1,3 @@
-local ui = ky.ui
-
 return {
   {
     'akinsho/toggleterm.nvim',
@@ -30,12 +28,19 @@ return {
   },
   {
     'willothy/flatten.nvim',
-    priority = 1001,
     lazy = false,
+    priority = 1001,
     config = {
       window = { open = 'alternate' },
-      callbacks = {
+      hooks = {
         block_end = function() require('toggleterm').toggle() end,
+        post_open = function(_, winnr, _, is_blocking)
+          if is_blocking then
+            require('toggleterm').toggle()
+          else
+            api.nvim_set_current_win(winnr)
+          end
+        end,
       },
     },
   },

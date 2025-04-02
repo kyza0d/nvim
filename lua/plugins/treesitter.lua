@@ -1,8 +1,5 @@
 ---@diagnostic disable: missing-fields
-
 return {
-  { 'vidocqh/auto-indent.nvim', event = 'BufReadPre', opts = {} },
-  { 'JoosepAlviste/nvim-ts-context-commentstring', opts = {}, event = 'BufReadPre' },
   {
     'nvim-treesitter/nvim-treesitter',
     build = ':TSUpdate',
@@ -36,7 +33,7 @@ return {
         },
         move = {
           enable = true,
-          set_jumps = false, -- whether to set jumps in the jumplist
+          set_jumps = false,
           goto_next_start = { ['[m'] = '@function.outer' },
           goto_next_end = { [']m'] = '@function.outer' },
         },
@@ -45,17 +42,33 @@ return {
       indent = { enable = true },
       playground = { enable = true },
     },
+    keys = {
+      {
+        '<C-j>',
+        function() require('nvim-treesitter.incremental_selection').init_selection() end,
+        desc = 'Initialize incremental selection',
+        mode = 'v',
+      },
+      {
+        '<C-j>',
+        function() require('nvim-treesitter.incremental_selection').node_incremental() end,
+        desc = 'Increment selection',
+        mode = 'v',
+      },
+      {
+        '<C-k>',
+        function() require('nvim-treesitter.incremental_selection').node_decremental() end,
+        desc = 'Decrement selection',
+        mode = 'v',
+      },
+    },
   },
+  { 'JoosepAlviste/nvim-ts-context-commentstring', opts = {}, event = 'BufReadPre' },
   {
     'windwp/nvim-ts-autotag',
     ft = { 'typescriptreact', 'javascript', 'javascriptreact', 'html', 'vue', 'svelte' },
     dependencies = { 'nvim-treesitter/nvim-treesitter' },
     opts = {},
-  },
-  {
-    'nvim-treesitter/playground',
-    cmd = { 'TSPlaygroundToggle', 'TSCaptureUnderCursor' },
-    dependencies = { 'nvim-treesitter' },
   },
   {
     'kevinhwang91/nvim-ufo',
@@ -65,12 +78,10 @@ return {
   },
   {
     'numToStr/Comment.nvim',
-    keys = { 'gcc', { 'gc', mode = { 'x', 'n', 'o' } }, '<C-/>' },
+    keys = {
+      { 'gcc', desc = 'Toggle comment line' },
+      { 'gc', mode = { 'x', 'n', 'o' }, desc = 'Toggle comment selection' },
+    },
     opts = {},
-  },
-  {
-    'folke/todo-comments.nvim',
-    event = 'BufReadPost',
-    opts = { signs = false },
   },
 }

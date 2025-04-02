@@ -26,7 +26,6 @@ ky.ui.icons = {
     filetype = {
       bash = { glyph = '', hl = 'MiniIconsGreen' },
       csv = { glyph = '', hl = 'MiniIconsGreen' },
-      markdown = { glyph = '', hl = 'MiniIconsBlue' },
       pdf = { glyph = '', hl = 'MiniIconsGreen' },
       sh = { glyph = '', hl = 'MiniIconsGreen' },
       xmodmap = { glyph = '', hl = 'MiniIconsCyan' },
@@ -45,6 +44,7 @@ ky.ui.icons = {
       ['mp4'] = { glyph = '', hl = 'MiniIconsPurple' },
       ['ttf'] = { glyph = '', hl = 'MiniIconsPurple' },
       ['zip'] = { glyph = '', hl = 'MiniIconsYellow' },
+      ['md'] = { glyph = '', hl = 'MiniIconsBlue' },
     },
   },
   symbol_kinds = {
@@ -166,9 +166,9 @@ ky.ui.icons = {
   },
 
   git = {
-    add = '  ', --    
-    mod = '  ', --  
-    remove = '  ', --    
+    add = ' ', --    
+    mod = ' ', --  
+    remove = ' ', --    
     ignore = '',
     rename = '',
     untracked = '',
@@ -190,6 +190,7 @@ ky.ui.icons = {
   },
 
   misc = {
+    fzf = '',
     readonly = ' ',
     none = '',
     pointer = '➤',

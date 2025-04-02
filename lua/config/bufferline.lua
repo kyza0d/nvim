@@ -16,7 +16,7 @@ bufferline.setup({
     show_buffer_close_icons = false,
     show_close_icon = false,
     style_preset = bufferline.style_preset.default, -- or bufferline.style_preset.minimal,
-    show_buffer_icons = false,
+    show_buffer_icons = true,
     left_trunc_marker = '',
     right_trunc_marker = '',
     tab_size = 0,
@@ -47,7 +47,9 @@ bufferline.setup({
 
     right_mouse_command = 'Bdelete! %d',
     left_mouse_command = 'buffer %d',
-    indicator = { style = 'underline' },
+    indicator = {
+      style = not vim.g.neovide and 'underline' or 'none',
+    },
     modified_icon = '',
     separator_style = { ' ', ' ' },
     offsets = {

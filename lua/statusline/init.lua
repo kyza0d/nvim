@@ -1,7 +1,7 @@
 local M = {}
 
 local str = require('utils.strings')
-local section, display, spacer = str.section, str.display, str.spacer
+local section, display = str.section, str.display
 
 local ui = ky.ui
 local icons = ui.icons

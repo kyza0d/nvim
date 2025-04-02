@@ -1,111 +1,80 @@
--- [ Status and Command Line ] ----------------------------
+vim.opt.laststatus = 2
+vim.opt.cmdheight = 0
+vim.opt.showtabline = 3
+vim.opt.showmode = false
 
-vim.opt.laststatus = 2 -- Always display the status line
-vim.opt.cmdheight = 0 -- Height of the command line
-vim.opt.showtabline = 3 -- Always show tabline
-vim.opt.showmode = false -- Don't show mode in command line
-
--- [ Popup Menu ] --------------------------------------
-
-vim.opt.pumheight = 10 -- Popup menu height
-
--- [ Cursor and Scrolling ] ----------------------------
+vim.opt.pumheight = 10
 
 vim.opt.cursorline = false
-vim.opt.scrolloff = 8 -- Minimum lines to keep above and below the cursor
-vim.opt.mousescroll = 'ver:3,hor:0' -- Mouse scroll settings
+vim.opt.scrolloff = 8
+vim.opt.mousescroll = 'ver:3,hor:0'
 vim.opt.guicursor = {
   'n-v-c:block,i-ci-ve:ver25,r-cr:hor20,o:hor50',
   'a:Cursor/lCursor',
   'sm:block-blinkwait175-blinkoff150-blinkon175',
 }
 
--- [ Colors and Display ] ----------------------------
+vim.opt.termguicolors = true
+vim.opt.conceallevel = 2
+vim.opt.signcolumn = 'yes'
+vim.opt.emoji = true
 
-vim.opt.termguicolors = true -- Enable 24-bit RGB colors
-vim.opt.conceallevel = 2 -- Conceal text (useful for markdown)
-vim.opt.signcolumn = 'no' -- Always show sign column
-vim.opt.emoji = true -- Enable emoji display
+vim.opt.tabstop = 2
+vim.opt.softtabstop = 2
+vim.opt.shiftwidth = 2
+vim.opt.expandtab = true
+vim.opt.autoindent = true
+vim.opt.breakindent = true
+vim.opt.breakindentopt = 'shift:3'
 
--- [ Tabs and Indentation ] ----------------------------
+vim.opt.textwidth = 80
+vim.opt.wrap = true
+vim.opt.linebreak = true
 
-vim.opt.tabstop = 2 -- Number of spaces that a <Tab> counts for
-vim.opt.softtabstop = 2 -- Number of spaces that a <Tab> counts for while editing
-vim.opt.shiftwidth = 2 -- Number of spaces to use for autoindenting
-vim.opt.expandtab = true -- Use spaces instead of tabs
-vim.opt.autoindent = true -- Copy indent from current line when starting a new line
-vim.opt.breakindent = true -- Wrap indent to match line start
-vim.opt.breakindentopt = 'shift:3' -- Options for break indent
+vim.opt.foldenable = true
+vim.opt.foldcolumn = '0'
+vim.opt.foldlevel = 25
+vim.opt.foldmethod = 'expr'
+vim.opt.foldexpr = 'nvim_treesitter#foldexpr()'
 
--- [ Wrapping and Text Width ] ----------------------------
+vim.opt.ignorecase = true
+vim.opt.smartcase = true
 
-vim.opt.textwidth = 80 -- Maximum width of text that is being inserted
-vim.opt.wrap = true -- Wrap long lines
-vim.opt.linebreak = true -- Break lines at word boundaries
+vim.opt.timeout = true
+vim.opt.timeoutlen = 500
+vim.opt.updatetime = 300
 
--- [ Folding ] ----------------------------
+vim.opt.number = false
+vim.opt.numberwidth = 3
+vim.opt.hidden = true
+vim.opt.lazyredraw = false
 
-vim.opt.foldenable = true -- Enable folding
-vim.opt.foldcolumn = '0' -- Number of fold columns
-vim.opt.foldlevel = 25 -- Fold level
-vim.opt.foldmethod = 'expr' -- Folding method
-vim.opt.foldexpr = 'nvim_treesitter#foldexpr()' -- Fold expression
+vim.opt.swapfile = false
+vim.opt.backup = false
+vim.opt.undofile = true
 
--- [ Search ] ----------------------------
+vim.opt.splitkeep = 'screen'
+vim.opt.splitbelow = true
+vim.opt.splitright = true
 
-vim.opt.ignorecase = true -- Ignore case when searching
-vim.opt.smartcase = true -- Override ignorecase if search pattern contains uppercase letters
+vim.opt.eadirection = 'hor'
+vim.opt.switchbuf = 'useopen,uselast'
 
--- [ Timing ] ----------------------------
-
-vim.opt.timeout = true -- Enable timeout
-vim.opt.timeoutlen = 500 -- Time to wait for a mapped sequence to complete
-vim.opt.updatetime = 300 -- Time to wait before triggering the plugin
-
--- [ Numbers and Hidden Buffers ] ----------------------------
-
-vim.opt.number = false -- Show line numbers
-vim.opt.hidden = true -- Allow switching buffers without saving
-vim.opt.lazyredraw = false -- Don't redraw while executing macros
-
--- [ Files and Backups ] ----------------------------
-
-vim.opt.swapfile = false -- Don't use swap file
-vim.opt.backup = false -- Don't create backup files
-vim.opt.undofile = true -- Save undo history
-
--- [ Splits ] ----------------------------
-
-vim.opt.splitkeep = 'screen' -- Keep splits visible on screen
-vim.opt.splitbelow = true -- Put new split below current
-vim.opt.splitright = true -- Put new split to the right of the current
-
--- [ Buffers and Windows ] ----------------------------
-
-vim.opt.eadirection = 'hor' -- Equally divide splits horizontally
-vim.opt.switchbuf = 'useopen,uselast' -- Buffer switching options
-
--- [ Shell ] ----------------------------
-
-vim.opt.shell = '/usr/bin/zsh' -- Use zsh as the shell
-vim.opt.title = true -- Set terminal title
-
--- [ Fillchars ] ----------------------------
+vim.opt.shell = '/usr/bin/zsh'
+vim.opt.title = true
 
 vim.opt.fillchars:append({
   horiz = '─',
   horizup = '─',
   diff = '╱',
   horizdown = '─',
-  vert = '▕', --
+  vert = '▕',
   vertleft = '▏',
   vertright = '▏',
   eob = ' ',
   foldopen = '󰅀',
   foldclose = '󰅂',
 })
-
--- [ Diff Options ] ----------------------------
 
 vim.opt.diffopt = vim.opt.diffopt
   + {
