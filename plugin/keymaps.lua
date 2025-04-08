@@ -1,58 +1,52 @@
-keymap('n', '\\', ':set invhlsearch<cr>', { desc = 'Toggle highlight' })
-keymap('v', '//', [[y/\V<C-R>=escape(@",'/\')<CR><CR>N]], { desc = 'Search for visually selected text' })
-
--- [ Navigation and Motion ] ----------------------------
+local lsp = vim.lsp
+keymap('v', '//', [[y/\V<C-R>=escape(@",'/\')<CR><CR>N]])
+keymap('n', '\\', ':set invhlsearch<cr>')
 
 -- Scrolling
-keymap('n', '<M-k>', '4<C-y>', { desc = 'Scroll up' })
-keymap('n', '<M-j>', '4<C-e>', { desc = 'Scroll down' })
+keymap('n', '<M-k>', '4<C-y>')
+keymap('n', '<M-j>', '4<C-e>')
 
 -- Search navigation
-keymap('n', '<C-n>', '*', { desc = 'Next occurrence' })
-keymap('n', '<C-p>', '#', { desc = 'Previous occurrence' })
+keymap('n', '<C-n>', '*')
+keymap('n', '<C-p>', '#')
 
 -- Matching pairs
-keymap({ 'n', 'v' }, '<M-o>', function() vim.api.nvim_input('%') end, { desc = 'Goto matching pair', nowait = true })
+keymap({ 'n', 'v' }, '<M-o>', function() vim.api.nvim_input('%') end)
 
 -- Line navigation
-keymap({ 'n', 'v' }, '<M-l>', '$', { desc = 'Goto end of line' })
-keymap({ 'n', 'v' }, '<M-h>', '^', { desc = 'Goto start of line' })
-
--- [ Text Manipulation ] ----------------------------
+keymap({ 'n', 'v' }, '<M-l>', '$')
+keymap({ 'n', 'v' }, '<M-h>', '^')
 
 -- Misc text operations
-keymap('v', '.', ':normal .<cr>', { desc = 'Repeat across lines' })
-keymap('x', 'x', '<S-j>', { desc = 'Collapse line in visual mode' })
+keymap('v', '.', ':normal .<cr>')
+keymap('x', 'x', '<S-j>')
 
 -- Clipboard operations
-keymap({ 'n', 'v' }, '<C-v>', '"+p', { desc = 'Paste from + register' })
-keymap('v', '<C-c>', '"+y', { desc = 'Yank to + register' })
-
--- [ File and Buffer Management ] ----------------------------
+keymap({ 'n', 'v' }, '<C-v>', '"+p')
+keymap('v', '<C-c>', '"+y')
 
 -- File operations
-keymap('n', '<M-s>', '<cmd>silent w<cr>', { desc = 'Save file' })
+keymap('n', '<M-s>', '<cmd>silent w<cr>')
 
 -- Buffer navigation
-keymap('n', '<C-CR>', '<C-^>', { desc = 'Alternate buffers' })
+keymap('n', '<C-CR>', '<C-^>')
+keymap('n', '<S-q>', '<cmd>bd!<cr>')
 
 -- Window management
-keymap('n', '<M-CR>', '<cmd>split<cr>', { desc = 'Split window' })
+keymap('n', '<M-CR>', '<cmd>split<cr>')
 
 -- [ Folding ] ----------------------------
-keymap('n', 'zh', 'za', { desc = 'Toggle fold' })
-keymap('n', 'zl', 'zA', { desc = 'Toggle all folds' })
+keymap('n', 'zh', 'za')
+keymap('n', 'zl', 'zA')
 
--- [ Miscellaneous ] ----------------------------
-keymap({ 'n', 'v' }, '<C-b>', '<C-v>', { desc = 'Block selection' })
-keymap('n', '<C-I>', '<C-I>', { desc = 'Jump to last jump' })
+keymap({ 'n', 'v' }, '<C-b>', '<C-v>')
 
 -- LSP keymaps
 create_autocmd('LspAttach', {
   callback = function()
-    keymap('n', '<s-d>', function() vim.lsp.buf.definition() end, { desc = 'Go to definition (LSP)', buffer = true })
-    -- Debugging
-    keymap('n', 'gp', 'g?p', { noremap = false, desc = 'Print variable' })
+    keymap('n', 'gp', 'g?p', { noremap = false })
+    keymap('n', 'gd', lsp.buf.definition)
+    keymap('n', 'gr', lsp.buf.references)
   end,
 })
 
@@ -60,11 +54,11 @@ ky.augroup('AddTerminalMappings', {
   event = { 'TermOpen' },
   command = function()
     if vim.bo.filetype == '' or vim.bo.filetype == 'toggleterm' then
-      vim.keymap.set('t', '<cmd>stopinsert<cr>', '<C-[>', { desc = 'Stop insert mode', noremap = true })
-      vim.keymap.set('t', '<esc>', [[<C-\><C-n>]], { desc = 'Escape to normal mode', buffer = 0 })
-      vim.keymap.set('t', '<C-w>', [[<C-\><C-n><C-w>]], { desc = 'Close window', buffer = 0 })
-      vim.keymap.set('t', '<C-j>', [[<C-\><C-n><C-w>ji]], { desc = 'Move cursor down', buffer = 0 })
-      vim.keymap.set('t', '<C-k>', [[<C-\><C-n><C-w>ki]], { desc = 'Move cursor up', buffer = 0 })
+      vim.keymap.set('t', '<cmd>stopinsert<cr>', '<C-[>')
+      vim.keymap.set('t', '<esc>', [[<C-\><C-n>]])
+      vim.keymap.set('t', '<C-w>', [[<C-\><C-n><C-w>]])
+      vim.keymap.set('t', '<C-j>', [[<C-\><C-n><C-w>ji]])
+      vim.keymap.set('t', '<C-k>', [[<C-\><C-n><C-w>ki]])
     end
   end,
 })

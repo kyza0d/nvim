@@ -7,7 +7,6 @@ local file_picker = function(cwd) fzf_lua.files({ cwd = cwd }) end
 return {
   {
     'folke/which-key.nvim',
-    lazy = false,
     event = 'UIEnter',
     config = function() require('config.whichkey') end,
     keys = { '<c-w>', '<leader>', '<cr>' },
@@ -28,42 +27,34 @@ return {
       require('trouble').setup(opts)
     end,
     keys = {
-      { '<leader>ld', '<cmd>Trouble diagnostics toggle focus=true<cr>', desc = 'Diagnostics (Trouble)' },
-      { '<cr>d', '<cmd>Trouble diagnostics toggle filter.buf=0 focus=true<cr>', desc = 'Buffer Diagnostics (Trouble)' },
-      { '<leader>cs', '<cmd>Trouble symbols toggle focus=true<cr>', desc = 'Symbols (Trouble)' },
-      { '<leader>cl', '<cmd>Trouble lsp toggle focus=true win.position=right<cr>', desc = 'LSP Definitions / references / ... (Trouble)' },
-      { '<leader>xL', '<cmd>Trouble loclist toggle<cr>', desc = 'Location List (Trouble)' },
-      { '<leader>xQ', '<cmd>Trouble qflist toggle<cr>', desc = 'Quickfix List (Trouble)' },
+      { '<cr>d', '<cmd>Trouble diagnostics toggle filter.buf=0 focus=true<cr>' },
+      { '<cr>s', '<cmd>Trouble symbols toggle focus=true<cr>' },
+
+      { '<leader>ld', '<cmd>Trouble diagnostics toggle focus=true<cr>' },
+      { '<leader>lr', '<cmd>Trouble lsp_references toggle focus=true<cr>' },
     },
   },
-  -- {
-  --   'aaronik/treewalker.nvim',
-  --   keys = {
-  --     { '<C-h>', ':Treewalker Left<cr>', silent = true, mode = { 'n' } },
-  --     { '<C-j>', ':Treewalker Down<cr>', silent = true, mode = { 'n' } },
-  --     { '<C-k>', ':Treewalker Up<cr>', silent = true, mode = { 'n' } },
-  --     { '<C-l>', ':Treewalker Right<cr>', silent = true, mode = { 'n' } },
-  --   },
-  -- },
   {
     'ibhagwan/fzf-lua',
     cmd = 'FzfLua',
-    dependencies = { 'nvim-tree/nvim-web-devicons' },
     keys = {
-      { '<c-f>', function() reqcall('fzf-lua').files() end, desc = 'find files' },
-      { '<c-g>', function() reqcall('fzf-lua').live_grep() end, desc = 'live grep' },
-      { '<c-.>', function() reqcall('fzf-lua').lsp_code_actions() end, desc = 'code actions' },
-      { '<leader>ff', function() reqcall('fzf-lua').git_files() end, desc = 'find files' },
-      { '<leader>fa', '<Cmd>FzfLua<CR>', desc = 'builtins' },
-      { '<leader>fb', function() reqcall('fzf-lua').grep_curbuf() end, desc = 'current buffer fuzzy find' },
-      { '<leader>fr', function() reqcall('fzf-lua').resume() end, desc = 'resume picker' },
-      { '<leader>f?', function() reqcall('fzf-lua').help_tags() end, desc = 'help' },
-      { '<cr>r', function() reqcall('fzf-lua').oldfiles() end, desc = 'Most (f)recently used files' },
-      { '<leader>fdn', function() file_picker('/home/kyza/.config/nvim') end, desc = 'nvim config' },
-      { '<leader>fdk', ':e /home/kyza/.config/kitty/kitty.conf<cr>', desc = 'kitty config' },
-      { '<leader>fgc', fzf_lua.git_commits, desc = 'commits' },
-      { '<leader>fgb', fzf_lua.git_branches, desc = 'branches' },
-      { '<leader>fs', fzf_lua.lsp_workspace_symbols, desc = 'workspace symbols' },
+      { '<c-f>', function() reqcall('fzf-lua').files() end },
+      { '<c-g>', function() reqcall('fzf-lua').live_grep() end },
+      { '<c-.>', function() reqcall('fzf-lua').lsp_code_actions() end },
+      { '<leader>ff', function() reqcall('fzf-lua').git_files() end },
+      { '<leader>fh', function() reqcall('fzf-lua').highlights() end },
+      { '<leader>fa', '<Cmd>FzfLua<CR>' },
+      { '<leader>fb', function() reqcall('fzf-lua').grep_curbuf() end },
+      { '<leader>fp', function() reqcall('fzf-lua').grep_curbuf() end },
+      { '<leader>fr', function() reqcall('fzf-lua').resume() end },
+      { '<leader>f?', function() reqcall('fzf-lua').help_tags() end },
+      { '<cr>r', function() reqcall('fzf-lua').oldfiles() end },
+      { '<leader>fn', function() file_picker('/home/kyza/Notes') end },
+      { '<leader>fdn', function() file_picker('/home/kyza/.config/nvim') end },
+      { '<leader>fdk', ':e /home/kyza/.config/kitty/kitty.conf<cr>' },
+      { '<leader>fgc', fzf_lua.git_commits },
+      { '<leader>fgb', fzf_lua.git_branches },
+      { '<leader>fs', fzf_lua.lsp_workspace_symbols },
     },
     config = function()
       local fzf = require('fzf-lua')
@@ -87,9 +78,39 @@ return {
         }, opts)
       end
 
+      local function list_sessions()
+        local ok, persisted = ky.pcall(require, 'persisted')
+        if not ok then return end
+        local sessions = persisted.list()
+        fzf.fzf_exec(
+          vim.tbl_map(function(s) return s.name end, sessions),
+          dropdown({
+            winopts = { title = '󰆔 Sessions', height = 0.33, row = 0.5 },
+            previewer = false,
+            actions = {
+              ['default'] = function(selected)
+                local session = vim.iter(sessions):find(function(s) return s.name == selected[1] end)
+                if not session then return end
+                persisted.load({ session = session.file_path })
+              end,
+              ['ctrl-d'] = {
+                function(selected)
+                  local session = vim.iter(sessions):find(function(s) return s.name == selected[1] end)
+                  if not session then return end
+                  fn.delete(vim.fn.expand(session.file_path))
+                end,
+                fzf.actions.resume,
+              },
+            },
+          })
+        )
+      end
+
+      ky.command('SessionList', list_sessions)
+
       local function cursor_dropdown(opts)
         return dropdown(vim.tbl_deep_extend('force', {
-          winopts = { row = 1, relative = 'cursor', height = 0.33, width = 0.20 },
+          winopts = { row = 1, relative = 'cursor', height = 0.33, width = 0.60 },
         }, opts))
       end
 
@@ -158,9 +179,9 @@ return {
     'chrisgrieser/nvim-spider',
     opts = {},
     keys = {
-      { 'w', "<cmd>lua require('spider').motion('w')<CR>", desc = 'Spider-w', mode = { 'n', 'o', 'x' } },
-      { 'e', "<cmd>lua require('spider').motion('e')<CR>", desc = 'Spider-e', mode = { 'n', 'o', 'x' } },
-      { 'b', "<cmd>lua require('spider').motion('b')<CR>", desc = 'Spider-b', mode = { 'n', 'o', 'x' } },
+      { 'w', "<cmd>lua require('spider').motion('w')<CR>", mode = { 'n', 'o', 'x' } },
+      { 'e', "<cmd>lua require('spider').motion('e')<CR>", mode = { 'n', 'o', 'x' } },
+      { 'b', "<cmd>lua require('spider').motion('b')<CR>", mode = { 'n', 'o', 'x' } },
       { '<C-w>', "<Esc>l<cmd>lua require('spider').motion('w')<CR>i", mode = 'i' },
       { '<C-b>', "<Esc><cmd>lua require('spider').motion('b')<CR>i", mode = 'i' },
     },
@@ -218,43 +239,38 @@ return {
     keys = {
       {
         '<M-e>',
-        function()
-          local width = vim.o.columns
-          require('neo-tree.command').execute({
-            source = 'last',
-            position = width > 120 and 'left' or 'bottom',
-            toggle = true,
-          })
-        end,
-        desc = 'Toggle Neo-tree',
+        '<cmd>Neotree toggle<cr>',
         mode = 'n',
       },
     },
   },
   {
     'akinsho/bufferline.nvim',
-    event = 'BufWinEnter',
+    event = 'UIEnter',
     dependencies = 'moll/vim-bbye',
     config = function() require('config.bufferline') end,
     keys = {
-      {
-        '<S-l>',
-        '<cmd>BufferLineCycleNext<cr>',
-        desc = 'Next buffer (Bufferline)',
-        mode = 'n',
-      },
-      {
-        '<S-h>',
-        '<cmd>BufferLineCyclePrev<cr>',
-        desc = 'Previous buffer (Bufferline)',
-        mode = 'n',
-      },
-      {
-        '<S-x>',
-        '<cmd>Bd<cr>',
-        desc = 'Close buffer (Bufferline)',
-        mode = 'n',
-      },
+      { '<S-l>', '<cmd>BufferLineCycleNext<cr>', mode = 'n' },
+      { '<S-h>', '<cmd>BufferLineCyclePrev<cr>', mode = 'n' },
+      { '<S-x>', '<cmd>Bd<cr>', mode = 'n' },
+    },
+  },
+  {
+    'olimorris/persisted.nvim',
+    lazy = false,
+    init = function()
+      ky.augroup('PersistedEvents', {
+        event = 'User',
+        pattern = 'PersistedSavePre',
+        command = function() vim.cmd('%argdelete') end,
+      })
+    end,
+    opts = {
+      silent = true,
+      autoload = true,
+      use_git_branch = true,
+      allowed_dirs = { '/home/kyza/Projects' },
+      ignored_dirs = { fn.stdpath('data') },
     },
   },
 }

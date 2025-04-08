@@ -16,14 +16,11 @@ bufferline.setup({
     show_buffer_close_icons = false,
     show_close_icon = false,
     style_preset = bufferline.style_preset.default, -- or bufferline.style_preset.minimal,
-    show_buffer_icons = true,
+    show_buffer_icons = false,
     left_trunc_marker = '',
     right_trunc_marker = '',
     tab_size = 0,
-    get_element_icon = function(element)
-      local icon, hl = require('nvim-web-devicons').get_icon_by_filetype(element.filetype, { default = false })
-      return icon, hl
-    end,
+    enforce_regular_tabs = false,
     groups = {
       options = {
         toggle_hidden_on_enter = false,
@@ -76,7 +73,7 @@ bufferline.setup({
 
     local tab_bg = highlight.tint(normal_bg, 0.45)
     local tab_bg_inactive = highlight.tint(normal_bg, -0.1)
-    local fill = highlight.tint(normal_bg, is_light and -0.25 or -0.1)
+    local fill = highlight.tint(normal_bg, -0.1)
 
     local tab_fg = highlight.tint(normal_fg, 0.1)
     local tab_fg_inactive = highlight.tint(normal_fg, -0.35)

@@ -44,7 +44,7 @@ vim.opt.timeout = true
 vim.opt.timeoutlen = 500
 vim.opt.updatetime = 300
 
-vim.opt.number = false
+vim.opt.number = true
 vim.opt.numberwidth = 3
 vim.opt.hidden = true
 vim.opt.lazyredraw = false

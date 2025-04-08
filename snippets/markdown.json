@@ -1,0 +1,5 @@
+{
+  "/brain": { "prefix": "thought", "body": "[!BRAIN] $0" },
+  "think": { "prefix": "think", "body": "think step by step$0" }
+}
+

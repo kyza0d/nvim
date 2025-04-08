@@ -43,6 +43,21 @@ return {
     },
   },
   {
+    '0xAdk/full_visual_line.nvim',
+    keys = 'V',
+    opts = {},
+  },
+  {
+    'kevinhwang91/nvim-bqf',
+    opts = {
+      preview = {
+        border = 'none',
+        winblend = 0,
+      },
+    },
+    ft = 'qf',
+  },
+  {
     'rcarriga/nvim-notify',
     event = 'VeryLazy',
     init = function() vim.notify = require('notify') end,
@@ -60,5 +75,32 @@ return {
   },
   { 'EdenEast/nightfox.nvim' },
   { 'onsails/lspkind.nvim' },
-  { 'Bekaboo/dropbar.nvim' },
+  {
+    'Bekaboo/dropbar.nvim',
+    opts = {
+      sources = {
+        path = {
+          relative_to = function(_, win)
+            local ok, win_cwd = pcall(vim.fn.getcwd, win)
+            local cwd = ok and win_cwd or vim.fn.getcwd()
+            local is_subdir_of_home = vim.fn.fnamemodify(cwd, ':~') ~= cwd
+
+            return is_subdir_of_home and vim.env.HOME or '/'
+          end,
+        },
+      },
+      bar = {
+        sources = function()
+          local sources = require('dropbar.sources')
+          local utils = require('dropbar.utils')
+          return {
+            utils.source.fallback({
+              sources.lsp,
+              sources.path,
+            }),
+          }
+        end,
+      },
+    },
+  },
 }

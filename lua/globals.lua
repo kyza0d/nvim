@@ -185,14 +185,33 @@ function ky.reqcall(require_path)
   })
 end
 
-function ky.reqidx(require_path)
-  return setmetatable({}, {
-    __index = function(_, key) return require(require_path)[key] end,
-    __newindex = function(_, key, value) require(require_path)[key] = value end,
-  })
+function ky.command(name, rhs, opts)
+  opts = opts or {}
+  api.nvim_create_user_command(name, rhs, opts)
 end
 
-function ky.filetype_settings(map)
+function ky.settings(map)
+  -- Look for exclusions in the catch-all pattern first
+  local excluded_filetypes = {}
+  local excluded_buftypes = {}
+
+  -- Check for '*' with exclusions
+  if map[{ '*' }] and map[{ '*' }].exclude then
+    local exclude_config = map[{ '*' }].exclude
+
+    if exclude_config.filetypes then
+      for _, ft in ipairs(exclude_config.filetypes) do
+        excluded_filetypes[ft] = true
+      end
+    end
+
+    if exclude_config.buftypes then
+      for _, bt in ipairs(exclude_config.buftypes) do
+        excluded_buftypes[bt] = true
+      end
+    end
+  end
+
   local commands = ky.map(function(settings, ft)
     local name = type(ft) == 'string' and ft or table.concat(ft, ',')
     return {
@@ -200,14 +219,169 @@ function ky.filetype_settings(map)
       event = 'FileType',
       desc = ('ft settings for %s'):format(name),
       command = function(args)
+        local bufnr = args.buf
+        local winid = vim.api.nvim_get_current_win()
+
+        -- Early exit for excluded filetypes and buftypes
+        local current_ft = vim.bo[bufnr].filetype
+        local current_bt = vim.bo[bufnr].buftype
+
+        if excluded_filetypes[current_ft] or excluded_buftypes[current_bt] then return end
+
+        -- Also check for floating windows
+        if vim.api.nvim_win_get_config(winid).relative ~= '' then
+          return -- This is a floating window, skip applying settings
+        end
+
+        -- The rest of the function remains the same...
+        local exclude_defaults = settings.exclude or false
+        local group_name = settings.group
+        local group_settings = group_name and ky.ui.groups[group_name]
+        local default_settings = ky.ui.groups['default']
+        local default_namespace = nil
+        local specific_namespace = nil
+
+        local function apply_default_settings()
+          if exclude_defaults or not default_settings then return end
+          local current_win = vim.fn.bufwinid(bufnr)
+          if current_win == -1 then return end
+
+          -- Check again if this is a floating window before applying settings
+          if vim.api.nvim_win_get_config(current_win).relative ~= '' then return end
+
+          if default_settings.opts then
+            for option, value in pairs(default_settings.opts) do
+              vim.opt_local[option] = value
+            end
+          end
+
+          if default_settings.highlights then
+            if not default_namespace then
+              default_namespace = vim.api.nvim_create_namespace('ft_default_' .. bufnr)
+              ky.hl.all(default_settings.highlights, default_namespace)
+            end
+            vim.api.nvim_win_set_hl_ns(current_win, default_namespace)
+          end
+
+          if type(default_settings.on_enter) == 'function' then default_settings.on_enter() end
+        end
+
+        local function apply_group_settings()
+          if not group_settings or group_name == 'default' then return end
+          local current_win = vim.fn.bufwinid(bufnr)
+          if current_win == -1 then return end
+
+          -- Check again if this is a floating window before applying settings
+          if vim.api.nvim_win_get_config(current_win).relative ~= '' then return end
+
+          if group_settings.opts then
+            for option, value in pairs(group_settings.opts) do
+              vim.opt_local[option] = value
+            end
+          end
+
+          if group_settings.highlights then
+            if not specific_namespace then
+              specific_namespace = vim.api.nvim_create_namespace('ft_' .. name .. '_' .. bufnr)
+              ky.hl.all(group_settings.highlights, specific_namespace)
+            end
+            vim.api.nvim_win_set_hl_ns(current_win, specific_namespace)
+          end
+
+          if type(group_settings.on_enter) == 'function' then group_settings.on_enter() end
+        end
+
+        local function apply_all_settings()
+          apply_default_settings()
+          apply_group_settings()
+        end
+
+        vim.b[bufnr].apply_default_settings = apply_default_settings
+        vim.b[bufnr].apply_group_settings = apply_group_settings
+        vim.b[bufnr].apply_all_settings = apply_all_settings
+
+        -- Apply settings only if not excluded
+        apply_all_settings()
+
+        local group_id = create_augroup('ft_' .. name .. '_' .. bufnr, { clear = true })
+
+        create_autocmd('BufLeave', {
+          buffer = bufnr,
+          group = group_id,
+          callback = function()
+            if group_settings and type(group_settings.on_exit) == 'function' then group_settings.on_exit() end
+            apply_default_settings()
+          end,
+        })
+
+        create_autocmd('BufEnter', {
+          buffer = bufnr,
+          group = group_id,
+          callback = function()
+            -- Check if buffer should be excluded before applying
+            local ft = vim.bo[bufnr].filetype
+            local bt = vim.bo[bufnr].buftype
+            if excluded_filetypes[ft] or excluded_buftypes[bt] then return end
+
+            apply_all_settings()
+          end,
+        })
+
+        create_autocmd('WinEnter', {
+          buffer = bufnr,
+          group = group_id,
+          callback = function()
+            local current_win = vim.fn.bufwinid(bufnr)
+            if current_win == -1 then return end
+
+            -- Skip floating windows
+            if vim.api.nvim_win_get_config(current_win).relative ~= '' then return end
+
+            -- Check if buffer should be excluded
+            local ft = vim.bo[bufnr].filetype
+            local bt = vim.bo[bufnr].buftype
+            if excluded_filetypes[ft] or excluded_buftypes[bt] then return end
+
+            if specific_namespace and group_settings and group_settings.highlights then
+              vim.api.nvim_win_set_hl_ns(current_win, specific_namespace)
+            elseif default_namespace and default_settings and default_settings.highlights then
+              vim.api.nvim_win_set_hl_ns(current_win, default_namespace)
+            end
+          end,
+        })
+
         ky.foreach(function(value, scope)
           if scope == 'opt' then scope = 'opt_local' end
           if scope == 'plugins' then return ky.ftplugin_conf(value) end
+          if scope == 'options' then
+            ky.foreach(function(setting, option) vim.opt_local[option] = setting end, value)
+            return
+          end
+          if scope == 'group' or scope == 'exclude' or scope == 'commands' then
+            return -- These are handled separately
+          end
           if type(value) ~= 'table' and vim.is_callable(value) then return value(args) end
           ky.foreach(function(setting, option) vim[scope][option] = setting end, value)
         end, settings)
+
+        if settings.commands then
+          local cmd_group = create_augroup('ft_cmd_' .. name .. '_' .. bufnr, { clear = true })
+          for _, cmd in ipairs(settings.commands) do
+            local autocmd_opts = {
+              callback = cmd.callback,
+              group = cmd_group,
+            }
+            if cmd.pattern then
+              autocmd_opts.pattern = cmd.pattern
+            else
+              autocmd_opts.buffer = cmd.buffer or bufnr
+            end
+            create_autocmd(cmd.event, autocmd_opts)
+          end
+        end
       end,
     }
   end, map)
+
   ky.augroup('filetype-settings', unpack(commands))
 end

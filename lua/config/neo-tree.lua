@@ -109,13 +109,6 @@ require('neo-tree').setup({
     end,
   },
 
-  event_handlers = {
-    { event = 'neo_tree_buffer_enter', handler = function() highlight.set('Cursor', { blend = 100 }) end },
-    { event = 'neo_tree_popup_buffer_enter', handler = function() highlight.set('Cursor', { blend = 0 }) end },
-    { event = 'neo_tree_buffer_leave', handler = function() highlight.set('Cursor', { blend = 0 }) end },
-    { event = 'neo_tree_window_after_close', handler = function() highlight.set('Cursor', { blend = 0 }) end },
-  },
-
   hide_root_node = true,
   enable_git_status = false,
   enable_modified_markers = false,

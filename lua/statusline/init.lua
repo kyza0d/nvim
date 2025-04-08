@@ -123,10 +123,10 @@ function M.render()
     r1 = section:new()
   else
     l1 = section:new(
-      { { { icons.misc.vertical_bar, mode_hl } }, priority = 0 },
+      -- { { { icons.misc.vertical_bar, mode_hl } }, priority = 0 },
       {
         {
-          { fmt('%+' .. strwidth(tostring(line_count)) .. 's', lnum), hls.title },
+          { fmt('  %+' .. strwidth(tostring(line_count)) .. 's', lnum), hls.title },
           { ':', hls.dimmed },
           { line_count, hls.dimmed },
         },

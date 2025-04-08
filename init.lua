@@ -48,14 +48,19 @@ require('lazy').setup({
       },
     },
   },
+  rocks = {
+    hererocks = true,
+  },
 })
-
-if vim.g.neovide then require('config.neovide') end
 
 opt.background = 'dark'
 ky.pcall('theme failed to load because', vim.cmd.colorscheme, 'carbonfox')
 
+if vim.g.neovide then require('config.neovide') end
+
 require('statusline').init()
+-- lunaperche
+-- carbonfox
 
 --- Based off of several configs 🫡
 --- https://github.com/akinsho/dotfiles/

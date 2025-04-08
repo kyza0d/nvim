@@ -1,86 +1,61 @@
 if not ky then return end
-local settings, highlight = ky.filetype_settings, ky.hl
-local cmd = vim.cmd
+local settings = ky.settings
 
 vim.treesitter.language.register('bash', 'sh')
 vim.treesitter.language.register('gitcommit', 'NeogitCommitMessage')
 vim.treesitter.language.register('png', 'jpeg')
 
 settings({
-  checkhealth = { opt = { spell = false } },
-  [{ 'kitty' }] = {
-    opt = {
+  [{ '*' }] = {
+    group = 'default',
+    exclude = {
+      filetypes = { 'fzf', 'fugitive', 'telescope' },
+      buftypes = { 'prompt', 'nofile', 'terminal' },
+    },
+  },
+  [{
+    'kitty',
+    'lua',
+    '.zsh',
+  }] = {
+    group = 'config',
+    options = {
       commentstring = '# %s',
     },
-  },
-  [{ 'norg' }] = {
-    opt = {
-      signcolumn = 'no',
-      number = false,
-      cursorline = false,
-      statuscolumn = ' ',
+    commands = {
+      {
+        event = 'BufWritePost',
+        pattern = 'kitty.conf',
+        callback = function()
+          vim.fn.system('kill -SIGUSR1 $(pgrep kitty)')
+          vim.notify('Restarted', 'info', { title = 'kitty.conf' })
+        end,
+      },
     },
   },
-  [{ 'norg' }] = {
-    bo = {
-      commentstring = '#%s',
+  [{
+    'javascript',
+    'typescript',
+    'javascriptreact',
+    'typescriptreact',
+  }] = {
+    group = 'coding',
+    options = {
       shiftwidth = 2,
+      tabstop = 2,
     },
   },
-  [{ 'gitcommit', 'gitrebase' }] = {
-    bo = { bufhidden = 'delete' },
-    opt = {
-      list = false,
-      spell = true,
-      spelllang = 'en_gb',
-    },
+  [{ 'markdown', 'help' }] = {
+    group = 'notes',
   },
-  [{ 'Avante', 'AvanteInput' }] = {
-    opt = {
-      breakindent = false,
-      wrap = true,
-    },
+  [{
+    'neo-tree',
+    'neo-tree-popup',
+    'Trouble',
+  }] = {
+    group = 'panel',
   },
-  ['Neogit*'] = {
-    wo = { winbar = '' },
-  },
-  -- Minimal layout
-  [{ 'png', 'jpeg' }] = {
-    opt = {
-      spell = true,
-      number = true,
-    },
-  },
-  NeogitCommitMessage = {
-    opt = {
-      spell = true,
-      spelllang = 'en_gb',
-      list = false,
-    },
-    plugins = {
-      cmp = function(cmp)
-        cmp.setup.filetype('NeogitCommitMessage', {
-          sources = {
-            { name = 'git', group_index = 1 },
-            { name = 'luasnip', group_index = 1 },
-            { name = 'dictionary', group_index = 1 },
-            { name = 'spell', group_index = 1 },
-            { name = 'buffer', group_index = 2 },
-          },
-        })
-      end,
-    },
-    function()
-      vim.schedule(function()
-        -- Schedule this call as highlights are not set correctly if there is not a delay
-        highlight.set_winhl('gitcommit', 0, { { VirtColumn = { fg = { from = 'Variable' } } } })
-      end)
-    end,
-  },
-  [{ 'javascript', 'javascriptreact' }] = {
-    bo = { textwidth = 100 },
-  },
-  startuptime = {
-    function() cmd.wincmd('H') end, -- open startup time to the left
+  [{ 'toggleterm' }] = {
+    group = 'term',
   },
 })

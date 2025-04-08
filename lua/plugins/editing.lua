@@ -22,13 +22,10 @@ return {
   {
     'kevinhwang91/nvim-fundo',
     dependencies = 'kevinhwang91/promise-async',
-    event = 'BufReadPre',
-    run = function() require('fundo').install() end,
-    opts = {},
   },
   {
     'MagicDuck/grug-far.nvim',
-    event = 'UIEnter',
+    event = 'BufReadPost',
     opts = {
       icons = {
         enabled = true,

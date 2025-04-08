@@ -2,60 +2,6 @@ local lsp = vim.lsp
 
 local servers = {
   jedi_language_server = {},
-  ts_ls = function()
-    local function do_organize_imports()
-      local params = {
-        command = '_typescript.organizeImports',
-        arguments = { vim.api.nvim_buf_get_name(0) },
-        title = '',
-      }
-      lsp.buf.execute_command(params)
-    end
-
-    return {
-      -- cmd = lsp_cmd_override({ ".bin/typescript-language-server", "typescript-language-server" }, { "stdio" }),
-      init_options = {
-        hostInfo = 'neovim',
-        logVerbosity = 'verbose',
-      },
-      commands = {
-        OrganizeImports = {
-          do_organize_imports,
-          description = 'Organize Imports',
-        },
-      },
-      filetypes = {
-        'javascript',
-        'javascriptreact',
-        'typescript',
-        'typescriptreact',
-      },
-      settings = {
-        typescript = {
-          inlayHints = {
-            includeInlayParameterNameHints = 'literal', -- alts: all
-            includeInlayParameterNameHintsWhenArgumentMatchesName = false,
-            includeInlayFunctionParameterTypeHints = true,
-            includeInlayVariableTypeHints = true,
-            includeInlayPropertyDeclarationTypeHints = true,
-            includeInlayFunctionLikeReturnTypeHints = true,
-            includeInlayEnumMemberValueHints = true,
-          },
-        },
-        javascript = {
-          inlayHints = {
-            includeInlayParameterNameHints = 'all',
-            includeInlayParameterNameHintsWhenArgumentMatchesName = false,
-            includeInlayFunctionParameterTypeHints = false,
-            includeInlayVariableTypeHints = true,
-            includeInlayPropertyDeclarationTypeHints = true,
-            includeInlayFunctionLikeReturnTypeHints = true,
-            includeInlayEnumMemberValueHints = true,
-          },
-        },
-      },
-    }
-  end,
   lua_ls = {
     settings = {
       Lua = {

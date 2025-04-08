@@ -8,11 +8,6 @@ return {
     opts = { ui = { height = 0.8 } },
   },
   {
-    'pmizio/typescript-tools.nvim',
-    dependencies = { 'nvim-lua/plenary.nvim', 'neovim/nvim-lspconfig' },
-    opts = {},
-  },
-  {
     'williamboman/mason-lspconfig.nvim',
     event = { 'BufReadPre', 'BufNewFile' },
     dependencies = {
@@ -102,7 +97,10 @@ return {
         sh = { 'shfmt' },
         rust = { 'rustfmt' },
       },
-      format_on_save = { timeout_ms = 500, lsp_fallback = true },
+      format_on_save = {
+        timeout_ms = 500,
+        lsp_fallback = true,
+      },
     },
     init = function() vim.o.formatexpr = "v:lua.require'conform'.formatexpr()" end,
     config = function(_, opts)
