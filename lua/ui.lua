@@ -88,7 +88,6 @@ ky.ui.groups = {
   ['default'] = {
     opts = {
       shiftwidth = 2,
-      laststatus = 2,
       tabstop = 2,
       expandtab = true,
       number = true,
@@ -96,30 +95,26 @@ ky.ui.groups = {
     },
   },
   ['notes'] = {
-    on_enter = function() vim.opt_local.commentstring = '# %s' end,
-    on_exit = function() vim.opt_local.commentstring = nil end,
-    highlights = {
-      { Normal = { bg = { from = 'Normal', alter = -0.12 } } },
-    },
     opts = {
       number = false,
-      laststatus = 0,
-      statuscolumn = '',
+      statuscolumn = '  ',
       signcolumn = 'no',
     },
   },
   ['config'] = {
     on_enter = function() vim.opt_local.commentstring = '# %s' end,
     on_exit = function() vim.opt_local.commentstring = nil end,
-    highlights = {
-      { Cursor = { bg = P.accent, reverse = false } },
-      { iCursor = { bg = P.accent, reverse = false } },
-    },
     opts = {
       shiftwidth = 4,
       tabstop = 4,
     },
   },
+  ['panel'] = {
+    opts = {
+      number = false,
+    },
+  },
+
   ['coding'] = {
     on_enter = function()
       vim.opt_local.shiftwidth = 2
@@ -130,19 +125,11 @@ ky.ui.groups = {
       vim.opt_local.tabstop = nil
     end,
   },
-  ['panel'] = {
-    highlights = {
-      { Normal = { bg = { from = 'Normal', alter = -0.08 } } },
-    },
-    opts = {
-      number = false,
-    },
-  },
+
   ['term'] = {
-    on_enter = function() vim.opt_local.laststatus = 3 end,
-    on_exit = function() vim.opt_local.laststatus = 2 end,
-    highlights = {
-      { Normal = { bg = { from = 'Normal', alter = -0.15 } } },
+    opts = {
+      laststatus = 2,
+      number = false,
     },
   },
 }

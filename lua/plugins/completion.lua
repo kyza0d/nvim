@@ -49,16 +49,16 @@ return {
             name = 'path',
             score_offset = 600,
           },
-          snippets = {
-            name = 'snippets',
-            score_offset = 400,
-          },
           copilot = {
             name = 'copilot',
             module = 'blink-copilot',
             max_items = 1,
-            score_offset = 200,
+            score_offset = 100,
             async = true,
+          },
+          snippets = {
+            name = 'snippets',
+            score_offset = 150,
           },
         },
       },
@@ -79,7 +79,9 @@ return {
         },
       },
     },
-    opts_extend = { 'sources.default' },
+    opts_extend = {
+      'sources.default',
+    },
   },
   {
     'L3MON4D3/LuaSnip',
@@ -303,10 +305,10 @@ return {
         select_history = '<leader>ah', -- Select history command
       },
       windows = {
-        position = 'right',
+        position = 'bottom',
         wrap = true,
         width = 30,
-        height = 30,
+        height = 5,
         sidebar_header = {
           enabled = true,
           align = 'left',

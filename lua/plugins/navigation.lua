@@ -50,6 +50,7 @@ return {
       { '<leader>f?', function() reqcall('fzf-lua').help_tags() end },
       { '<cr>r', function() reqcall('fzf-lua').oldfiles() end },
       { '<leader>fn', function() file_picker('/home/kyza/Notes') end },
+      { '<leader>fdh', function() file_picker('/home/kyza/.config/hypr') end },
       { '<leader>fdn', function() file_picker('/home/kyza/.config/nvim') end },
       { '<leader>fdk', ':e /home/kyza/.config/kitty/kitty.conf<cr>' },
       { '<leader>fgc', fzf_lua.git_commits },

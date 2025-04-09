@@ -1,5 +1,5 @@
 --- author kyza0d
---- version 0.0.0
+--- version 0.6.0
 --- website https://kyza.dev
 
 require('globals')
@@ -54,13 +54,14 @@ require('lazy').setup({
 })
 
 opt.background = 'dark'
+-- lunaperche
+-- carbonfox
+-- dayfox
 ky.pcall('theme failed to load because', vim.cmd.colorscheme, 'carbonfox')
 
 if vim.g.neovide then require('config.neovide') end
 
 require('statusline').init()
--- lunaperche
--- carbonfox
 
 --- Based off of several configs 🫡
 --- https://github.com/akinsho/dotfiles/

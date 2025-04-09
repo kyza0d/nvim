@@ -11,7 +11,7 @@ return {
   },
   {
     'lukas-reineke/indent-blankline.nvim',
-    enabled = not vim.g.neovide,
+    enabled = not vim.g.neovide or vim.g.background == 'dark',
     main = 'ibl',
     event = 'UIEnter',
     init = function()
@@ -44,6 +44,7 @@ return {
   },
   {
     '0xAdk/full_visual_line.nvim',
+    enabled = false,
     keys = 'V',
     opts = {},
   },

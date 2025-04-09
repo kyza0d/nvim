@@ -13,10 +13,11 @@ settings({
       buftypes = { 'prompt', 'nofile', 'terminal' },
     },
   },
+  [{ 'toggleterm' }] = {
+    group = 'term',
+  },
   [{
     'kitty',
-    'lua',
-    '.zsh',
   }] = {
     group = 'config',
     options = {
@@ -40,10 +41,6 @@ settings({
     'typescriptreact',
   }] = {
     group = 'coding',
-    options = {
-      shiftwidth = 2,
-      tabstop = 2,
-    },
   },
   [{ 'markdown', 'help' }] = {
     group = 'notes',
@@ -54,8 +51,5 @@ settings({
     'Trouble',
   }] = {
     group = 'panel',
-  },
-  [{ 'toggleterm' }] = {
-    group = 'term',
   },
 })

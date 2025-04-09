@@ -61,6 +61,18 @@ return {
         desc = 'Decrement selection',
         mode = 'v',
       },
+      {
+        '<C-[>',
+        ':TSTextobjectSwapPrevious @parameter.inner<cr>',
+        desc = 'Swap previous parameter (Treesitter)',
+        mode = 'n',
+      },
+      {
+        '<C-]>',
+        ':TSTextobjectSwapNext @parameter.inner<cr>',
+        desc = 'Swap next parameter (Treesitter)',
+        mode = 'n',
+      },
     },
   },
   { 'JoosepAlviste/nvim-ts-context-commentstring', opts = {}, event = 'BufReadPre' },

@@ -10,11 +10,9 @@ return {
       size = function() return vim.o.lines * 0.5 end,
       float_opts = {
         border = 'none',
-        winblend = 0,
+        winblend = 10,
         height = function() return vim.o.lines - 1 end,
         width = function() return vim.o.columns end,
-        row = 0,
-        col = 0,
       },
       highlights = {
         NormalFloat = { link = 'Term' },

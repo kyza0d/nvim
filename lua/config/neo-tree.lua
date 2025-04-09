@@ -1,3 +1,5 @@
+---@diagnostic disable: missing-fields
+
 local icons = ky.ui.icons.neo_tree
 
 local highlight, P = ky.hl, ky.ui.palette
@@ -116,11 +118,6 @@ require('neo-tree').setup({
   git_status_async = true,
 
   window = {
-    width = function()
-      local max_width = 30
-      return math.min(max_width, math.floor(vim.o.columns * 0.4))
-    end,
-    height = function() return math.floor(vim.o.lines * 0.4) end,
     mapping_options = { noremap = true, nowait = true },
     mappings = {
       ['P'] = { 'toggle_preview', config = { use_float = true, use_image_nvim = true } },

@@ -90,6 +90,7 @@ function M.set(ns, name, opts)
   if type(ns) == 'string' and type(name) == 'table' then
     opts, name, ns = name, ns, 0
   end
+  vim.validate({ opts = { opts, 'table' }, name = { name, 'string' }, ns = { ns, 'number' } })
   local hl = opts.clear and {} or get_hl_as_hex({ name = opts.inherit or name })
   for attribute, hl_data in pairs(opts) do
     if attrs[attribute] then hl[attribute] = resolve_from_attribute(hl_data, attribute) end

@@ -24,7 +24,7 @@ whichkey.setup({
 })
 
 whichkey.add({
-  { icon = '', group = 'leader', '<leader>' },
+  { group = 'leader', icon = '', '<leader>' },
   { icon = '', group = 'cr', '<cr>' },
 
   { icon = '', group = 'Find', '<leader>f' },
@@ -48,6 +48,7 @@ whichkey.add({
   { icon = ' ', desc = 'Open Ideas', '<cr>ni', '<cmd>e ~/Notes/2025/Journal/Ideas.md<cr>' },
 
   { icon = ' ', group = 'Dotfiles', '<leader>fd' },
+  { icon = '` ', desc = 'Hypr Config', '<leader>fdh' },
   { icon = ' ', desc = 'Nvim Config', '<leader>fdn' },
   { icon = ' ', desc = 'Kitty Config', '<leader>fdk' },
   { icon = '', desc = 'Zsh Config', '<leader>fdz' },
@@ -55,6 +56,15 @@ whichkey.add({
   { icon = ' ', desc = 'Git Commits', '<leader>fgc' },
   { icon = ' ', desc = 'Git Branches', '<leader>fgb' },
   { icon = ' ', desc = 'Workspace Symbols', '<leader>fs' },
+
+  { icon = '', group = '  AI', '<leader>a' },
+  { icon = '󰆈', desc = ' Ask', '<leader>aa' },
+  { icon = '󰆈', desc = ' Clear Avante', '<leader>ax', '<cmd>AvanteClear<cr>' },
+  { icon = '󰂽', desc = ' Open Window', '<leader>ao' },
+  { icon = '', desc = ' Toggle Inlay Hints', '<leader>ah' },
+  { icon = '', desc = ' Toggle Debug', '<leader>ad' },
+  { icon = '', desc = ' Refresh', '<leader>ar' },
+  { icon = '', desc = ' Edit Code Block', '<leader>ae' },
 
   { group = 'Buffers', '<leader>b' },
   { desc = 'Pin', '<leader>bp', '<cmd>BufferLineTogglePin<cr>', mode = 'n' },

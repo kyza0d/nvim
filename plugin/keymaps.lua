@@ -23,6 +23,8 @@ keymap('x', 'x', '<S-j>')
 
 -- Clipboard operations
 keymap({ 'n', 'v' }, '<C-v>', '"+p')
+keymap('i', '<C-v>', '<C-r>+')
+
 keymap('v', '<C-c>', '"+y')
 
 -- File operations
@@ -55,6 +57,7 @@ ky.augroup('AddTerminalMappings', {
   command = function()
     if vim.bo.filetype == '' or vim.bo.filetype == 'toggleterm' then
       vim.keymap.set('t', '<cmd>stopinsert<cr>', '<C-[>')
+      vim.keymap.set('t', '<C-v>', [[<C-\><C-n>"+pi]])
       vim.keymap.set('t', '<esc>', [[<C-\><C-n>]])
       vim.keymap.set('t', '<C-w>', [[<C-\><C-n><C-w>]])
       vim.keymap.set('t', '<C-j>', [[<C-\><C-n><C-w>ji]])

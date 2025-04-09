@@ -40,15 +40,15 @@ vim.g.neovide_transparency = 1.0
 vim.g.transparency = 1.0
 vim.g.neovide_floating_shadow = false
 vim.g.neovide_floating_blur = 0
-vim.g.neovide_scale_factor = 1.0
+vim.g.neovide_scale_factor = 0.9
 
 -- Iosevka Comfy Wide
 -- https://github.com/protesilaos/iosevka-comfy
 -- vim.opt.guifont = 'Iosevka Comfy Wide,Symbols Nerd Font:h10.1:w1.0'
-vim.opt.guifont = 'Cartograph CF Light,Symbols Nerd Font:h13.4:w1.4'
+vim.opt.guifont = 'Cartograph CF Light,Symbols Nerd Font:h11.4:w1.4'
 -- vim.opt.guifont = 'Jetbrains Mono,Symbols Nerd Font:h9.4:w1.7'
 
-opt.linespace = 9
+opt.linespace = 11
 vim.opt.laststatus = 2
 vim.opt.statuscolumn = table.concat({ '  %@NumCb@%l  ' })
 vim.opt.fillchars = { diff = ' ', vert = ' ', vertleft = ' ', vertright = ' ', verthoriz = ' ', eob = ' ' }
