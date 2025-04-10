@@ -67,17 +67,38 @@ end
 
 _G.keymap = function(modes, mapping, command, options)
   local default_opts = { noremap = true, silent = true, nowait = true }
-  local keymap = type(command) == 'function' and vim.keymap.set or vim.api.nvim_set_keymap
-
   options = options or {}
   options = vim.tbl_deep_extend('keep', {}, options, default_opts or {})
 
+  -- Handle function commands appropriately
+  local is_func = type(command) == 'function'
+  local set_func = is_func and vim.keymap.set or vim.api.nvim_set_keymap
+
+  -- Convert command to string if using nvim_set_keymap (can't handle functions)
+  if not is_func and set_func == vim.api.nvim_set_keymap then command = tostring(command) end
+
+  -- For vim.api.nvim_set_keymap, 'buffer' is not a valid option
+  if not is_func and options.buffer then
+    local bufnr = options.buffer == true and 0 or options.buffer
+    options.buffer = nil -- Remove buffer from options
+
+    if type(modes) == 'table' then
+      for _, mode in pairs(modes) do
+        vim.api.nvim_buf_set_keymap(bufnr, mode, mapping, command, options)
+      end
+    else
+      vim.api.nvim_buf_set_keymap(bufnr, modes, mapping, command, options)
+    end
+    return
+  end
+
+  -- Regular non-buffer specific keymaps
   if type(modes) == 'table' then
     for _, mode in pairs(modes) do
-      keymap(mode, mapping, command, options)
+      set_func(mode, mapping, command, options)
     end
   else
-    keymap(modes, mapping, command, options)
+    set_func(modes, mapping, command, options)
   end
 end
 

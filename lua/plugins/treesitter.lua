@@ -62,13 +62,13 @@ return {
         mode = 'v',
       },
       {
-        '<C-[>',
+        '<C-S-[>',
         ':TSTextobjectSwapPrevious @parameter.inner<cr>',
         desc = 'Swap previous parameter (Treesitter)',
         mode = 'n',
       },
       {
-        '<C-]>',
+        '<C-S-]>',
         ':TSTextobjectSwapNext @parameter.inner<cr>',
         desc = 'Swap next parameter (Treesitter)',
         mode = 'n',

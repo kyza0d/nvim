@@ -13,7 +13,6 @@ return {
   },
   {
     'folke/trouble.nvim',
-    cmd = 'Trouble',
     config = function(_, opts)
       hl.plugin('Trouble', {
         theme = {
@@ -29,40 +28,45 @@ return {
     keys = {
       { '<cr>d', '<cmd>Trouble diagnostics toggle filter.buf=0 focus=true<cr>' },
       { '<cr>s', '<cmd>Trouble symbols toggle focus=true<cr>' },
-
       { '<leader>ld', '<cmd>Trouble diagnostics toggle focus=true<cr>' },
       { '<leader>lr', '<cmd>Trouble lsp_references toggle focus=true<cr>' },
     },
+    cmd = 'Trouble',
   },
   {
     'ibhagwan/fzf-lua',
-    cmd = 'FzfLua',
-    keys = {
-      { '<c-f>', function() reqcall('fzf-lua').files() end },
-      { '<c-g>', function() reqcall('fzf-lua').live_grep() end },
-      { '<c-.>', function() reqcall('fzf-lua').lsp_code_actions() end },
-      { '<leader>ff', function() reqcall('fzf-lua').git_files() end },
-      { '<leader>fh', function() reqcall('fzf-lua').highlights() end },
-      { '<leader>fa', '<Cmd>FzfLua<CR>' },
-      { '<leader>fb', function() reqcall('fzf-lua').grep_curbuf() end },
-      { '<leader>fp', function() reqcall('fzf-lua').grep_curbuf() end },
-      { '<leader>fr', function() reqcall('fzf-lua').resume() end },
-      { '<leader>f?', function() reqcall('fzf-lua').help_tags() end },
-      { '<cr>r', function() reqcall('fzf-lua').oldfiles() end },
-      { '<leader>fn', function() file_picker('/home/kyza/Notes') end },
-      { '<leader>fdh', function() file_picker('/home/kyza/.config/hypr') end },
-      { '<leader>fdn', function() file_picker('/home/kyza/.config/nvim') end },
-      { '<leader>fdk', ':e /home/kyza/.config/kitty/kitty.conf<cr>' },
-      { '<leader>fgc', fzf_lua.git_commits },
-      { '<leader>fgb', fzf_lua.git_branches },
-      { '<leader>fs', fzf_lua.lsp_workspace_symbols },
-    },
+    init = function()
+      local wk = reqcall('which-key')
+      wk.add({
+        { icon = '', group = 'Find', '<leader>f' },
+        { icon = ' ', desc = 'Live Grep', '<c-g>' },
+        { icon = '󰅩 ', desc = 'Code Actions', '<c-.>' },
+        { icon = ' ', desc = 'Git Files', '<leader>ff' },
+        { icon = ' ', desc = 'Highlights', '<leader>fh' },
+        { icon = ' ', desc = 'Fzf Menu', '<leader>fa' },
+        { icon = ' ', desc = 'Buffer Grep', '<leader>fb' },
+        { icon = ' ', desc = 'Recent', '<leader>fr' },
+        { icon = ' ', desc = 'Notes', '<leader>fn' },
+        { icon = ' ', desc = 'Projects', '<leader>fp' },
+        { icon = ' ', desc = 'Help', '<leader>f?' },
+        { icon = ' ', desc = 'Recent Files', '<cr>r' },
+
+        { icon = ' ', group = 'Dotfiles', '<leader>fd' },
+        { icon = '` ', desc = 'Hypr Config', '<leader>fdh' },
+        { icon = ' ', desc = 'Nvim Config', '<leader>fdn' },
+        { icon = ' ', desc = 'Kitty Config', '<leader>fdk' },
+        { icon = '', desc = 'Zsh Config', '<leader>fdz' },
+        { icon = ' ', group = 'Git', '<leader>fg' },
+        { icon = ' ', desc = 'Git Commits', '<leader>fgc' },
+        { icon = ' ', desc = 'Git Branches', '<leader>fgb' },
+        { icon = ' ', desc = 'Workspace Symbols', '<leader>fs' },
+      })
+    end,
     config = function()
       local fzf = require('fzf-lua')
       local lsp_kind = require('lspkind')
       local actions = fzf.actions
       local prompt = icons.misc.fzf
-
       local function dropdown(opts)
         opts = opts or { winopts = {} }
         return vim.tbl_deep_extend('force', {
@@ -74,62 +78,56 @@ return {
             height = 0.70,
             width = 0.45,
             row = 0.1,
-            preview = { hidden = 'hidden', layout = 'vertical', vertical = 'up:50%' },
+            preview = {
+              hidden = 'hidden',
+              layout = 'vertical',
+              vertical = 'up:50%',
+            },
           },
         }, opts)
       end
 
-      local function list_sessions()
-        local ok, persisted = ky.pcall(require, 'persisted')
-        if not ok then return end
-        local sessions = persisted.list()
-        fzf.fzf_exec(
-          vim.tbl_map(function(s) return s.name end, sessions),
-          dropdown({
-            winopts = { title = '󰆔 Sessions', height = 0.33, row = 0.5 },
-            previewer = false,
-            actions = {
-              ['default'] = function(selected)
-                local session = vim.iter(sessions):find(function(s) return s.name == selected[1] end)
-                if not session then return end
-                persisted.load({ session = session.file_path })
-              end,
-              ['ctrl-d'] = {
-                function(selected)
-                  local session = vim.iter(sessions):find(function(s) return s.name == selected[1] end)
-                  if not session then return end
-                  fn.delete(vim.fn.expand(session.file_path))
-                end,
-                fzf.actions.resume,
-              },
-            },
-          })
-        )
-      end
-
-      ky.command('SessionList', list_sessions)
-
       local function cursor_dropdown(opts)
         return dropdown(vim.tbl_deep_extend('force', {
-          winopts = { row = 1, relative = 'cursor', height = 0.33, width = 0.60 },
+          winopts = {
+            row = 1,
+            relative = 'cursor',
+            height = 0.33,
+            width = 0.60,
+          },
         }, opts))
       end
 
       fzf.setup({
         prompt = prompt,
+        winopts = {
+          border = vim.g.neovide and 'empty' or 'single',
+        },
         actions = {
           files = {
             ['enter'] = actions.file_edit_or_qf,
-            ['ctrl-v'] = actions.file_split,
             ['ctrl-s'] = actions.file_vsplit,
+            ['ctrl-v'] = actions.file_split,
           },
         },
+        oldfiles = dropdown({
+          winopts = {
+            width = 0.8,
+            title = '  Old files ',
+          },
+        }),
         files = dropdown({
-          winopts = { width = 0.8, title = '  Files ' },
+          winopts = {
+            width = 0.8,
+            title = '  Files ',
+          },
         }),
         grep = {
           prompt = ' ',
-          winopts = { title = ' 󰈭 Grep ' },
+          winopts = {
+            title = ' 󰈭 Grep ',
+            width = 0.8,
+          },
           rg_opts = '--column --hidden --line-number --no-heading --color=always --smart-case --max-columns=4096 -e',
           fzf_opts = {
             ['--keep-right'] = '',
@@ -175,6 +173,27 @@ return {
         },
       })
     end,
+    keys = {
+      { '<c-f>', function() reqcall('fzf-lua').files() end },
+      { '<c-g>', function() reqcall('fzf-lua').live_grep() end },
+      { '<c-.>', function() reqcall('fzf-lua').lsp_code_actions() end },
+      { '<leader>ff', function() reqcall('fzf-lua').git_files() end },
+      { '<leader>fh', function() reqcall('fzf-lua').highlights() end },
+      { '<leader>fa', '<Cmd>FzfLua<CR>' },
+      { '<leader>fb', function() reqcall('fzf-lua').grep_curbuf() end },
+      { '<leader>fp', function() reqcall('fzf-lua').grep_curbuf() end },
+      { '<leader>fr', function() reqcall('fzf-lua').resume() end },
+      { '<leader>f?', function() reqcall('fzf-lua').help_tags() end },
+      { '<cr>r', function() reqcall('fzf-lua').oldfiles() end },
+      { '<leader>fgc', fzf_lua.git_commits },
+      { '<leader>fgb', fzf_lua.git_branches },
+      { '<leader>fs', fzf_lua.lsp_workspace_symbols },
+
+      { '<leader>fn', function() file_picker('/home/kyza/Notes') end },
+      { '<leader>fdh', function() file_picker('/home/kyza/.config/hypr') end },
+      { '<leader>fdn', function() file_picker('/home/kyza/.config/nvim') end },
+      { '<leader>fdk', ':e /home/kyza/.config/kitty/kitty.conf<cr>' },
+    },
   },
   {
     'chrisgrieser/nvim-spider',
@@ -217,11 +236,10 @@ return {
     },
     config = function()
       local ss = require('smart-splits')
-
-      keymap({ 'n', 't', 'i' }, '<C-h>', ss.move_cursor_left)
-      keymap({ 'n', 't', 'i' }, '<C-j>', ss.move_cursor_down)
-      keymap({ 'n', 't', 'i' }, '<C-k>', ss.move_cursor_up)
-      keymap({ 'n', 't', 'i' }, '<C-l>', ss.move_cursor_right)
+      keymap({ 'n', 't' }, '<C-h>', ss.move_cursor_left)
+      keymap({ 'n', 't' }, '<C-j>', ss.move_cursor_down)
+      keymap({ 'n', 't' }, '<C-k>', ss.move_cursor_up)
+      keymap({ 'n', 't' }, '<C-l>', ss.move_cursor_right)
 
       keymap({ 'n', 't' }, '<C-S-h>', ss.resize_left)
       keymap({ 'n', 't' }, '<C-S-j>', ss.resize_down)
@@ -255,6 +273,15 @@ return {
       { '<S-h>', '<cmd>BufferLineCyclePrev<cr>', mode = 'n' },
       { '<S-x>', '<cmd>Bd<cr>', mode = 'n' },
     },
+    init = function()
+      local wk = reqcall('which-key')
+
+      wk.add({
+        { icon = '', group = 'Buffers', '<leader>b' },
+        { icon = '󰐃', desc = 'Pin', '<leader>bp', '<cmd>BufferLineTogglePin<cr>', mode = 'n' },
+        { icon = '󱉬', desc = 'Yank', '<leader>by', ':silent %y+<cr>', mode = 'n' },
+      })
+    end,
   },
   {
     'olimorris/persisted.nvim',

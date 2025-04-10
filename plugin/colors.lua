@@ -1,6 +1,6 @@
 if not ky then return end
 
-local hl, P = ky.hl, ky.ui.palette
+local hl, vivid_blend_hsl, P = ky.hl, ky.hl.vivid_blend_hsl, ky.ui.palette
 
 local function set_sidebar_highlight()
   hl.all({
@@ -105,72 +105,116 @@ local function general_overrides()
     { MiniIconsPurple = { fg = { from = 'Constant' } } },
     { MiniIconsRed = { fg = { from = 'DiagnosticError' } } },
     { MiniIconsYellow = { fg = { from = 'DiagnosticWarn' } } },
-    { BlinkCmpKind = { fg = P.light_gray } },
-    { BlinkCmpKindText = { fg = P.pale_blue } },
-    { BlinkCmpKindMethod = { fg = P.light_yellow } },
-    { BlinkCmpKindFunction = { fg = P.light_yellow } },
-    { BlinkCmpKindConstructor = { fg = P.light_yellow } },
-    { BlinkCmpKindField = { fg = P.pale_red } },
-    { BlinkCmpKindVariable = { fg = P.pale_red } },
-    { BlinkCmpKindClass = { fg = P.accent } },
-    { BlinkCmpKindInterface = { fg = P.accent } },
-    { BlinkCmpKindModule = { fg = P.pale_blue } },
-    { BlinkCmpKindProperty = { fg = P.pale_red } },
-    { BlinkCmpKindUnit = { fg = P.light_gray } },
-    { BlinkCmpKindValue = { fg = P.green } },
-    { BlinkCmpKindEnum = { fg = P.accent } },
-    { BlinkCmpKindKeyword = { fg = P.pale_red } },
-    { BlinkCmpKindSnippet = { fg = P.light_gray } },
-    { BlinkCmpKindColor = { fg = P.green } },
-    { BlinkCmpKindFile = { fg = P.pale_blue } },
-    { BlinkCmpKindReference = { fg = P.pale_red } },
-    { BlinkCmpKindFolder = { fg = P.pale_blue } },
-    { BlinkCmpKindEnumMember = { fg = P.accent } },
-    { BlinkCmpKindConstant = { fg = P.green } },
-    { BlinkCmpKindStruct = { fg = P.accent } },
-    { BlinkCmpKindEvent = { fg = P.light_yellow } },
-    { BlinkCmpKindOperator = { fg = P.pale_red } },
-    { BlinkCmpKindTypeParameter = { fg = P.accent } },
-    { BlinkCmpKindCopilot = { fg = P.light_gray } },
+
+    { BlinkCmpKind = {
+      fg = P.light_gray,
+      bg = vivid_blend_hsl(P.light_gray, P.normal.bg, 0.25, 1.7),
+    } },
+    { BlinkCmpKindText = {
+      fg = P.pale_blue,
+      bg = vivid_blend_hsl(P.pale_blue, P.normal.bg, 0.25, 1.7),
+    } },
+    { BlinkCmpKindMethod = {
+      fg = P.light_yellow,
+      bg = vivid_blend_hsl(P.light_yellow, P.normal.bg, 0.25, 1.7),
+    } },
+    { BlinkCmpKindFunction = {
+      fg = P.light_yellow,
+      bg = vivid_blend_hsl(P.light_yellow, P.normal.bg, 0.25, 1.7),
+    } },
+    { BlinkCmpKindConstructor = {
+      fg = P.light_yellow,
+      bg = vivid_blend_hsl(P.light_yellow, P.normal.bg, 0.25, 1.7),
+    } },
+    { BlinkCmpKindField = {
+      fg = P.pale_red,
+      bg = vivid_blend_hsl(P.pale_red, P.normal.bg, 0.25, 1.7),
+    } },
+    { BlinkCmpKindVariable = {
+      fg = P.pale_red,
+      bg = vivid_blend_hsl(P.pale_red, P.normal.bg, 0.25, 1.7),
+    } },
+    { BlinkCmpKindClass = {
+      fg = P.accent,
+      bg = vivid_blend_hsl(P.accent, P.normal.bg, 0.25, 1.7),
+    } },
+    { BlinkCmpKindInterface = {
+      fg = P.accent,
+      bg = vivid_blend_hsl(P.accent, P.normal.bg, 0.25, 1.7),
+    } },
+    { BlinkCmpKindModule = {
+      fg = P.pale_blue,
+      bg = vivid_blend_hsl(P.pale_blue, P.normal.bg, 0.25, 1.7),
+    } },
+    { BlinkCmpKindProperty = {
+      fg = P.pale_red,
+      bg = vivid_blend_hsl(P.pale_red, P.normal.bg, 0.25, 1.7),
+    } },
+    { BlinkCmpKindUnit = {
+      fg = P.light_gray,
+      bg = vivid_blend_hsl(P.light_gray, P.normal.bg, 0.25, 1.7),
+    } },
+    { BlinkCmpKindValue = {
+      fg = P.green,
+      bg = vivid_blend_hsl(P.green, P.normal.bg, 0.25, 1.7),
+    } },
+    { BlinkCmpKindEnum = {
+      fg = P.accent,
+      bg = vivid_blend_hsl(P.accent, P.normal.bg, 0.25, 1.7),
+    } },
+    { BlinkCmpKindKeyword = {
+      fg = P.pale_red,
+      bg = vivid_blend_hsl(P.pale_red, P.normal.bg, 0.25, 1.7),
+    } },
+    { BlinkCmpKindSnippet = {
+      fg = P.light_gray,
+      bg = vivid_blend_hsl(P.light_gray, P.normal.bg, 0.25, 1.7),
+    } },
+    { BlinkCmpKindColor = {
+      fg = P.green,
+      bg = vivid_blend_hsl(P.green, P.normal.bg, 0.25, 1.7),
+    } },
+    { BlinkCmpKindFile = {
+      fg = P.pale_blue,
+      bg = vivid_blend_hsl(P.pale_blue, P.normal.bg, 0.25, 1.7),
+    } },
+    { BlinkCmpKindReference = {
+      fg = P.pale_red,
+      bg = vivid_blend_hsl(P.pale_red, P.normal.bg, 0.25, 1.7),
+    } },
+    { BlinkCmpKindFolder = {
+      fg = P.pale_blue,
+      bg = vivid_blend_hsl(P.pale_blue, P.normal.bg, 0.25, 1.7),
+    } },
+    { BlinkCmpKindEnumMember = {
+      fg = P.accent,
+      bg = vivid_blend_hsl(P.accent, P.normal.bg, 0.25, 1.7),
+    } },
+    { BlinkCmpKindConstant = {
+      fg = P.green,
+      bg = vivid_blend_hsl(P.green, P.normal.bg, 0.25, 1.7),
+    } },
+    { BlinkCmpKindStruct = {
+      fg = P.accent,
+      bg = vivid_blend_hsl(P.accent, P.normal.bg, 0.25, 1.7),
+    } },
+    { BlinkCmpKindEvent = {
+      fg = P.light_yellow,
+      bg = vivid_blend_hsl(P.light_yellow, P.normal.bg, 0.25, 1.7),
+    } },
+    { BlinkCmpKindOperator = {
+      fg = P.pale_red,
+      bg = vivid_blend_hsl(P.pale_red, P.normal.bg, 0.25, 1.7),
+    } },
+    { BlinkCmpKindTypeParameter = {
+      fg = P.accent,
+      bg = vivid_blend_hsl(P.accent, P.normal.bg, 0.25, 1.7),
+    } },
+    { BlinkCmpKindCopilot = {
+      fg = P.light_gray,
+      bg = vivid_blend_hsl(P.light_gray, P.normal.bg, 0.25, 1.7),
+    } },
   })
-end
-
-local fn, api = vim.fn, vim.api
-local original_color
-
-local function exec_kitty(cmd, on_error, on_stdout)
-  fn.jobstart(cmd, {
-    on_stderr = function(_, d)
-      if #d > 1 then on_error() end
-    end,
-    on_stdout = on_stdout,
-  })
-end
-
-local function get_kitty_background()
-  if not original_color then
-    exec_kitty(
-      { 'kitty', '@', 'get-colors' },
-      function() api.nvim_err_writeln('Error getting background. Ensure kitty remote control is on.') end,
-      function(_, d)
-        for _, result in ipairs(d) do
-          if result:match('^background') then
-            original_color = vim.split(result, '%s+')[2]
-            break
-          end
-        end
-      end
-    )
-  end
-end
-
-local function update_background(color, sync)
-  local command = fmt('kitty @ set-colors background="%s"', color)
-  if sync then
-    fn.system(command)
-  else
-    exec_kitty(command, function() api.nvim_err_writeln('Error changing background. Ensure kitty remote control is on.') end)
-  end
 end
 
 ky.augroup('kyza/highlights', {
@@ -178,8 +222,6 @@ ky.augroup('kyza/highlights', {
   command = function()
     general_overrides()
     set_sidebar_highlight()
-    if vim.g.background == 'light' then update_background(original_color, true) end
-    if not vim.g.neovide then get_kitty_background() end
     local ok, icons = pcall(require, 'nvim-web-devicons')
     if not ok then return false, icons.refresh() end
   end,

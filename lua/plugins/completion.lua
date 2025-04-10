@@ -1,5 +1,7 @@
+local reqcall = ky.reqcall
 local icons = ky.ui.icons
 local completion_icons = icons.completion
+
 return {
   {
     'saghen/blink.cmp',
@@ -7,14 +9,18 @@ return {
     dependencies = {
       'rafamadriz/friendly-snippets',
       'MahanRahmati/blink-nerdfont.nvim',
-      'fang2hou/blink-copilot',
+      {
+        'fang2hou/blink-copilot',
+        opts = {
+          kind_icon = completion_icons.Copilot,
+        },
+      },
     },
     opts = {
       keymap = { preset = 'enter' },
       appearance = {
         nerd_font_variant = 'mono',
         use_nvim_cmp_as_default = true,
-
         kind_icons = completion_icons,
       },
       cmdline = {
@@ -26,7 +32,9 @@ return {
               auto_insert = true,
             },
           },
-          menu = { auto_show = true },
+          menu = {
+            auto_show = true,
+          },
         },
       },
       sources = {
@@ -39,12 +47,6 @@ return {
           'nerdfont',
         },
         providers = {
-          nerdfont = {
-            module = 'blink-nerdfont',
-            name = 'Nerd Fonts',
-            score_offset = 100,
-            opts = { insert = true },
-          },
           path = {
             name = 'path',
             score_offset = 600,
@@ -53,16 +55,31 @@ return {
             name = 'copilot',
             module = 'blink-copilot',
             max_items = 1,
-            score_offset = 100,
+            score_offset = 250,
             async = true,
+          },
+          lsp = {
+            name = 'lsp',
+            score_offset = 200,
           },
           snippets = {
             name = 'snippets',
             score_offset = 150,
           },
+          nerdfont = {
+            module = 'blink-nerdfont',
+            name = 'Nerd Fonts',
+            score_offset = 100,
+            opts = { insert = true },
+          },
         },
       },
       completion = {
+        menu = {
+          draw = {
+            padding = { 0, 1 },
+          },
+        },
         accept = {
           auto_brackets = {
             enabled = true,
@@ -82,63 +99,6 @@ return {
     opts_extend = {
       'sources.default',
     },
-  },
-  {
-    'L3MON4D3/LuaSnip',
-    version = 'v2.*',
-    event = 'InsertEnter',
-    build = 'make install_jsregexp',
-    dependencies = {
-      'rafamadriz/friendly-snippets',
-    },
-    config = function()
-      local ls = require('luasnip')
-      local types = require('luasnip.util.types')
-      local extras = require('luasnip.extras')
-      local fmt = require('luasnip.extras.fmt').fmt
-
-      ls.config.set_config({
-        history = false,
-        region_check_events = 'CursorMoved,CursorHold,InsertEnter',
-        delete_check_events = 'InsertLeave',
-        ext_opts = {
-          [types.choiceNode] = {
-            active = {
-              hl_mode = 'combine',
-              virt_text = { { '●', 'Operator' } },
-            },
-          },
-          [types.insertNode] = {
-            active = {
-              hl_mode = 'combine',
-              virt_text = { { '●', 'Type' } },
-            },
-          },
-        },
-        enable_autosnippets = true,
-        snip_env = {
-          fmt = fmt,
-          m = extras.match,
-          t = ls.text_node,
-          f = ls.function_node,
-          c = ls.choice_node,
-          d = ls.dynamic_node,
-          i = ls.insert_node,
-          l = extras.lamda,
-          snippet = ls.snippet,
-        },
-      })
-
-      require('luasnip.loaders.from_lua').lazy_load()
-      -- NOTE: the loader is called twice so it picks up the defaults first then my custom textmate snippets.
-      -- see: https://github.com/L3MON4D3/LuaSnip/issues/364
-      require('luasnip.loaders.from_vscode').lazy_load()
-      require('luasnip.loaders.from_vscode').lazy_load({ paths = './snippets/textmate' })
-
-      ls.filetype_extend('typescriptreact', { 'javascript', 'typescript' })
-      ls.filetype_extend('dart', { 'flutter' })
-      ls.filetype_extend('NeogitCommitMessage', { 'gitcommit' })
-    end,
   },
   {
     'windwp/nvim-autopairs',
@@ -161,22 +121,8 @@ return {
     'zbirenbaum/copilot.lua',
     config = function()
       require('copilot').setup({
-        suggestion = {
-          enabled = false,
-          auto_trigger = true,
-          debounce = 75,
-          keymap = {
-            accept = '<c-cr>',
-            accept_word = '<c-w>',
-            accept_line = '<c-space>',
-            next = '<M-]>',
-            prev = '<M-[>',
-            dismiss = '<C-]>',
-          },
-        },
-        panel = {
-          enabled = true,
-        },
+        suggestion = { enabled = false },
+        panel = { enabled = true },
         filetypes = {
           markdown = true,
           help = true,
@@ -236,110 +182,26 @@ return {
         temperature = 0,
         max_tokens = 8192,
       },
-      history = {
-        max_tokens = 4096,
-        carried_entry_count = nil,
-        storage_path = vim.fn.stdpath('state') .. '/avante',
-        paste = {
-          extension = 'png',
-          filename = 'pasted-%Y-%m-%d-%H-%M-%S',
-        },
-      },
       highlights = {
         diff = {
           current = nil,
           incoming = nil,
         },
       },
-      mappings = {
-        diff = {
-          ours = 'co',
-          theirs = 'ct',
-          all_theirs = 'ca',
-          both = 'cb',
-          cursor = 'cc',
-          next = ']x',
-          prev = '[x',
-        },
-        jump = {
-          next = ']]',
-          prev = '[[',
-        },
-        submit = {
-          normal = '<CR>',
-          insert = '<C-s>',
-        },
-        cancel = {
-          normal = { '<C-c>', '<Esc>', 'q' },
-          insert = { '<C-c>' },
-        },
-        ask = '<leader>aa',
-        edit = '<leader>ae',
-        refresh = '<leader>ar',
-        focus = '<leader>af',
-        stop = '<leader>aS',
-        toggle = {
-          default = '<leader>at',
-          debug = '<leader>ad',
-          hint = '<leader>ah',
-          suggestion = '<leader>as',
-          repomap = '<leader>aR',
-        },
-        sidebar = {
-          apply_all = 'A',
-          apply_cursor = 'a',
-          retry_user_request = 'r',
-          edit_user_request = 'e',
-          switch_windows = '<Tab>',
-          reverse_switch_windows = '<S-Tab>',
-          remove_file = 'd',
-          add_file = '@',
-          close = { '<Esc>', 'q' },
-          close_from_input = nil,
-        },
-        files = {
-          add_current = '<leader>ac', -- Add current buffer to selected files
-          add_all_buffers = '<leader>aB', -- Add all buffer files to selected files
-        },
-        select_model = '<leader>a?', -- Select model command
-        select_history = '<leader>ah', -- Select history command
-      },
       windows = {
-        position = 'bottom',
-        wrap = true,
-        width = 30,
-        height = 5,
-        sidebar_header = {
-          enabled = true,
-          align = 'left',
-          rounded = false,
-        },
+        position = 'right',
         input = {
           prefix = '> ',
           height = 8,
-        },
-        edit = {
-          border = 'none',
-          start_insert = true,
-        },
-        ask = {
-          floating = false,
-          start_insert = false,
         },
       },
       hints = {
         enabled = false,
       },
-      file_selector = {
-        provider = 'native',
-        provider_opts = {},
-      },
       suggestion = {
         debounce = 600,
         throttle = 600,
       },
-      disabled_tools = {},
-      custom_tools = {},
     },
   },
   {
@@ -349,23 +211,19 @@ return {
     opts = {
       snippetDir = vim.fn.stdpath('config') .. '/snippets',
     },
-    keys = {
-      '<Leader>sa',
-      '<Leader>se',
-    },
     config = function()
-      local present, wk = pcall(require, 'which-key')
-      if not present then return end
+      local wk = reqcall('which-key')
 
       wk.add({
-        { '<leader>s', group = 'Snippets', nowait = false, remap = false },
-        { '<leader>sa', '<cmd>lua require("scissors").addNewSnippet()<CR>', desc = 'Add new snippet', nowait = false, remap = false },
-        { '<leader>se', '<cmd>lua require("scissors").editSnippet()<CR>', desc = 'Edit snippet', nowait = false, remap = false },
+        { icon = '', '<leader>s', group = 'Snippets', nowait = false, remap = false },
+        { icon = '', '<leader>sa', '<cmd>lua require("scissors").addNewSnippet()<CR>', desc = 'Add new snippet', nowait = false, remap = false },
+        { icon = '󰲶', '<leader>se', '<cmd>lua require("scissors").editSnippet()<CR>', desc = 'Edit snippet', nowait = false, remap = false },
       })
 
       wk.add({
-        { '<leader>as', group = 'Snippets', mode = 'x', nowait = false, remap = false },
+        { icon = '', '<leader>s', group = 'Snippets', mode = 'x', nowait = false, remap = false },
         {
+          icon = '󰳼',
           '<leader>sa',
           '<cmd>lua require("scissors").addNewSnippet()<CR>',
           desc = 'Add new snippet from selection',
@@ -375,8 +233,11 @@ return {
         },
       })
     end,
+    keys = {
+      '<Leader>sa',
+      '<Leader>se',
+    },
   },
-  { 'onsails/lspkind-nvim', event = { 'CmdlineEnter', 'InsertEnter' } },
   { 'windwp/nvim-ts-autotag', event = { 'InsertEnter' } },
   { 'saecki/live-rename.nvim' },
 }

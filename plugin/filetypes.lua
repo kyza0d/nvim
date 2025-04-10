@@ -46,6 +46,7 @@ settings({
     group = 'notes',
   },
   [{
+    'qf',
     'neo-tree',
     'neo-tree-popup',
     'Trouble',

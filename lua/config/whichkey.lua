@@ -1,4 +1,4 @@
-local whichkey = require('which-key')
+local wk = require('which-key')
 
 local row = function()
   local height = vim.api.nvim_win_get_height(0)
@@ -6,7 +6,7 @@ local row = function()
   return height - offset
 end
 
-whichkey.setup({
+wk.setup({
   preset = 'modern',
   icons = {
     breadcrumb = '»',
@@ -21,31 +21,17 @@ whichkey.setup({
   },
   show_help = false,
   show_keys = false,
+
+  -- dont show if icon isn't defined, or if it's the avante plugin
+  filter = function(key)
+    if key.icon == '' then return false end
+    return true
+  end,
 })
 
-whichkey.add({
+wk.add({
   { group = 'leader', icon = '', '<leader>' },
   { icon = '', group = 'cr', '<cr>' },
-
-  { icon = '', group = 'Find', '<leader>f' },
-  { icon = ' ', desc = 'Live Grep', '<c-g>' },
-  { icon = '󰅩 ', desc = 'Code Actions', '<c-.>' },
-  { icon = ' ', desc = 'Git Files', '<leader>ff' },
-  { icon = ' ', desc = 'Highlights', '<leader>fh' },
-  { icon = ' ', desc = 'Fzf Menu', '<leader>fa' },
-  { icon = ' ', desc = 'Buffer Grep', '<leader>fb' },
-  { icon = ' ', desc = 'Recent', '<leader>fr' },
-  { icon = ' ', desc = 'Projects', '<leader>fp' },
-  { icon = ' ', desc = 'Help', '<leader>f?' },
-  { icon = ' ', desc = 'Recent Files', '<cr>r' },
-
-  { icon = ' ', desc = 'Notes', '<leader>n' },
-
-  { icon = ' ', group = 'Notes', '<cr>n' },
-  { icon = ' ', desc = 'Open Daily', '<cr>nd', '<cmd>ObsidianToday<cr>' },
-  { icon = '󱞳 ', desc = 'Open Daily (Yesterday)', '<cr>ny', '<cmd>ObsidianYesterday<cr>' },
-  { icon = '󱞫 ', desc = 'Open Daily (Tomorrow)', '<cr>nt', '<cmd>ObsidianTomorrow<cr>' },
-  { icon = ' ', desc = 'Open Ideas', '<cr>ni', '<cmd>e ~/Notes/2025/Journal/Ideas.md<cr>' },
 
   { icon = ' ', group = 'Dotfiles', '<leader>fd' },
   { icon = '` ', desc = 'Hypr Config', '<leader>fdh' },
@@ -57,7 +43,7 @@ whichkey.add({
   { icon = ' ', desc = 'Git Branches', '<leader>fgb' },
   { icon = ' ', desc = 'Workspace Symbols', '<leader>fs' },
 
-  { icon = '', group = '  AI', '<leader>a' },
+  { icon = '', group = 'Avante.nvim', '<leader>a' },
   { icon = '󰆈', desc = ' Ask', '<leader>aa' },
   { icon = '󰆈', desc = ' Clear Avante', '<leader>ax', '<cmd>AvanteClear<cr>' },
   { icon = '󰂽', desc = ' Open Window', '<leader>ao' },
@@ -66,7 +52,9 @@ whichkey.add({
   { icon = '', desc = ' Refresh', '<leader>ar' },
   { icon = '', desc = ' Edit Code Block', '<leader>ae' },
 
-  { group = 'Buffers', '<leader>b' },
-  { desc = 'Pin', '<leader>bp', '<cmd>BufferLineTogglePin<cr>', mode = 'n' },
-  { desc = 'Yank', '<leader>by', ':silent %y+<cr>', mode = 'n' },
+  { icon = '', group = 'LSP', '<leader>l' },
+  { icon = ' ', desc = 'Diagnostics', '<cr>d' },
+  { icon = ' ', desc = 'Symbols', '<cr>s' },
+  { icon = '󰱽 ', desc = 'Workspace Diagnostics', '<leader>ld' },
+  { icon = ' ', desc = 'References', '<leader>lr' },
 })

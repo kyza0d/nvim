@@ -41,14 +41,17 @@ keymap('n', '<M-CR>', '<cmd>split<cr>')
 keymap('n', 'zh', 'za')
 keymap('n', 'zl', 'zA')
 
+-- Block Selection
 keymap({ 'n', 'v' }, '<C-b>', '<C-v>')
 
 -- LSP keymaps
 create_autocmd('LspAttach', {
   callback = function()
     keymap('n', 'gp', 'g?p', { noremap = false })
-    keymap('n', 'gd', lsp.buf.definition)
+    keymap('n', 'gd', lsp.buf.type_definition)
+    keymap('n', 'gD', lsp.buf.definition)
     keymap('n', 'gr', lsp.buf.references)
+    keymap('n', '<C-space>', lsp.buf.hover)
   end,
 })
 

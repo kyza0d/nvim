@@ -133,4 +133,60 @@ function M.plugin(name, opts)
   })
 end
 
+M.vivid_blend_hsl = function(fg, bg, alpha, saturation_boost)
+  saturation_boost = saturation_boost or 1.7 -- Default saturation boost
+  alpha = math.min(math.max(alpha, 0), 1)
+
+  -- Extract RGB components
+  local fg_r, fg_g, fg_b = tonumber(string.sub(fg, 2, 3), 16), tonumber(string.sub(fg, 4, 5), 16), tonumber(string.sub(fg, 6, 7), 16)
+
+  local bg_r, bg_g, bg_b = tonumber(string.sub(bg, 2, 3), 16), tonumber(string.sub(bg, 4, 5), 16), tonumber(string.sub(bg, 6, 7), 16)
+
+  -- Convert foreground to HSL (simplified conversion for this example)
+  local max = math.max(fg_r, fg_g, fg_b) / 255
+  local min = math.min(fg_r, fg_g, fg_b) / 255
+  local delta = max - min
+  local l = (max + min) / 2
+  local s = delta == 0 and 0 or delta / (1 - math.abs(2 * l - 1))
+  local h = 0
+
+  if delta ~= 0 then
+    if max == fg_r / 255 then
+      h = ((fg_g / 255 - fg_b / 255) / delta) % 6
+    elseif max == fg_g / 255 then
+      h = (fg_b / 255 - fg_r / 255) / delta + 2
+    else
+      h = (fg_r / 255 - fg_g / 255) / delta + 4
+    end
+    h = h * 60
+    if h < 0 then h = h + 360 end
+  end
+
+  -- Increase saturation
+  s = math.min(1, s * saturation_boost)
+
+  -- Convert back to RGB (simplified conversion)
+  local function hue_to_rgb(p, q, t)
+    if t < 0 then t = t + 1 end
+    if t > 1 then t = t - 1 end
+    if t < 1 / 6 then return p + (q - p) * 6 * t end
+    if t < 1 / 2 then return q end
+    if t < 2 / 3 then return p + (q - p) * (2 / 3 - t) * 6 end
+    return p
+  end
+
+  local q = l < 0.5 and l * (1 + s) or l + s - l * s
+  local p = 2 * l - q
+  local r = hue_to_rgb(p, q, (h / 360 + 1 / 3) % 1) * 255
+  local g = hue_to_rgb(p, q, (h / 360) % 1) * 255
+  local b = hue_to_rgb(p, q, (h / 360 - 1 / 3) % 1) * 255
+
+  -- Blend with background
+  local blended_r = math.floor(r * alpha + bg_r * (1 - alpha))
+  local blended_g = math.floor(g * alpha + bg_g * (1 - alpha))
+  local blended_b = math.floor(b * alpha + bg_b * (1 - alpha))
+
+  return string.format('#%02x%02x%02x', blended_r, blended_g, blended_b)
+end
+
 return M

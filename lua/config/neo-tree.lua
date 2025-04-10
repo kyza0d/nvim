@@ -79,8 +79,6 @@ require('neo-tree').setup({
       folder_open = icons.folders.open,
       folder_empty = icons.folders.empty,
       folder_empty_open = icons.folders.empty_open,
-      -- The next two settings are only a fallback, if you use nvim-web-devicons and configure default icons there
-      -- then these will never be used.
       default = '*',
       highlight = 'NeoTreeFileIcon',
     },
@@ -90,6 +88,13 @@ require('neo-tree').setup({
       indent_marker = icons.indent_marker,
       last_indent_marker = icons.last_indent_marker,
     },
+  },
+
+  event_handlers = {
+    { event = 'neo_tree_buffer_enter', handler = function() highlight.set('Cursor', { blend = 100 }) end },
+    { event = 'neo_tree_popup_buffer_enter', handler = function() highlight.set('Cursor', { blend = 0 }) end },
+    { event = 'neo_tree_buffer_leave', handler = function() highlight.set('Cursor', { blend = 0 }) end },
+    { event = 'neo_tree_window_after_close', handler = function() highlight.set('Cursor', { blend = 0 }) end },
   },
 
   commands = {

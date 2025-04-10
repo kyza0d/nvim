@@ -1,7 +1,20 @@
 ---@diagnostic disable: missing-fields
+local reqcall = ky.reqcall
+
 return {
   {
     'epwalsh/obsidian.nvim',
+    init = function()
+      local wk = reqcall('which-key')
+
+      wk.add({
+        { icon = ' ', group = 'Notes', '<cr>n' },
+        { icon = ' ', desc = 'Open Daily', '<cr>nd', '<cmd>ObsidianToday<cr>' },
+        { icon = '󱞳 ', desc = 'Open Daily (Yesterday)', '<cr>ny', '<cmd>ObsidianYesterday<cr>' },
+        { icon = '󱞫 ', desc = 'Open Daily (Tomorrow)', '<cr>nt', '<cmd>ObsidianTomorrow<cr>' },
+        { icon = ' ', desc = 'Open Ideas', '<cr>ni', '<cmd>e ~/Notes/2025/Journal/Ideas.md<cr>' },
+      })
+    end,
     tag = '*',
     requires = {
       'nvim-lua/plenary.nvim',
@@ -18,6 +31,7 @@ return {
             ['t'] = {},
           },
         },
+
         daily_notes = {
           folder = '/Dailies/',
           date_format = '%Y-%m-%d',
@@ -37,6 +51,7 @@ return {
             opts = { buffer = true, expr = true },
           },
         },
+
         workspaces = {
           {
             name = 'Notes',

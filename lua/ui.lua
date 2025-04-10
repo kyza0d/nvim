@@ -1,4 +1,7 @@
 ky.ui.palette = {
+  normal = {
+    bg = '#161616',
+  },
   accent = '#4b92d8',
   green = '#aec795',
   dark_green = '#10B981',
@@ -97,7 +100,7 @@ ky.ui.groups = {
   ['notes'] = {
     opts = {
       number = false,
-      statuscolumn = '  ',
+      statuscolumn = ' ',
       signcolumn = 'no',
     },
   },
@@ -112,6 +115,7 @@ ky.ui.groups = {
   ['panel'] = {
     opts = {
       number = false,
+      statuscolumn = '',
     },
   },
 

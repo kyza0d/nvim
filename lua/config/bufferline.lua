@@ -14,9 +14,9 @@ bufferline.setup({
     close_icon = 'x',
     close_command = 'Bdelete! %d',
     show_buffer_close_icons = false,
-    show_close_icon = false,
-    style_preset = bufferline.style_preset.default, -- or bufferline.style_preset.minimal,
+    show_close_icon = true,
     show_buffer_icons = false,
+    style_preset = bufferline.style_preset.default, -- or bufferline.style_preset.minimal,
     left_trunc_marker = '',
     right_trunc_marker = '',
     tab_size = 0,
@@ -29,7 +29,7 @@ bufferline.setup({
         bufferline_groups.builtin.pinned:with({ icon = ' ' }),
         groups.builtin.ungrouped,
         {
-          name = 'docs',
+          name = 'notes',
           separator = {
             style = require('bufferline.groups').separator.tab,
           },

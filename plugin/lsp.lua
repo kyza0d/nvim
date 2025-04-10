@@ -1,4 +1,3 @@
-local api, fmt = vim.fn, vim.api
 local diagnostic = vim.diagnostic
 local S = vim.diagnostic.severity
 local icons = ky.ui.icons
