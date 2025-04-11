@@ -12,7 +12,10 @@ return {
         { icon = ' ', desc = 'Open Daily', '<cr>nd', '<cmd>ObsidianToday<cr>' },
         { icon = '󱞳 ', desc = 'Open Daily (Yesterday)', '<cr>ny', '<cmd>ObsidianYesterday<cr>' },
         { icon = '󱞫 ', desc = 'Open Daily (Tomorrow)', '<cr>nt', '<cmd>ObsidianTomorrow<cr>' },
-        { icon = ' ', desc = 'Open Ideas', '<cr>ni', '<cmd>e ~/Notes/2025/Journal/Ideas.md<cr>' },
+        { icon = ' ', group = 'Log', '<cr>l' },
+        { icon = ' ', desc = 'Idea', '<cr>li', '<cmd>e ~/Notes/2025/Journal/Logs/Ideas.md<cr>' },
+        { icon = ' ', desc = 'Dream', '<cr>ld', '<cmd>e ~/Notes/2025/Journal/Logs/Dreams.md<cr>' },
+        { icon = '󰟶 ', desc = 'Thought', '<cr>lt', '<cmd>e ~/Notes/2025/Journal/Logs/Thoughts.md<cr>' },
       })
     end,
     tag = '*',
@@ -60,35 +63,5 @@ return {
         },
       })
     end,
-  },
-  {
-    'MeanderingProgrammer/render-markdown.nvim',
-    dependencies = { 'nvim-treesitter/nvim-treesitter', 'echasnovski/mini.nvim' },
-    opts = {
-      callout = {
-        thought = {
-          raw = '[!BRAIN]',
-          rendered = ' Thoughts',
-          highlight = 'Macro',
-        },
-      },
-      checkbox = {
-        unchecked = { icon = ' ' },
-        checked = { icon = ' ' },
-        custom = {
-          pending = { raw = '[?]', rendered = ' ', highlight = 'Macro', scope_highlight = nil },
-          active = { raw = '[~]', rendered = '⚡', highlight = 'Keyword', scope_highlight = nil },
-          canceled = { raw = '[t]', rendered = '', highlight = 'Error', scope_highlight = nil },
-        },
-      },
-    },
-  },
-  {
-    '3rd/image.nvim',
-    enabled = not vim.g.neovide,
-    opts = {
-      max_width = 46,
-      max_height = 18,
-    },
   },
 }

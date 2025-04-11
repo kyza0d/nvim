@@ -115,7 +115,7 @@ return {
     opts = {
       keymaps = {
         normal = {
-          plain_below = 'g?p',
+          variable_below = 'g?p',
         },
       },
       commands = {

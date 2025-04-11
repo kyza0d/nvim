@@ -13,6 +13,11 @@ create_autocmd('BufWritePost', {
   group = group,
 })
 
+create_autocmd('BufWritePost', {
+  callback = function() vim.notify('File saved!', vim.log.levels.INFO) end,
+  group = group,
+})
+
 create_autocmd('BufWinEnter', {
   command = 'set formatoptions-=cro',
   group = group,

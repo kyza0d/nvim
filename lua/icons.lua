@@ -191,7 +191,7 @@ ky.ui.icons = {
   },
 
   misc = {
-    fzf = '',
+    fzf = '   ',
     readonly = ' ',
     none = '',
     pointer = '➤',

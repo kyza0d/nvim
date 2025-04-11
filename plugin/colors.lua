@@ -110,42 +110,52 @@ local function general_overrides()
       fg = P.light_gray,
       bg = vivid_blend_hsl(P.light_gray, P.normal.bg, 0.25, 1.7),
     } },
+
     { BlinkCmpKindText = {
       fg = P.pale_blue,
       bg = vivid_blend_hsl(P.pale_blue, P.normal.bg, 0.25, 1.7),
     } },
+
     { BlinkCmpKindMethod = {
       fg = P.light_yellow,
       bg = vivid_blend_hsl(P.light_yellow, P.normal.bg, 0.25, 1.7),
     } },
+
     { BlinkCmpKindFunction = {
       fg = P.light_yellow,
       bg = vivid_blend_hsl(P.light_yellow, P.normal.bg, 0.25, 1.7),
     } },
+
     { BlinkCmpKindConstructor = {
       fg = P.light_yellow,
       bg = vivid_blend_hsl(P.light_yellow, P.normal.bg, 0.25, 1.7),
     } },
+
     { BlinkCmpKindField = {
       fg = P.pale_red,
       bg = vivid_blend_hsl(P.pale_red, P.normal.bg, 0.25, 1.7),
     } },
+
     { BlinkCmpKindVariable = {
       fg = P.pale_red,
       bg = vivid_blend_hsl(P.pale_red, P.normal.bg, 0.25, 1.7),
     } },
+
     { BlinkCmpKindClass = {
       fg = P.accent,
       bg = vivid_blend_hsl(P.accent, P.normal.bg, 0.25, 1.7),
     } },
+
     { BlinkCmpKindInterface = {
       fg = P.accent,
       bg = vivid_blend_hsl(P.accent, P.normal.bg, 0.25, 1.7),
     } },
+
     { BlinkCmpKindModule = {
       fg = P.pale_blue,
       bg = vivid_blend_hsl(P.pale_blue, P.normal.bg, 0.25, 1.7),
     } },
+
     { BlinkCmpKindProperty = {
       fg = P.pale_red,
       bg = vivid_blend_hsl(P.pale_red, P.normal.bg, 0.25, 1.7),

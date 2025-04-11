@@ -50,5 +50,12 @@ vim.opt.guifont = 'Cartograph CF Light,Symbols Nerd Font:h11.4:w1.4'
 
 opt.linespace = 11
 vim.opt.laststatus = 2
-vim.opt.statuscolumn = table.concat({ '  %@NumCb@%l  ' })
-vim.opt.fillchars = { diff = ' ', vert = ' ', vertleft = ' ', vertright = ' ', verthoriz = ' ', eob = ' ' }
+
+vim.opt.fillchars = {
+  diff = ' ',
+  vert = ' ',
+  vertleft = ' ',
+  vertright = ' ',
+  verthoriz = ' ',
+  eob = ' ',
+}

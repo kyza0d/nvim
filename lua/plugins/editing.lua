@@ -1,9 +1,42 @@
+local hl = ky.hl
+
 return {
   { 'vidocqh/auto-indent.nvim', event = 'BufReadPre', opts = {} },
-  { 'echasnovski/mini.ai', event = 'BufReadPost', opts = {} },
+  {
+    'kevinhwang91/nvim-fundo',
+    dependencies = 'kevinhwang91/promise-async',
+  },
+  {
+    'monaqa/dial.nvim',
+    event = 'BufReadPre',
+    keys = {
+      { '<C-a>', '<Plug>(dial-increment)', mode = 'n' },
+      { '<C-x>', '<Plug>(dial-decrement)', mode = 'n' },
+    },
+    config = function()
+      local augend = require('dial.augend')
+      local config = require('dial.config')
+
+      config.augends:register_group({
+        default = {
+          augend.integer.alias.decimal,
+          augend.constant.alias.bool,
+          augend.constant.new({ elements = { 'let', 'const' } }),
+          augend.constant.new({ elements = { 'yes', 'no' } }),
+        },
+      })
+    end,
+  },
+  {
+    'brenton-leighton/multiple-cursors.nvim',
+    version = '*',
+    opts = {},
+    keys = {
+      { '<S-n>', '<Cmd>MultipleCursorsAddJumpNextMatch<CR>', mode = { 'n', 'x' }, desc = 'Add cursor and move down' },
+    },
+  },
   {
     'Vonr/align.nvim',
-    branch = 'v2',
     keys = {
       {
         'aa',
@@ -18,10 +51,6 @@ return {
         mode = 'x',
       },
     },
-  },
-  {
-    'kevinhwang91/nvim-fundo',
-    dependencies = 'kevinhwang91/promise-async',
   },
   {
     'MagicDuck/grug-far.nvim',
@@ -71,26 +100,5 @@ return {
     version = '*',
     opts = { move_cursor = true, keymaps = { visual = 's' } },
     event = 'BufReadPre',
-  },
-  {
-    'monaqa/dial.nvim',
-    event = 'BufReadPre',
-    keys = {
-      { '<C-a>', '<Plug>(dial-increment)', mode = 'n' },
-      { '<C-x>', '<Plug>(dial-decrement)', mode = 'n' },
-    },
-    config = function()
-      local augend = require('dial.augend')
-      local config = require('dial.config')
-
-      config.augends:register_group({
-        default = {
-          augend.integer.alias.decimal,
-          augend.constant.alias.bool,
-          augend.constant.new({ elements = { 'let', 'const' } }),
-          augend.constant.new({ elements = { 'yes', 'no' } }),
-        },
-      })
-    end,
   },
 }

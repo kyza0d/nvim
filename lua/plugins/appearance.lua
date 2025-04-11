@@ -1,4 +1,4 @@
-local hl, P = ky.hl, ky.ui.palette
+local hl = ky.hl
 
 ---@diagnostic disable: missing-fields
 return {
@@ -8,6 +8,28 @@ return {
       require('mini.icons').setup(ky.ui.icons.mini)
       require('mini.icons').mock_nvim_web_devicons()
     end,
+  },
+  {
+    'MeanderingProgrammer/render-markdown.nvim',
+    dependencies = { 'nvim-treesitter/nvim-treesitter', 'echasnovski/mini.nvim' },
+    opts = {
+      callout = {
+        thought = {
+          raw = '[!BRAIN]',
+          rendered = ' Thoughts',
+          highlight = 'Macro',
+        },
+      },
+      checkbox = {
+        unchecked = { icon = ' ' },
+        checked = { icon = ' ' },
+        custom = {
+          pending = { raw = '[?]', rendered = ' ', highlight = 'Macro', scope_highlight = nil },
+          active = { raw = '[~]', rendered = '⚡', highlight = 'Keyword', scope_highlight = nil },
+          canceled = { raw = '[t]', rendered = '', highlight = 'Error', scope_highlight = nil },
+        },
+      },
+    },
   },
   {
     'lukas-reineke/indent-blankline.nvim',
@@ -65,17 +87,14 @@ return {
     config = function()
       local notify = require('notify')
       notify.setup({
-        top_down = false,
-        render = 'wrapped-compact',
+        render = 'compact',
         stages = 'fade_in_slide_out',
         on_open = function(win)
-          if api.nvim_win_is_valid(win) then api.nvim_win_set_config(win, { border = 'single' }) end
+          if api.nvim_win_is_valid(win) then api.nvim_win_set_config(win, { border = 'none' }) end
         end,
       })
     end,
   },
-  { 'EdenEast/nightfox.nvim' },
-  { 'onsails/lspkind.nvim' },
   {
     'Bekaboo/dropbar.nvim',
     opts = {
@@ -104,4 +123,19 @@ return {
       },
     },
   },
+  {
+    '3rd/image.nvim',
+    enabled = true,
+    config = function()
+      require('image').setup()
+      package.path = package.path .. ';' .. vim.fn.expand('$HOME') .. '/.luarocks/share/lua/5.1/?/init.lua;'
+      package.path = package.path .. ';' .. vim.fn.expand('$HOME') .. '/.luarocks/share/lua/5.1/?.lua;'
+    end,
+    opts = {
+      max_width = 46,
+      max_height = 18,
+    },
+  },
+  { 'EdenEast/nightfox.nvim' },
+  { 'onsails/lspkind.nvim' },
 }

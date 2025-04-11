@@ -1,15 +1,11 @@
 --- author kyza0d
---- version 0.6.0
+--- version 0.7.0
 --- website https://kyza.dev
 
 require('globals')
-
 require('ui')
 require('options')
 require('icons')
-
-package.path = fmt('%s/.luarocks/share/lua/5.1/?/init.lua;%s/.luarocks/share/lua/5.1/?.lua;', vim.fn.expand('$HOME'), vim.fn.expand('$HOME'))
-package.cpath = fmt('%s/.luarocks/lib/lua/5.1/?/so', vim.fn.expand('$HOME'))
 
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '

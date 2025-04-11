@@ -1,5 +1,6 @@
-local hl = ky.hl
+local hl, helpers = ky.hl, ky.helpers
 local ui, reqcall = ky.ui, ky.reqcall
+
 local icons = ui.icons
 local fzf_lua = reqcall('fzf-lua')
 local file_picker = function(cwd) fzf_lua.files({ cwd = cwd }) end
@@ -10,28 +11,6 @@ return {
     event = 'UIEnter',
     config = function() require('config.whichkey') end,
     keys = { '<c-w>', '<leader>', '<cr>' },
-  },
-  {
-    'folke/trouble.nvim',
-    config = function(_, opts)
-      hl.plugin('Trouble', {
-        theme = {
-          ['*'] = {
-            { TroubleFile = { fg = { from = 'Function' }, bg = 'none' } },
-            { TroubleSignOther = { fg = { from = 'Special' }, bg = 'none' } },
-            { TroubleInformation = { fg = { from = 'Special' }, bg = 'none' } },
-          },
-        },
-      })
-      require('trouble').setup(opts)
-    end,
-    keys = {
-      { '<cr>d', '<cmd>Trouble diagnostics toggle filter.buf=0 focus=true<cr>' },
-      { '<cr>s', '<cmd>Trouble symbols toggle focus=true<cr>' },
-      { '<leader>ld', '<cmd>Trouble diagnostics toggle focus=true<cr>' },
-      { '<leader>lr', '<cmd>Trouble lsp_references toggle focus=true<cr>' },
-    },
-    cmd = 'Trouble',
   },
   {
     'ibhagwan/fzf-lua',
@@ -61,6 +40,12 @@ return {
         { icon = ' ', desc = 'Git Branches', '<leader>fgb' },
         { icon = ' ', desc = 'Workspace Symbols', '<leader>fs' },
       })
+
+      keymap('v', '<c-g>', function()
+        reqcall('fzf-lua').live_grep({
+          search = helpers.visual_selection(),
+        })
+      end)
     end,
     config = function()
       local fzf = require('fzf-lua')
@@ -175,7 +160,7 @@ return {
     end,
     keys = {
       { '<c-f>', function() reqcall('fzf-lua').files() end },
-      { '<c-g>', function() reqcall('fzf-lua').live_grep() end },
+      { '<c-g>', function() reqcall('fzf-lua').live_grep({ resume = true }) end },
       { '<c-.>', function() reqcall('fzf-lua').lsp_code_actions() end },
       { '<leader>ff', function() reqcall('fzf-lua').git_files() end },
       { '<leader>fh', function() reqcall('fzf-lua').highlights() end },
@@ -188,6 +173,8 @@ return {
       { '<leader>fgc', fzf_lua.git_commits },
       { '<leader>fgb', fzf_lua.git_branches },
       { '<leader>fs', fzf_lua.lsp_workspace_symbols },
+      { '<leader>fs', fzf_lua.lsp_workspace_symbols },
+      { '<C-s>', fzf_lua.lsp_workspace_symbols },
 
       { '<leader>fn', function() file_picker('/home/kyza/Notes') end },
       { '<leader>fdh', function() file_picker('/home/kyza/.config/hypr') end },
@@ -196,30 +183,40 @@ return {
     },
   },
   {
-    'chrisgrieser/nvim-spider',
-    opts = {},
-    keys = {
-      { 'w', "<cmd>lua require('spider').motion('w')<CR>", mode = { 'n', 'o', 'x' } },
-      { 'e', "<cmd>lua require('spider').motion('e')<CR>", mode = { 'n', 'o', 'x' } },
-      { 'b', "<cmd>lua require('spider').motion('b')<CR>", mode = { 'n', 'o', 'x' } },
-      { '<C-w>', "<Esc>l<cmd>lua require('spider').motion('w')<CR>i", mode = 'i' },
-      { '<C-b>', "<Esc><cmd>lua require('spider').motion('b')<CR>i", mode = 'i' },
-    },
-  },
-  {
-    'folke/flash.nvim',
-    event = 'VeryLazy',
-    init = function()
-      hl.plugin('Flash', {
+    'folke/trouble.nvim',
+    config = function(_, opts)
+      hl.plugin('Trouble', {
         theme = {
-          FlashLabel = { fg = ky.ui.palette.magenta, bold = true },
+          ['*'] = {
+            { TroubleFile = { fg = { from = 'Function' }, bg = 'none' } },
+            { TroubleSignOther = { fg = { from = 'Special' }, bg = 'none' } },
+            { TroubleInformation = { fg = { from = 'Special' }, bg = 'none' } },
+          },
         },
       })
+      require('trouble').setup(opts)
     end,
-    opts = {
-      modes = { char = { highlight = { backdrop = false } } },
-      prompt = { enabled = false },
-      highlight = { backdrop = false },
+    keys = {
+      { '<cr>d', '<cmd>Trouble diagnostics toggle filter.buf=0 focus=true<cr>' },
+      { '<cr>s', '<cmd>Trouble symbols toggle focus=true<cr>' },
+      { '<leader>ld', '<cmd>Trouble diagnostics toggle focus=true<cr>' },
+      { '<leader>lr', '<cmd>Trouble lsp_references toggle focus=true<cr>' },
+    },
+    cmd = 'Trouble',
+  },
+  {
+    'nvim-neo-tree/neo-tree.nvim',
+    config = function() require('config.neo-tree') end,
+    dependencies = {
+      'mrbjarksen/neo-tree-diagnostics.nvim',
+      'MunifTanjim/nui.nvim',
+    },
+    keys = {
+      {
+        '<M-e>',
+        '<cmd>Neotree toggle<cr>',
+        mode = 'n',
+      },
     },
   },
   {
@@ -249,19 +246,10 @@ return {
     build = './kitty/install-kittens.bash',
   },
   {
-    'nvim-neo-tree/neo-tree.nvim',
-    config = function() require('config.neo-tree') end,
-    dependencies = {
-      'mrbjarksen/neo-tree-diagnostics.nvim',
-      'MunifTanjim/nui.nvim',
-    },
-    keys = {
-      {
-        '<M-e>',
-        '<cmd>Neotree toggle<cr>',
-        mode = 'n',
-      },
-    },
+    'kevinhwang91/nvim-ufo',
+    event = 'BufRead',
+    dependencies = { 'kevinhwang91/promise-async' },
+    config = function() require('ufo').setup({}) end,
   },
   {
     'akinsho/bufferline.nvim',
@@ -269,36 +257,20 @@ return {
     dependencies = 'moll/vim-bbye',
     config = function() require('config.bufferline') end,
     keys = {
-      { '<S-l>', '<cmd>BufferLineCycleNext<cr>', mode = 'n' },
-      { '<S-h>', '<cmd>BufferLineCyclePrev<cr>', mode = 'n' },
-      { '<S-x>', '<cmd>Bd<cr>', mode = 'n' },
+      { '<S-x>', '<cmd>Bd<cr>' },
+      { '<S-l>', '<cmd>BufferLineCycleNext<cr>' },
+      { '<S-h>', '<cmd>BufferLineCyclePrev<cr>' },
+      { '!', '<cmd>BufferLineGoToBuffer 1<cr>' },
+      { '@', '<cmd>BufferLineGoToBuffer 2<cr>' },
+      { '#', '<cmd>BufferLineGoToBuffer 3<cr>' },
     },
     init = function()
       local wk = reqcall('which-key')
-
       wk.add({
         { icon = '', group = 'Buffers', '<leader>b' },
         { icon = '󰐃', desc = 'Pin', '<leader>bp', '<cmd>BufferLineTogglePin<cr>', mode = 'n' },
         { icon = '󱉬', desc = 'Yank', '<leader>by', ':silent %y+<cr>', mode = 'n' },
       })
     end,
-  },
-  {
-    'olimorris/persisted.nvim',
-    lazy = false,
-    init = function()
-      ky.augroup('PersistedEvents', {
-        event = 'User',
-        pattern = 'PersistedSavePre',
-        command = function() vim.cmd('%argdelete') end,
-      })
-    end,
-    opts = {
-      silent = true,
-      autoload = true,
-      use_git_branch = true,
-      allowed_dirs = { '/home/kyza/Projects' },
-      ignored_dirs = { fn.stdpath('data') },
-    },
   },
 }

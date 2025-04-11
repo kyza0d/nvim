@@ -19,7 +19,7 @@ bufferline.setup({
     style_preset = bufferline.style_preset.default, -- or bufferline.style_preset.minimal,
     left_trunc_marker = '',
     right_trunc_marker = '',
-    tab_size = 0,
+    tab_size = 9,
     enforce_regular_tabs = false,
     groups = {
       options = {
