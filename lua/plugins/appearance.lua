@@ -10,30 +10,13 @@ return {
     end,
   },
   {
-    'MeanderingProgrammer/render-markdown.nvim',
-    dependencies = { 'nvim-treesitter/nvim-treesitter', 'echasnovski/mini.nvim' },
-    opts = {
-      callout = {
-        thought = {
-          raw = '[!BRAIN]',
-          rendered = ' Thoughts',
-          highlight = 'Macro',
-        },
-      },
-      checkbox = {
-        unchecked = { icon = ' ' },
-        checked = { icon = ' ' },
-        custom = {
-          pending = { raw = '[?]', rendered = ' ', highlight = 'Macro', scope_highlight = nil },
-          active = { raw = '[~]', rendered = '⚡', highlight = 'Keyword', scope_highlight = nil },
-          canceled = { raw = '[t]', rendered = '', highlight = 'Error', scope_highlight = nil },
-        },
-      },
-    },
+    'svermeulen/text-to-colorscheme',
+    lazy = false,
+    opts = require('config.text-to-colorscheme'),
   },
   {
     'lukas-reineke/indent-blankline.nvim',
-    enabled = not vim.g.neovide or vim.g.background == 'dark',
+    enabled = not vim.g.neovide,
     main = 'ibl',
     event = 'UIEnter',
     init = function()
@@ -65,10 +48,16 @@ return {
     },
   },
   {
-    '0xAdk/full_visual_line.nvim',
-    enabled = false,
-    keys = 'V',
-    opts = {},
+    'rcarriga/nvim-notify',
+    event = 'VeryLazy',
+    init = function() vim.notify = require('notify') end,
+    config = function()
+      local notify = require('notify')
+      notify.setup({
+        top_down = false,
+        render = 'minimal',
+      })
+    end,
   },
   {
     'kevinhwang91/nvim-bqf',
@@ -79,21 +68,6 @@ return {
       },
     },
     ft = 'qf',
-  },
-  {
-    'rcarriga/nvim-notify',
-    event = 'VeryLazy',
-    init = function() vim.notify = require('notify') end,
-    config = function()
-      local notify = require('notify')
-      notify.setup({
-        render = 'compact',
-        stages = 'fade_in_slide_out',
-        on_open = function(win)
-          if api.nvim_win_is_valid(win) then api.nvim_win_set_config(win, { border = 'none' }) end
-        end,
-      })
-    end,
   },
   {
     'Bekaboo/dropbar.nvim',
@@ -125,17 +99,64 @@ return {
   },
   {
     '3rd/image.nvim',
-    enabled = true,
-    config = function()
-      require('image').setup()
-      package.path = package.path .. ';' .. vim.fn.expand('$HOME') .. '/.luarocks/share/lua/5.1/?/init.lua;'
-      package.path = package.path .. ';' .. vim.fn.expand('$HOME') .. '/.luarocks/share/lua/5.1/?.lua;'
-    end,
+    enabled = not vim.g.neovide,
     opts = {
-      max_width = 46,
-      max_height = 18,
+      max_width = 65,
+      max_height = 24,
     },
   },
-  { 'EdenEast/nightfox.nvim' },
-  { 'onsails/lspkind.nvim' },
+  {
+    -- 'NStefan002/screenkey.nvim',
+    dir = '~/Clones/screenkey.nvim/',
+    enabled = false,
+    version = '*',
+
+    config = function()
+      require('screenkey').setup({
+        win_opts = {
+          row = vim.o.lines - vim.o.cmdheight - 1,
+          col = vim.o.columns - 1,
+          relative = 'editor',
+          anchor = 'SE',
+          width = 40,
+          height = 1,
+          border = 'none',
+          title = '',
+          title_pos = 'center',
+          style = 'minimal',
+          focusable = false,
+          noautocmd = true,
+        },
+        highlights = {
+          Float = { bg = 'NONE', fg = 'NONE' },
+          ScreenKey = { bg = 'NONE', fg = { from = 'Comment' } },
+        },
+      })
+    end,
+    lazy = false,
+  },
+  {
+    '0xAdk/full_visual_line.nvim',
+    enabled = true,
+    keys = 'V',
+    opts = {},
+  },
+  {
+    'tris203/precognition.nvim',
+    enabled = false,
+    opts = {
+      hints = {
+        Caret = { text = '^', prio = 2, highlight = 'Special' },
+        Dollar = { text = '$', prio = 1 },
+        MatchingPair = { text = '%', prio = 5 },
+        Zero = { text = '0', prio = 1 },
+        w = { text = 'w', prio = 10 },
+        b = { text = 'b', prio = 9 },
+        e = { text = 'e', prio = 8 },
+        W = { text = 'W', prio = 7 },
+        B = { text = 'B', prio = 6 },
+        E = { text = 'E', prio = 5 },
+      },
+    },
+  },
 }

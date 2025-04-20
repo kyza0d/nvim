@@ -1,23 +1,40 @@
 local hl = ky.hl
 
 return {
-  { 'echasnovski/mini.ai', event = 'BufReadPost', opts = {} },
   {
-    'tris203/precognition.nvim',
-    opts = {
-      hints = {
-        Caret = { text = '^', prio = 2, highlight = 'Special' },
-        Dollar = { text = '$', prio = 1 },
-        MatchingPair = { text = '%', prio = 5 },
-        Zero = { text = '0', prio = 1 },
-        w = { text = 'w', prio = 10 },
-        b = { text = 'b', prio = 9 },
-        e = { text = 'e', prio = 8 },
-        W = { text = 'W', prio = 7 },
-        B = { text = 'B', prio = 6 },
-        E = { text = 'E', prio = 5 },
-      },
+    'echasnovski/mini.ai',
+    keys = {
+      { 'a', mode = { 'x', 'o' } },
+      { 'i', mode = { 'x', 'o' } },
+      { 'g[', mode = { 'n', 'x', 'o' } },
+      { 'g]', mode = { 'n', 'x', 'o' } },
     },
+    opts = function()
+      local ai = require('mini.ai')
+      return {
+        mappings = {
+          around_last = 'aN',
+          inside_last = 'iN',
+        },
+        n_lines = 250,
+        custom_textobjects = {
+          l = { '^()%s*().*()%s*()\n$' },
+          e = function()
+            return {
+              from = { line = 1, col = 1 },
+              ---@diagnostic disable-next-line
+              to = { line = vim.fn.line('$'), col = math.max(vim.fn.getline('$'):len(), 1) },
+            }
+          end,
+          F = ai.gen_spec.treesitter({ a = '@function.outer', i = '@function.inner' }, {}),
+          c = ai.gen_spec.treesitter({ a = '@class.outer', i = '@class.inner' }, {}),
+          o = ai.gen_spec.treesitter({
+            a = { '@block.outer', '@conditional.outer', '@loop.outer' },
+            i = { '@block.inner', '@conditional.inner', '@loop.inner' },
+          }, {}),
+        },
+      }
+    end,
   },
   {
     'chrisgrieser/nvim-spider',
@@ -26,8 +43,6 @@ return {
       { 'w', "<cmd>lua require('spider').motion('w')<CR>", mode = { 'n', 'o', 'x' } },
       { 'e', "<cmd>lua require('spider').motion('e')<CR>", mode = { 'n', 'o', 'x' } },
       { 'b', "<cmd>lua require('spider').motion('b')<CR>", mode = { 'n', 'o', 'x' } },
-      { '<C-w>', "<Esc>l<cmd>lua require('spider').motion('w')<CR>i", mode = 'i' },
-      { '<C-b>', "<Esc><cmd>lua require('spider').motion('b')<CR>i", mode = 'i' },
     },
   },
   {

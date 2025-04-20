@@ -139,7 +139,6 @@ M.vivid_blend_hsl = function(fg, bg, alpha, saturation_boost)
 
   -- Extract RGB components
   local fg_r, fg_g, fg_b = tonumber(string.sub(fg, 2, 3), 16), tonumber(string.sub(fg, 4, 5), 16), tonumber(string.sub(fg, 6, 7), 16)
-
   local bg_r, bg_g, bg_b = tonumber(string.sub(bg, 2, 3), 16), tonumber(string.sub(bg, 4, 5), 16), tonumber(string.sub(bg, 6, 7), 16)
 
   -- Convert foreground to HSL (simplified conversion for this example)
@@ -190,3 +189,6 @@ M.vivid_blend_hsl = function(fg, bg, alpha, saturation_boost)
 end
 
 return M
+
+-- References:
+-- https://github.com/akinsho/dotfiles/blob/6f071329ab6e7846f44f105cdb1e67679fdd58c1/.config/nvim/lua/as/highlights.lua

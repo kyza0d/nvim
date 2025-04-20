@@ -109,23 +109,4 @@ return {
       require('conform').setup(opts)
     end,
   },
-  {
-    'andrewferrier/debugprint.nvim',
-    event = 'BufReadPre',
-    opts = {
-      keymaps = {
-        normal = {
-          variable_below = 'g?p',
-        },
-      },
-      commands = {
-        toggle_comment_debug_prints = 'ToggleCommentDebugPrints',
-      },
-    },
-    dependencies = {
-      'echasnovski/mini.nvim',
-      'nvim-treesitter/nvim-treesitter',
-    },
-    version = '*',
-  },
 }

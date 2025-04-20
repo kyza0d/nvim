@@ -1,6 +1,5 @@
-local opt = vim.opt_local
+local opt, hl = vim.opt_local, ky.hl
 
--- Set up markdown-specific options
 opt.wrap = true
 opt.conceallevel = 2
 opt.concealcursor = 'nc'
@@ -15,9 +14,13 @@ opt.expandtab = true
 opt.spell = true
 opt.spelllang = 'en_us'
 
-keymap('i', '<C-t>', '<c-o>:norm <C-t>$<cr>', { noremap = false, desc = 'Insert checkbox at beginning and move to end', buffer = true })
+keymap('i', '<C-t>', '<c-o>:norm <C-t>$<cr>', { noremap = false, buffer = true })
+keymap('i', '<C-c>', '<C-g>u<Esc>[s1z=`]a<C-g>u', { buffer = true })
+keymap('i', '<C-l>', '<cmd>ObsidianSearch<cr>', { noremap = false, buffer = true })
 
-local hl = ky.hl
+keymap('n', '<Tab>', '<C-t>', { noremap = false, buffer = true })
+keymap('n', '<C-c>', '1z=', { buffer = true })
+keymap('n', '<C-a>', 'zg', { buffer = true })
 
 hl.all({
   -- Headers
@@ -29,12 +32,12 @@ hl.all({
   { RenderMarkdownH6 = { fg = { from = 'String' }, bold = true } },
 
   -- Header backgrounds
-  { RenderMarkdownH1Bg = { bg = { from = 'Normal' } } },
-  { RenderMarkdownH2Bg = { bg = { from = 'Normal' } } },
-  { RenderMarkdownH3Bg = { bg = { from = 'Normal' } } },
-  { RenderMarkdownH4Bg = { bg = { from = 'Normal' } } },
-  { RenderMarkdownH5Bg = { bg = { from = 'Normal' } } },
-  { RenderMarkdownH6Bg = { bg = { from = 'Normal' } } },
+  { RenderMarkdownH1Bg = { bg = 'NONE', reverse = false } },
+  { RenderMarkdownH2Bg = { bg = 'NONE', reverse = false } },
+  { RenderMarkdownH3Bg = { bg = 'NONE', reverse = false } },
+  { RenderMarkdownH4Bg = { bg = 'NONE', reverse = false } },
+  { RenderMarkdownH5Bg = { bg = 'NONE', reverse = false } },
+  { RenderMarkdownH6Bg = { bg = 'NONE', reverse = false } },
 
   -- Code blocks
   { RenderMarkdownCode = { bg = { from = 'Normal' } } },

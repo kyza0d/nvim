@@ -3,9 +3,12 @@
 --- website https://kyza.dev
 
 require('globals')
-require('ui')
 require('options')
+require('ui')
 require('icons')
+
+package.path = fmt('%s/.luarocks/share/lua/5.1/?/init.lua;%s/.luarocks/share/lua/5.1/?.lua;', vim.fn.expand('$HOME'), vim.fn.expand('$HOME'))
+package.cpath = fmt('%s/.luarocks/lib/lua/5.1/?/so', vim.fn.expand('$HOME'))
 
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
@@ -53,7 +56,8 @@ opt.background = 'dark'
 -- lunaperche
 -- carbonfox
 -- dayfox
-ky.pcall('theme failed to load because', vim.cmd.colorscheme, 'carbonfox')
+-- text-to-colorscheme
+ky.pcall('theme failed to load because', vim.cmd.colorscheme, 'text-to-colorscheme')
 
 if vim.g.neovide then require('config.neovide') end
 

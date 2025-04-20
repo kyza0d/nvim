@@ -1,29 +1,28 @@
 -- stylua: ignore start
 
+-- Disable built-in keymappings
+keymap('n', 'Q', '<nop>')
+keymap('i', '<C-t>', '<nop>')
+keymap('i', '<C-w>', '<nop>')
+
 local lsp = vim.lsp
 keymap('n', '\\', ':set invhlsearch<cr>')
-
--- Opinionated Keymappings (my personal preferences)
 
 -- Search for visually selected text
 keymap('v', '//', [[y/\V<C-R>=escape(@",'/\')<CR><CR>N]])
 
-keymap('n', '<M-n>', '*') -- Next occrence
-keymap('n', '<M-p>', '#') -- Previous occrence
+keymap('n', '<C-n>', '*') -- Next occrence
+keymap('n', '<C-p>', '#') -- Previous occrence
 
 keymap({ 'n', 'v' }, '<M-l>', '$') -- End of line
 keymap({ 'n', 'v' }, '<M-h>', '^') -- Start of line
-keymap({ 'n', 'v' }, '<M-o>', function() -- Other bracket
-  vim.api.nvim_input('%')
-end)
+
+keymap({ 'n', 'v' }, '<M-o>', function() vim.api.nvim_input('%') end)
 
 keymap('n', '<M-k>', '4<C-y>') -- Scroll up
 keymap('n', '<M-j>', '4<C-e>') -- Scroll down
 
 keymap({ 'n', 'v' }, '<C-b>', '<C-v>') -- Block select
-
--- Change/delete go newxt
-keymap("x", "<C-n", "//cgn", { nowait = false, noremap = false })
 
 -----[ Register operations ]-----
 
@@ -42,16 +41,10 @@ keymap('v', '.', ':normal .<cr>') -- Dot repeat (across lines)
 keymap("v", "a", ":normal @a<cr>") -- apply macro (across lines )
 keymap('x', 'x', '<S-j>')
 
--- [ Folding ] ----------------------------
 keymap('n', 'zh', 'za') -- Collapse at cursor
 keymap('n', 'zl', 'zA') -- Expand at cursor
 keymap('n', 'zH', 'zM') -- Collapse all
 keymap('n', 'zL', 'zR') -- Expand all
-
--- [ Spelling ] ---------------------------
-keymap('n', 'zj', 'zg')                    -- Add to dictionary under cursor
-keymap('n', 'zJ', 'zgG')                   -- Add all to dictionary
-keymap('n', 'zc', '<C-o>:normal! z=1<cr>') -- Correct word under cursor
 
 -- LSP keymaps
 create_autocmd('LspAttach', {
@@ -71,6 +64,7 @@ ky.augroup('AddTerminalMappings', {
       vim.keymap.set('t', '<cmd>stopinsert<cr>', '<C-[>')
       vim.keymap.set('t', '<C-v>', [[<C-\><C-n>"+pi]])
       vim.keymap.set('t', '<esc>', [[<C-\><C-n>]])
+      vim.keymap.set('t', '<C-h>', [[<C-\><C-n><C-w>h]])
       vim.keymap.set('t', '<C-w>', [[<C-\><C-n><C-w>]])
       vim.keymap.set('t', '<C-j>', [[<C-\><C-n><C-w>ji]])
       vim.keymap.set('t', '<C-k>', [[<C-\><C-n><C-w>ki]])

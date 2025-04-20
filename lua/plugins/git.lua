@@ -19,10 +19,18 @@ return {
         add = { text = '🮈 ', highlight = 'GitSignsAdd' },
         change = { text = '🮈 ' },
         untracked = { text = '🮈 ' },
-        topdelete = { text = ' ' },
-        changedelete = { text = ' ' },
-        delete = { text = '' },
+        topdelete = { text = '' },
+        changedelete = { text = '' },
+        delete = { text = '' },
       },
+    },
+  },
+  {
+    'NeogitOrg/neogit',
+    dependencies = {
+      'nvim-lua/plenary.nvim',
+      'sindrets/diffview.nvim',
+      'ibhagwan/fzf-lua',
     },
   },
 }

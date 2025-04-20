@@ -1,5 +1,1 @@
-{
-  "/brain": { "prefix": "thought", "body": "[!BRAIN] $0" },
-  "think": { "prefix": "think", "body": "think step by step$0" }
-}
-
+{"Prohibited":{"prefix":"Prohibited","body":["Prohibited","$0"]},"acceptance":{"prefix":"acceptance","body":["Acceptance Criteria:","$0"]},"/brain":{"prefix":"thought","body":"[!BRAIN] $0"},"think":{"prefix":"think","body":"think step by step$0"}}

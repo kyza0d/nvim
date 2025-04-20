@@ -6,15 +6,15 @@ local group = create_augroup('kyza/general', {
   clear = true,
 })
 
+-- create_autocmd('VimEnter', {
+--   command = 'Screenkey',
+--   group = group,
+-- })
+
 -- Source configuration files on save
 create_autocmd('BufWritePost', {
   command = 'source %',
   pattern = '*/nvim/lua*',
-  group = group,
-})
-
-create_autocmd('BufWritePost', {
-  callback = function() vim.notify('File saved!', vim.log.levels.INFO) end,
   group = group,
 })
 
@@ -26,6 +26,7 @@ create_autocmd('BufWinEnter', {
 local smart_close_filetypes = ky.p_table({
   ['qf'] = true,
   ['log'] = true,
+  ['codecompanion'] = true,
   ['help'] = true,
   ['lspinfo'] = true,
   ['git.*'] = true,
@@ -47,7 +48,7 @@ ky.augroup('SmartClose', {
   command = 'cwindow',
 }, {
   event = { 'FileType' },
-  pattern = { 'qf', 'log', 'help', 'lspinfo', 'git.*', 'Neogit.*', 'Avante*' },
+  pattern = { 'codecompanion', 'qf', 'log', 'help', 'lspinfo', 'git.*', 'Neogit.*', 'Avante*' },
   command = function(args)
     local is_unmapped = fn.hasmapto('q', 'n') == 0
     local buf = vim.bo[args.buf]

@@ -172,7 +172,6 @@ modules.unique_files = {
   ['norg'] = {
     name = function(_, buf)
       local mode = modules.stl_mode()
-      local filetype = vim.bo[buf].filetype
       local file_name = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(buf), ':t')
       local line_count = vim.api.nvim_buf_line_count(buf)
       return string.format('%s %s Neorg (%d lines)', mode, file_name, line_count)
@@ -207,12 +206,6 @@ modules.unique_files = {
     icon = ' 󰙅  ',
     hl = colors.hls.neotree,
     icon_hl = colors.hls.neotree_icon,
-  },
-  ['help'] = {
-    name = function(_, _) return 'Help' end,
-    icon = '  ',
-    hl = colors.hls.statusline,
-    icon_hl = colors.hls.indicator,
   },
   ['toggleterm'] = {
     name = function(_, buf)

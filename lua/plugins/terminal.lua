@@ -6,12 +6,12 @@ return {
       open_mapping = '<M-\\>',
       persist_size = false,
       persist_mode = true,
-      direction = 'float',
+      direction = 'horizontal',
       size = function() return vim.o.lines * 0.5 end,
       float_opts = {
         border = 'none',
-        winblend = 10,
-        height = function() return vim.o.lines - 1 end,
+        winblend = 0,
+        height = function() return vim.o.lines end,
         width = function() return vim.o.columns end,
       },
       highlights = {

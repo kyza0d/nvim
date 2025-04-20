@@ -15,16 +15,12 @@ hl.plugin('Neovide', {
   },
 })
 
-keymap('n', '<M-CR>', '<cmd>split<cr>', { desc = 'Split window' })
-
-editor.zen_mode = true
-
 ky.ui.border.single = { ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ' }
 ky.ui.icons.misc.vertical_bar = ''
 ky.ui.icons.neo_tree.indent_marker = ' '
 ky.ui.icons.neo_tree.last_indent_marker = ' '
 
-vim.g.neovide_refresh_rate = 144
+vim.g.neovide_refresh_rate = 60
 vim.g.neovide_cursor_antialiasing = true
 vim.g.neovide_cursor_animate_command_line = false
 vim.g.neovide_cursor_trail_size = 0.6
@@ -45,11 +41,14 @@ vim.g.neovide_floating_corner_radius = 0.2
 -- Iosevka Comfy Wide
 -- https://github.com/protesilaos/iosevka-comfy
 -- vim.opt.guifont = 'Iosevka Comfy Wide,Symbols Nerd Font:h10.1:w1.0'
-vim.opt.guifont = 'Cartograph CF Light,Symbols Nerd Font:h11.4:w1.4'
+-- vim.opt.guifont = 'Cartograph CF Light,Symbols Nerd Font:h13.4:w1.4'
+vim.opt.guifont = 'Iosevka,Symbols Nerd Font:h15.4:w1.6'
 -- vim.opt.guifont = 'Jetbrains Mono,Symbols Nerd Font:h9.4:w1.7'
 
 opt.linespace = 11
 vim.opt.laststatus = 2
+vim.opt.statuscolumn = ' '
+vim.opt.signcolumn = 'no'
 
 vim.opt.fillchars = {
   diff = ' ',

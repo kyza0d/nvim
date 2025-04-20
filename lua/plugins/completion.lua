@@ -1,6 +1,7 @@
 local reqcall = ky.reqcall
 local icons = ky.ui.icons
 local completion_icons = icons.completion
+local helpers = ky.helpers
 
 return {
   {
@@ -24,17 +25,8 @@ return {
         kind_icons = completion_icons,
       },
       cmdline = {
-        keymap = { preset = 'cmdline' },
-        completion = {
-          list = {
-            selection = {
-              preselect = true,
-              auto_insert = true,
-            },
-          },
-          menu = {
-            auto_show = true,
-          },
+        keymap = {
+          preset = 'cmdline',
         },
       },
       sources = {
@@ -45,6 +37,9 @@ return {
           'snippets',
           'buffer',
           'nerdfont',
+        },
+        per_filetype = {
+          codecompanion = { 'codecompanion' },
         },
         providers = {
           path = {
@@ -76,6 +71,7 @@ return {
       },
       completion = {
         menu = {
+          auto_show = true,
           draw = {
             padding = { 0, 1 },
           },
@@ -106,23 +102,27 @@ return {
     config = function()
       require('nvim-autopairs').setup({
         close_triple_quotes = true,
-        disable_filetype = { 'neo-tree-popup' },
+        disable_filetype = {
+          'neo-tree-popup',
+        },
         check_ts = true,
-        fast_wrap = { map = '<c-e>' },
         ts_config = {
           lua = { 'string' },
           dart = { 'string' },
-          javascript = { 'template_string' },
+          javascript = {
+            'template_string',
+          },
         },
       })
     end,
   },
   {
     'zbirenbaum/copilot.lua',
+    event = 'InsertEnter',
     config = function()
       require('copilot').setup({
         suggestion = { enabled = false },
-        panel = { enabled = true },
+        panel = { enabled = false },
         filetypes = {
           markdown = true,
           help = true,
@@ -131,77 +131,33 @@ return {
     end,
   },
   {
-    'yetone/avante.nvim',
-    opts = {
-      provider = 'claude',
-      system_prompt = nil,
-      rag_service = {
-        enabled = false,
-        runner = 'docker',
-        provider = 'openai',
-        endpoint = 'https://api.openai.com/v1',
-      },
-      web_search_engine = {
-        provider = 'tavily',
-        providers = {
-          brave = {
-            api_key_name = 'BRAVE_API_KEY',
-            extra_request_body = {
-              count = '10',
-              result_filter = 'web',
-            },
-            format_response_body = function(body)
-              if body.web == nil then return '', nil end
-
-              local jsn = vim.iter(body.web.results):map(
-                function(result)
-                  return {
-                    title = result.title,
-                    url = result.url,
-                    snippet = result.description,
-                  }
-                end
-              )
-
-              return vim.json.encode(jsn), nil
-            end,
+    'olimorris/codecompanion.nvim',
+    init = function()
+      helpers.on_load('codecompanion.nvim', function()
+        local wk = reqcall('which-key')
+        wk.add({
+          {
+            icon = '󰱽',
+            '<leader>c',
+            group = 'Code Companion',
+            nowait = false,
+            remap = false,
           },
-        },
-      },
-      claude = {
-        endpoint = 'https://api.anthropic.com',
-        model = 'claude-3-7-sonnet-20250219',
-        timeout = 30000,
-        temperature = 0,
-        max_tokens = 20480,
-      },
-      gemini = {
-        endpoint = 'https://generativelanguage.googleapis.com/v1beta/models',
-        model = 'gemini-2.0-flash',
-        timeout = 30000,
-        temperature = 0,
-        max_tokens = 8192,
-      },
-      highlights = {
-        diff = {
-          current = nil,
-          incoming = nil,
-        },
-      },
-      windows = {
-        position = 'right',
-        input = {
-          prefix = '> ',
-          height = 8,
-        },
-      },
-      hints = {
-        enabled = false,
-      },
-      suggestion = {
-        debounce = 600,
-        throttle = 600,
-      },
+          {
+            icon = '󰱽',
+            '<leader>cc',
+            '<cmd>CodeCompanionChat Toggle<CR>',
+            desc = 'Code Companion Actions',
+            nowait = false,
+            remap = false,
+          },
+        })
+      end)
+    end,
+    opts = {},
+    dependencies = {
+      'nvim-lua/plenary.nvim',
+      'nvim-treesitter/nvim-treesitter',
     },
   },
   {
@@ -212,32 +168,31 @@ return {
       snippetDir = vim.fn.stdpath('config') .. '/snippets',
     },
     config = function()
-      local wk = reqcall('which-key')
-
-      wk.add({
-        { icon = '', '<leader>s', group = 'Snippets', nowait = false, remap = false },
-        { icon = '', '<leader>sa', '<cmd>lua require("scissors").addNewSnippet()<CR>', desc = 'Add new snippet', nowait = false, remap = false },
-        { icon = '󰲶', '<leader>se', '<cmd>lua require("scissors").editSnippet()<CR>', desc = 'Edit snippet', nowait = false, remap = false },
-      })
-
-      wk.add({
-        { icon = '', '<leader>s', group = 'Snippets', mode = 'x', nowait = false, remap = false },
+      reqcall('which-key').add({
         {
-          icon = '󰳼',
+          icon = '',
+          '<leader>s',
+          group = 'Snippets',
+          nowait = false,
+          remap = false,
+        },
+        {
+          icon = '',
           '<leader>sa',
           '<cmd>lua require("scissors").addNewSnippet()<CR>',
-          desc = 'Add new snippet from selection',
-          mode = 'x',
+          desc = 'Add new snippet',
+          nowait = false,
+          remap = false,
+        },
+        {
+          icon = '󰲶',
+          '<leader>se',
+          '<cmd>lua require("scissors").editSnippet()<CR>',
+          desc = 'Edit snippet',
           nowait = false,
           remap = false,
         },
       })
     end,
-    keys = {
-      '<Leader>sa',
-      '<Leader>se',
-    },
   },
-  { 'windwp/nvim-ts-autotag', event = { 'InsertEnter' } },
-  { 'saecki/live-rename.nvim' },
 }

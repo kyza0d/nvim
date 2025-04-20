@@ -1,17 +1,5 @@
 return {
   {
-    'toppair/peek.nvim',
-    event = 'VeryLazy',
-    build = 'deno task --quiet build:fast',
-    opts = {
-      app = 'zen-browser',
-    },
-    config = function()
-      ky.command('PeekOpen', require('peek').open, {})
-      ky.command('PeekClose', require('peek').close, {})
-    end,
-  },
-  {
     'olimorris/persisted.nvim',
     lazy = false,
     init = function()
@@ -28,5 +16,10 @@ return {
       allowed_dirs = { '/home/kyza/Projects' },
       ignored_dirs = { fn.stdpath('data') },
     },
+  },
+  {
+    'NStefan002/speedtyper.nvim',
+    branch = 'v2',
+    lazy = false,
   },
 }

@@ -15,11 +15,11 @@ bufferline.setup({
     close_command = 'Bdelete! %d',
     show_buffer_close_icons = false,
     show_close_icon = true,
-    show_buffer_icons = false,
+    show_buffer_icons = true,
     style_preset = bufferline.style_preset.default, -- or bufferline.style_preset.minimal,
     left_trunc_marker = '',
     right_trunc_marker = '',
-    tab_size = 9,
+    tab_size = 0,
     enforce_regular_tabs = false,
     groups = {
       options = {
@@ -44,11 +44,9 @@ bufferline.setup({
 
     right_mouse_command = 'Bdelete! %d',
     left_mouse_command = 'buffer %d',
-    indicator = {
-      style = not vim.g.neovide and 'underline' or 'none',
-    },
+    indicator = { style = 'icon' },
+    separator_style = { '', '' },
     modified_icon = '',
-    separator_style = { ' ', ' ' },
     offsets = {
       {
         filetype = 'trouble',
@@ -73,7 +71,7 @@ bufferline.setup({
 
     local tab_bg = highlight.tint(normal_bg, 0.45)
     local tab_bg_inactive = highlight.tint(normal_bg, -0.1)
-    local fill = highlight.tint(normal_bg, -0.1)
+    local fill = highlight.tint(normal_bg, -0.3)
 
     local tab_fg = highlight.tint(normal_fg, 0.1)
     local tab_fg_inactive = highlight.tint(normal_fg, -0.35)
@@ -136,7 +134,6 @@ bufferline.setup({
         sp = P.blue,
       },
 
-      -- EMPTY FILL
       fill = { bg = fill },
     }
   end,

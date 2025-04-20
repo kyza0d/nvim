@@ -3,19 +3,20 @@ local reqcall = ky.reqcall
 
 return {
   {
-    'epwalsh/obsidian.nvim',
+    'obsidian-nvim/obsidian.nvim',
     init = function()
-      local wk = reqcall('which-key')
-
-      wk.add({
+      reqcall('which-key').add({
         { icon = ' ', group = 'Notes', '<cr>n' },
+        { icon = ' ', desc = 'Open Focus', '<cr>nf', '<cmd>e ~/Notes/Focus.md<cr>' },
         { icon = ' ', desc = 'Open Daily', '<cr>nd', '<cmd>ObsidianToday<cr>' },
-        { icon = '󱞳 ', desc = 'Open Daily (Yesterday)', '<cr>ny', '<cmd>ObsidianYesterday<cr>' },
-        { icon = '󱞫 ', desc = 'Open Daily (Tomorrow)', '<cr>nt', '<cmd>ObsidianTomorrow<cr>' },
+        { icon = '󰺯 ', desc = 'Search', '<cr>ns', '<Cmd>ObsidianSearch<CR>' },
+        { icon = '󱞳 ', desc = 'Open Daily (Yesterday)', '<cr>n,', '<cmd>ObsidianYesterday<cr>' },
+        { icon = '󱞫 ', desc = 'Open Daily (Tomorrow)', '<cr>n.', '<cmd>ObsidianTomorrow<cr>' },
         { icon = ' ', group = 'Log', '<cr>l' },
-        { icon = ' ', desc = 'Idea', '<cr>li', '<cmd>e ~/Notes/2025/Journal/Logs/Ideas.md<cr>' },
-        { icon = ' ', desc = 'Dream', '<cr>ld', '<cmd>e ~/Notes/2025/Journal/Logs/Dreams.md<cr>' },
-        { icon = '󰟶 ', desc = 'Thought', '<cr>lt', '<cmd>e ~/Notes/2025/Journal/Logs/Thoughts.md<cr>' },
+        { icon = ' ', desc = 'Idea', '<cr>li', '<cmd>e ~/Notes/2025/Logs/Ideas.md<cr>' },
+        { icon = ' ', desc = 'Dream', '<cr>ld', '<cmd>e ~/Notes/2025/Logs/Dreams.md<cr>' },
+        { icon = '󰟶 ', desc = 'Thought', '<cr>lt', '<cmd>e ~/Notes/2025/Logs/Thoughts.md<cr>' },
+        { icon = '󰯃 ', desc = 'Quote', '<cr>lq', '<cmd>e ~/Notes/2025/Logs/Quotes.md<cr>' },
       })
     end,
     tag = '*',
@@ -43,10 +44,19 @@ return {
           template = nil,
         },
 
+        picker = {
+          name = 'fzf-lua',
+        },
+
         mappings = {
           ['<C-t>'] = {
             action = function() return require('obsidian').util.toggle_checkbox() end,
             opts = { buffer = true },
+          },
+
+          ['<S-f>'] = {
+            action = function() return require('obsidian').util.gf_passthrough() end,
+            opts = { noremap = false, expr = true, buffer = true },
           },
 
           ['<c-s>'] = {
@@ -63,5 +73,40 @@ return {
         },
       })
     end,
+  },
+  {
+    'MeanderingProgrammer/render-markdown.nvim',
+    dependencies = {
+      'nvim-treesitter/nvim-treesitter',
+      'echasnovski/mini.nvim',
+    },
+    opts = {
+      callout = {
+        thought = {
+          raw = '[!BRAIN]',
+          rendered = ' Thoughts',
+          highlight = 'Macro',
+        },
+      },
+      heading = {
+        width = 'block',
+        position = 'inline',
+        border_virtual = true,
+        border_prefix = true,
+        icons = { '', '', '', '', '', '' },
+      },
+      bullet = {
+        icons = { '•', '•', '•', '•' },
+      },
+      checkbox = {
+        unchecked = { icon = '󰄱 ' },
+        checked = { icon = '󰡖 ' },
+        custom = {
+          pending = { raw = '[?]', rendered = ' ', highlight = 'Macro', scope_highlight = nil },
+          active = { raw = '[~]', rendered = '⚡', highlight = 'Keyword', scope_highlight = nil },
+          canceled = { raw = '[t]', rendered = '', highlight = 'Error', scope_highlight = nil },
+        },
+      },
+    },
   },
 }

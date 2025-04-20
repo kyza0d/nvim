@@ -1,3 +1,5 @@
+local settings = require('utils.settings')
+
 vim.opt.laststatus = 2
 vim.opt.cmdheight = 0
 vim.opt.showtabline = 3
@@ -44,7 +46,7 @@ vim.opt.timeout = true
 vim.opt.timeoutlen = 500
 vim.opt.updatetime = 300
 
-vim.opt.number = true
+vim.opt.number = false
 vim.opt.numberwidth = 3
 vim.opt.hidden = true
 vim.opt.lazyredraw = false
@@ -87,3 +89,30 @@ vim.opt.diffopt = vim.opt.diffopt
     'indent-heuristic',
     'linematch:60',
   }
+
+settings.setup({
+  [{ 'kitty' }] = {
+    options = {
+      commentstring = '# %s',
+      number = false,
+    },
+  },
+
+  [{ 'markdown' }] = {
+    options = {
+      number = false,
+      statuscolumn = ' ',
+      signcolumn = 'no',
+    },
+  },
+
+  [{ 'qf' }] = {
+    options = {
+      wrap = false,
+      number = false,
+      signcolumn = 'no',
+      buflisted = false,
+      winfixheight = true,
+    },
+  },
+})
