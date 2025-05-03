@@ -1,15 +1,6 @@
---------------------------------------------
--- Autocommands
---------------------------------------------
-
 local group = create_augroup('kyza/general', {
   clear = true,
 })
-
--- create_autocmd('VimEnter', {
---   command = 'Screenkey',
---   group = group,
--- })
 
 -- Source configuration files on save
 create_autocmd('BufWritePost', {
@@ -31,7 +22,6 @@ local smart_close_filetypes = ky.p_table({
   ['lspinfo'] = true,
   ['git.*'] = true,
   ['Neogit.*'] = true,
-  ['copilot.*'] = true,
 })
 
 local smart_close_buftypes = ky.p_table({
@@ -42,7 +32,7 @@ local function smart_close()
   if fn.winnr('$') ~= 1 then api.nvim_win_close(0, true) end
 end
 
-ky.augroup('SmartClose', {
+augroup('SmartClose', {
   event = { 'QuickFixCmdPost' },
   pattern = { '*grep*' },
   command = 'cwindow',

@@ -1,12 +1,12 @@
 -- stylua: ignore start
 
 -- Disable built-in keymappings
-keymap('n', 'Q', '<nop>')
-keymap('i', '<C-t>', '<nop>')
-keymap('i', '<C-w>', '<nop>')
+keymap('n', '<S-q>', '<nop>')
 
 local lsp = vim.lsp
 keymap('n', '\\', ':set invhlsearch<cr>')
+
+keymap('v', '<M-n>', [[:<C-u>normal! *``gvy<CR>cgn]], { noremap = true, silent = true })
 
 -- Search for visually selected text
 keymap('v', '//', [[y/\V<C-R>=escape(@",'/\')<CR><CR>N]])
@@ -24,40 +24,36 @@ keymap('n', '<M-j>', '4<C-e>') -- Scroll down
 
 keymap({ 'n', 'v' }, '<C-b>', '<C-v>') -- Block select
 
------[ Register operations ]-----
-
--- Clipboard
-keymap({ 'n', 'v' }, '<C-v>', '"+p') -- Paste
-keymap('i', '<C-v>', '<C-r>+')       -- Paste (insert mode)
-keymap('v', '<C-c>', '"+y')          -- Yank
+-- Editing
+keymap('n', '<C-z>', '1z=', { nowait = true })
 
 -- Buffer operations
-keymap('n', '<S-s>', '<cmd>silent w<cr>') -- Save
-keymap('n', '<S-q>', '<cmd>bd<cr>')       -- Quit
-keymap('n', '<C-CR>', '<C-^>')            -- Swap
+keymap('n', '<S-x>', '<cmd>noautocmd silent! bd<cr>') -- Close buffer
+keymap('n', '<C-CR>', '<C-^>') -- Swap current and alternate file
 
--- Misc text operations
-keymap('v', '.', ':normal .<cr>') -- Dot repeat (across lines)
-keymap("v", "a", ":normal @a<cr>") -- apply macro (across lines )
-keymap('x', 'x', '<S-j>')
+-- Macros/repeat
+keymap('n', '<S-q>', 'qq')
+keymap('v', '.', ':normal .<cr>')
+keymap("v", "q", ":normal @q<cr>", { nowait = true })
+keymap({ "n", "v" }, "<C-.>", ":normal @q<cr>", { nowait = true })
 
+-- Folding
 keymap('n', 'zh', 'za') -- Collapse at cursor
 keymap('n', 'zl', 'zA') -- Expand at cursor
 keymap('n', 'zH', 'zM') -- Collapse all
 keymap('n', 'zL', 'zR') -- Expand all
 
--- LSP keymaps
+-- LSP
 create_autocmd('LspAttach', {
   callback = function()
     keymap('n', 'gp', 'g?p', { noremap = false })
     keymap('n', 'gD', lsp.buf.type_definition)
     keymap('n', 'gd', lsp.buf.definition)
     keymap('n', 'gr', lsp.buf.references)
-    keymap('n', '<C-space>', lsp.buf.hover)
   end,
 })
 
-ky.augroup('AddTerminalMappings', {
+augroup('AddTerminalMappings', {
   event = { 'TermOpen' },
   command = function()
     if vim.bo.filetype == '' or vim.bo.filetype == 'toggleterm' then

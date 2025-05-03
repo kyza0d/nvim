@@ -1,7 +1,38 @@
----@diagnostic disable: missing-fields
 return {
   {
     'nvim-treesitter/nvim-treesitter',
+    keys = {
+      {
+        '<C-j>',
+        function() require('nvim-treesitter.incremental_selection').init_selection() end,
+        desc = 'Initialize incremental selection',
+        mode = 'v',
+      },
+      {
+        '<C-j>',
+        function() require('nvim-treesitter.incremental_selection').node_incremental() end,
+        desc = 'Increment selection',
+        mode = 'v',
+      },
+      {
+        '<C-k>',
+        function() require('nvim-treesitter.incremental_selection').node_decremental() end,
+        desc = 'Decrement selection',
+        mode = 'v',
+      },
+      {
+        '<C-S-k>',
+        ':TSTextobjectSwapPrevious @parameter.inner<cr>',
+        desc = 'Swap previous parameter (Treesitter)',
+        mode = 'n',
+      },
+      {
+        '<C-S-j>',
+        ':TSTextobjectSwapNext @parameter.inner<cr>',
+        desc = 'Swap next parameter (Treesitter)',
+        mode = 'n',
+      },
+    },
     build = ':TSUpdate',
     dependencies = { { 'nvim-treesitter/nvim-treesitter-textobjects' } },
     config = function(_, opts) require('nvim-treesitter.configs').setup(opts) end,
@@ -42,52 +73,28 @@ return {
       indent = { enable = true },
       playground = { enable = true },
     },
-    keys = {
-      {
-        '<C-j>',
-        function() require('nvim-treesitter.incremental_selection').init_selection() end,
-        desc = 'Initialize incremental selection',
-        mode = 'v',
-      },
-      {
-        '<C-j>',
-        function() require('nvim-treesitter.incremental_selection').node_incremental() end,
-        desc = 'Increment selection',
-        mode = 'v',
-      },
-      {
-        '<C-k>',
-        function() require('nvim-treesitter.incremental_selection').node_decremental() end,
-        desc = 'Decrement selection',
-        mode = 'v',
-      },
-      {
-        '<C-S-[>',
-        ':TSTextobjectSwapPrevious @parameter.inner<cr>',
-        desc = 'Swap previous parameter (Treesitter)',
-        mode = 'n',
-      },
-      {
-        '<C-S-]>',
-        ':TSTextobjectSwapNext @parameter.inner<cr>',
-        desc = 'Swap next parameter (Treesitter)',
-        mode = 'n',
-      },
-    },
   },
-  { 'JoosepAlviste/nvim-ts-context-commentstring', opts = {}, event = 'BufReadPre' },
+  {
+    'numToStr/Comment.nvim',
+    dependencies = { 'JoosepAlviste/nvim-ts-context-commentstring' },
+    init = function()
+      local comment = require('Comment.api')
+      local key = vim.api.nvim_replace_termcodes('<ESC>', true, false, true)
+      keymap('n', '<C-/>', function() comment.toggle.linewise.current() end)
+      keymap('x', '<C-/>', function()
+        vim.api.nvim_feedkeys(key, 'nx', false)
+        comment.locked('toggle.linewise')(vim.fn.visualmode())
+      end)
+    end,
+    opts = function(_, opts)
+      local ok, tcc = pcall(require, 'ts_context_commentstring.integrations.comment_nvim')
+      if ok then opts.pre_hook = tcc.create_pre_hook() end
+    end,
+  },
   {
     'windwp/nvim-ts-autotag',
     ft = { 'typescriptreact', 'javascript', 'javascriptreact', 'html', 'vue', 'svelte' },
     dependencies = { 'nvim-treesitter/nvim-treesitter' },
-    opts = {},
-  },
-  {
-    'numToStr/Comment.nvim',
-    keys = {
-      { 'gcc', desc = 'Toggle comment line' },
-      { 'gc', mode = { 'x', 'n', 'o' }, desc = 'Toggle comment selection' },
-    },
     opts = {},
   },
 }

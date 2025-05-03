@@ -3,7 +3,6 @@ local opt, hl = vim.opt_local, ky.hl
 opt.wrap = true
 opt.conceallevel = 2
 opt.concealcursor = 'nc'
-opt.textwidth = 80
 opt.formatoptions:append('t')
 opt.formatoptions:append('c')
 opt.formatoptions:append('q')
@@ -11,15 +10,12 @@ opt.linebreak = true
 opt.shiftwidth = 2
 opt.tabstop = 2
 opt.expandtab = true
-opt.spell = true
 opt.spelllang = 'en_us'
 
 keymap('i', '<C-t>', '<c-o>:norm <C-t>$<cr>', { noremap = false, buffer = true })
 keymap('i', '<C-c>', '<C-g>u<Esc>[s1z=`]a<C-g>u', { buffer = true })
 keymap('i', '<C-l>', '<cmd>ObsidianSearch<cr>', { noremap = false, buffer = true })
 
-keymap('n', '<Tab>', '<C-t>', { noremap = false, buffer = true })
-keymap('n', '<C-c>', '1z=', { buffer = true })
 keymap('n', '<C-a>', 'zg', { buffer = true })
 
 hl.all({

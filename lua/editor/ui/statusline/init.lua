@@ -3,14 +3,10 @@ local M = {}
 local str = require('utils.strings')
 local section, display = str.section, str.display
 
-local ui = ky.ui
-local icons = ui.icons
-
 local api, fmt, strwidth = vim.api, string.format, vim.api.nvim_strwidth
 local falsy = ky.falsy
 
-local colors = require('statusline.palette')
-local modules = require('statusline.modules')
+local modules = require('editor.ui.statusline.modules')
 
 function M.render()
   local curwin = api.nvim_get_current_win()
@@ -30,22 +26,22 @@ function M.render()
     modified = vim.bo[curbuf].modified,
     fileformat = vim.bo[curbuf].fileformat,
     shiftwidth = vim.bo[curbuf].shiftwidth,
-    winhl = vim.wo[curwin].winhl:match(colors.hls.statusline) ~= nil,
+    winhl = vim.wo[curwin].winhl:match(palette.hls.statusline) ~= nil,
   }
 
-  local hls = is_active and colors.hls
+  local hls = is_active and palette.hls
     or {
-      title = colors.hls.title,
-      dimmed = colors.hls.dimmed,
-      statusline = colors.hls.statusline_nc,
-      statusline_icon = colors.hls.statusline_icon,
-      git_rm = colors.hls.git_rm,
-      git_add = colors.hls.git_add,
-      lsp_info = colors.hls.lsp_info,
-      lsp_warn = colors.hls.lsp_warn,
-      lsp_err = colors.hls.lsp_err,
-      modified = colors.hls.modified,
-      recording = colors.hls.recording,
+      title = palette.hls.title,
+      dimmed = palette.hls.dimmed,
+      statusline = palette.hls.statusline_nc,
+      statusline_icon = palette.hls.statusline_icon,
+      git_rm = palette.hls.git_rm,
+      git_add = palette.hls.git_add,
+      lsp_info = palette.hls.lsp_info,
+      lsp_warn = palette.hls.lsp_warn,
+      lsp_err = palette.hls.lsp_err,
+      modified = palette.hls.modified,
+      recording = palette.hls.recording,
     }
 
   local file_modified = ctx.modified and (icons.misc.circle or '')
@@ -70,7 +66,7 @@ function M.render()
     }
 
     -- Only add the separator if it's not the last client
-    if not is_last_client then table.insert(client_info, { ',', colors.hls.dimmed }) end
+    if not is_last_client then table.insert(client_info, { ',', palette.hls.dimmed }) end
 
     -- Add this client's info, along with its priority, to lsp_clients
     table.insert(lsp_clients, {
@@ -124,6 +120,7 @@ function M.render()
   else
     l1 = section:new(
       { { { not vim.neovide and icons.misc.vertical_bar or '', mode_hl } }, priority = 0 },
+      { { { modules.win_move() } }, priority = 0 },
       {
         {
           { fmt('%+' .. strwidth(tostring(line_count)) .. 's', lnum), hls.title },
@@ -140,6 +137,12 @@ function M.render()
         },
         cond = vim.v.hlsearch > 0,
         priority = 3,
+      },
+      {
+        { { helpers.get_tmux_session(), hls.title }, { ' ', hls.dimmed } },
+        cond = vim.env.TMUX ~= nil,
+        before = ' ',
+        priority = 8,
       },
       {
         { { fmt('recording: @%s', vim.fn.reg_recording()), hls.recording } },
@@ -185,14 +188,14 @@ function M.render()
     }, {
       {
         { space },
-        { icons.git.remove, hls.git_rm },
+        { join(icons.git.deleted, ' '), hls.git_rm },
         { status.removed, hls.title },
       },
       priority = 1,
       cond = not falsy(status.removed),
     }, {
       {
-        { icons.git.add, hls.git_add },
+        { join(icons.git.add, ' '), hls.git_add },
         { status.added, hls.title },
         { space },
       },
@@ -206,13 +209,13 @@ function M.render()
 end
 
 function M.init()
-  colors.setup()
+  palette.setup()
 
   -- :h qf.vim, disable qf statusline
   vim.g.qf_disable_statusline = 1
 
   -- set the statusline
-  vim.o.statusline = "%{%v:lua.require'statusline'.render()%}"
+  vim.o.statusline = "%{%v:lua.require'editor.ui.statusline'.render()%}"
 
   modules.setup()
 end

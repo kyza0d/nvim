@@ -62,10 +62,9 @@ local function sum_lengths(list)
 end
 
 local function is_lowest(item, lowest)
-  if not lowest then return true end
-  if not lowest.length then return true end
-
   if not item.priority or not item.length then return false end
+  if not lowest then return true end
+  if not lowest.priority or not lowest.length then return true end
 
   if item.priority == lowest.priority then return item.length > lowest.length end
   return item.priority > lowest.priority
@@ -74,12 +73,19 @@ end
 local function prioritize(statusline, space, length)
   length = length or sum_lengths(statusline)
   if length <= space then return statusline end
+
   local lowest, index_to_remove
   for idx, c in ipairs(statusline) do
     if is_lowest(c, lowest) then
       lowest, index_to_remove = c, idx
     end
   end
+
+  -- If no component can be removed, return an empty statusline or the current one
+  if not lowest or not index_to_remove then
+    return {} -- or return statusline to keep remaining components
+  end
+
   table.remove(statusline, index_to_remove)
   return prioritize(statusline, space, length - lowest.length)
 end

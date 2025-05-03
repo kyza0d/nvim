@@ -1,7 +1,5 @@
 if not ky then return end
 
-local hl, vivid_blend_hsl, P = ky.hl, ky.hl.vivid_blend_hsl, ky.ui.palette
-
 local function set_sidebar_highlight()
   hl.all({
     { PanelDarkBackground = { bg = { from = 'Normal', alter = -0.12 } } },
@@ -14,7 +12,13 @@ local function set_sidebar_highlight()
   })
 end
 
-local sidebar_fts = { 'Avante', 'AvanteInput', 'AvanteSelectedFiles', 'Trouble' }
+local sidebar_fts = {
+  'Avante',
+  'AvanteInput',
+  'AvanteSelectedFiles',
+  'Trouble',
+  'codecompanion',
+}
 
 local function on_sidebar_enter()
   vim.opt_local.winhighlight:append({
@@ -32,16 +36,16 @@ local function general_overrides()
   local normal_bg = hl.get('Normal', 'bg')
   local bg_color = hl.tint(normal_bg, -0.25)
 
-  local accent = P.accent
+  local accent = palette.accent
   local accent_50 = hl.blend({ accent, hl.get('Normal', 'bg') }, -0.2)
   local accent_80 = hl.blend({ accent, hl.get('Normal', 'bg') }, -0.1)
 
   hl.all({
-    { Cursor = { bg = P.accent, reverse = false } },
-    { iCursor = { bg = P.accent, reverse = false } },
-    { lCursor = { bg = P.accent, reverse = false } },
-    { vCursor = { bg = P.accent, reverse = false } },
-    { tCursor = { bg = P.accent, reverse = false } },
+    { Cursor = { bg = palette.accent, reverse = false } },
+    { iCursor = { bg = palette.accent, reverse = false } },
+    { lCursor = { bg = palette.accent, reverse = false } },
+    { vCursor = { bg = palette.accent, reverse = false } },
+    { tCursor = { bg = palette.accent, reverse = false } },
     { Directory = { fg = { from = 'Normal', alter = -0.45 } } },
     { Search = { clear = true, bg = accent_50 } },
     { CurSearch = { clear = true, bg = accent_80 } },
@@ -61,16 +65,17 @@ local function general_overrides()
     { CursorLineNr = { bg = { from = 'Normal', alter = 0.30 }, fg = { from = 'Identifier' } } },
     { CursorLineFold = { clear = true } },
     { CursorLineSign = { clear = true } },
-    { WinBar = { bg = { from = 'Normal' }, fg = { from = 'LineNr' } } },
+    { WinBar = { bg = { from = 'Normal' }, fg = { from = 'LineNr' }, bold = false } },
     { WinBarNC = { inherit = 'WinBar' } },
     { NormalFloat = { bg = { from = 'Normal', alter = -0.12 } } },
+    { NotifyNormal = { bg = 'none' } },
     { FloatBorder = { bg = { from = 'Normal', alter = -0.12 }, fg = { from = 'Normal', attr = 'bg', alter = 1.20 } } },
     { FloatTitle = { bold = true, fg = { from = 'WinBar' }, bg = { from = 'FloatBorder' } } },
     { Folded = { bg = { from = 'Normal', alter = 0.30 } } },
     { QuickFixLine = { link = 'Visual' } },
-    { diffAdded = { fg = 'none', bg = hl.blend({ bg_color, P.green }, -0.25), reverse = false } },
-    { diffChanged = { fg = 'none', bg = hl.blend({ bg_color, P.light_yellow }, -0.25), reverse = false } },
-    { diffRemoved = { fg = 'none', bg = hl.blend({ bg_color, P.pale_red }, -0.25), reverse = false } },
+    { diffAdded = { fg = 'none', bg = hl.blend({ bg_color, palette.green }, -0.25), reverse = false } },
+    { diffChanged = { fg = 'none', bg = hl.blend({ bg_color, palette.light_yellow }, -0.25), reverse = false } },
+    { diffRemoved = { fg = 'none', bg = hl.blend({ bg_color, palette.pale_red }, -0.25), reverse = false } },
     { diffBDiffer = { link = 'WarningMsg' } },
     { diffCommon = { link = 'WarningMsg' } },
     { diffDiffer = { link = 'WarningMsg' } },
@@ -80,17 +85,18 @@ local function general_overrides()
     { diffIsA = { link = 'WarningMsg' } },
     { diffNoEOL = { link = 'WarningMsg' } },
     { diffOnly = { link = 'WarningMsg' } },
+    { DiffAdd = { inherit = 'diffAdded' } },
     { DevIconDefault = { fg = { from = 'LineNr', alter = 0.24 } } },
-    { DiagnosticError = { fg = P.pale_red } },
-    { DiagnosticWarn = { fg = P.light_yellow } },
-    { DiagnosticInfo = { fg = P.pale_blue } },
-    { DiagnosticSignInfo = { fg = P.pale_red } },
-    { agnosticSignWarn = { fg = P.light_yellow } },
-    { DiagnosticVirtualTextWarn = { fg = P.light_yellow } },
-    { DiagnosticUnderlineWarn = { sp = P.light_yellow } },
-    { DiagnosticUnderlineInfo = { fg = P.light_yellow } },
-    { DiagnosticHint = { fg = P.pale_red } },
-    { AerialFunctionIcon = { bg = { from = 'Normal', alter = -0.30 }, fg = P.light_gray } },
+    { DiagnosticError = { fg = palette.pale_red } },
+    { DiagnosticWarn = { fg = palette.light_yellow } },
+    { DiagnosticInfo = { fg = palette.pale_blue } },
+    { DiagnosticSignInfo = { fg = palette.pale_red } },
+    { agnosticSignWarn = { fg = palette.light_yellow } },
+    { DiagnosticVirtualTextWarn = { fg = palette.light_yellow } },
+    { DiagnosticUnderlineWarn = { sp = palette.light_yellow } },
+    { DiagnosticUnderlineInfo = { fg = palette.light_yellow } },
+    { DiagnosticHint = { fg = palette.pale_red } },
+    { AerialFunctionIcon = { bg = { from = 'Normal', alter = -0.30 }, fg = palette.light_gray } },
     { AerialNormal = { bg = { from = 'Normal', alter = -0.30 } } },
     { Comment = { italic = true, fg = { from = 'LineNr', alter = -0.15 } } },
     { ['@comment'] = { link = 'Comment' } },
@@ -107,229 +113,182 @@ local function general_overrides()
     { MiniIconsPurple = { fg = { from = 'Constant' } } },
     { MiniIconsRed = { fg = { from = 'DiagnosticError' } } },
     { MiniIconsYellow = { fg = { from = 'DiagnosticWarn' } } },
+    { TreeSitterContext = { fg = '#555555', bg = 'none', sp = '#cccccc', underline = true } },
 
     {
       BlinkCmpKind = {
-        fg = P.light_gray,
+        fg = palette.light_gray,
         -- bg = vivid_blend_hsl(P.light_gray, P.normal.bg, 0.25, 1.7),
       },
     },
 
     {
       BlinkCmpKindText = {
-        fg = P.pale_blue,
-        -- bg = vivid_blend_hsl(P.pale_blue, P.normal.bg, 0.25, 1.7),
+        fg = palette.pale_blue,
+        -- bg = vivid_blend_hsl(P.pale_blue, palette.normal.bg, 0.25, 1.7),
       },
     },
 
     {
       BlinkCmpKindMethod = {
-        fg = P.green,
-        -- bg = vivid_blend_hsl(P.green, P.normal.bg, 0.25, 1.7),
+        fg = palette.green,
+        -- bg = vivid_blend_hsl(palette.green, palette.normal.bg, 0.25, 1.7),
       },
     },
 
     {
       BlinkCmpKindFunction = {
-        fg = P.magenta,
-        -- bg = vivid_blend_hsl(P.magenta, P.normal.bg, 0.25, 1.7),
+        fg = palette.magenta,
+        -- bg = vivid_blend_hsl(palette.magenta, palette.normal.bg, 0.25, 1.7),
       },
     },
 
     {
       BlinkCmpKindConstructor = {
-        fg = P.light_yellow,
-        -- bg = vivid_blend_hsl(P.light_yellow, P.normal.bg, 0.25, 1.7),
+        fg = palette.light_yellow,
+        -- bg = vivid_blend_hsl(palette.light_yellow, palette.normal.bg, 0.25, 1.7),
       },
     },
 
     {
       BlinkCmpKindField = {
-        fg = P.pale_red,
-        -- bg = vivid_blend_hsl(P.pale_red, P.normal.bg, 0.25, 1.7),
+        fg = palette.pale_red,
+        -- bg = vivid_blend_hsl(palette.pale_red, palette.normal.bg, 0.25, 1.7),
       },
     },
 
     {
       BlinkCmpKindVariable = {
-        fg = P.pale_red,
-        -- bg = vivid_blend_hsl(P.pale_red, P.normal.bg, 0.25, 1.7),
+        fg = palette.pale_red,
+        -- bg = vivid_blend_hsl(palette.pale_red, palette.normal.bg, 0.25, 1.7),
       },
     },
 
     {
       BlinkCmpKindClass = {
-        fg = P.accent,
-        -- bg = vivid_blend_hsl(P.accent, P.normal.bg, 0.25, 1.7),
+        fg = palette.accent,
+        -- bg = vivid_blend_hsl(palette.accent, palette.normal.bg, 0.25, 1.7),
       },
     },
 
     {
       BlinkCmpKindInterface = {
-        fg = P.accent,
-        -- bg = vivid_blend_hsl(P.accent, P.normal.bg, 0.25, 1.7),
+        fg = palette.accent,
+        -- bg = vivid_blend_hsl(palette.accent, palette.normal.bg, 0.25, 1.7),
       },
     },
 
     {
       BlinkCmpKindModule = {
-        fg = P.pale_blue,
-        -- bg = vivid_blend_hsl(P.pale_blue, P.normal.bg, 0.25, 1.7),
+        fg = palette.pale_blue,
+        -- bg = vivid_blend_hsl(palette.pale_blue, palette.normal.bg, 0.25, 1.7),
       },
     },
 
     {
-      BlinkCmpKindProperty = {
-        fg = P.pale_red,
-        -- bg = vivid_blend_hsl(P.pale_red, P.normal.bg, 0.25, 1.7),
+      BlinkCmpKindpaletteroperty = {
+        fg = palette.pale_red,
+        -- bg = vivid_blend_hsl(palette.pale_red, palette.normal.bg, 0.25, 1.7),
       },
     },
     {
       BlinkCmpKindUnit = {
-        fg = P.light_gray,
-        -- bg = vivid_blend_hsl(P.light_gray, P.normal.bg, 0.25, 1.7),
+        fg = palette.light_gray,
+        -- bg = vivid_blend_hsl(palette.light_gray, palette.normal.bg, 0.25, 1.7),
       },
     },
     {
       BlinkCmpKindValue = {
-        fg = P.green,
-        -- bg = vivid_blend_hsl(P.green, P.normal.bg, 0.25, 1.7),
+        fg = palette.green,
+        -- bg = vivid_blend_hsl(palette.green, palette.normal.bg, 0.25, 1.7),
       },
     },
     {
       BlinkCmpKindEnum = {
-        fg = P.accent,
-        -- bg = vivid_blend_hsl(P.accent, P.normal.bg, 0.25, 1.7),
+        fg = palette.accent,
+        -- bg = vivid_blend_hsl(palette.accent, palette.normal.bg, 0.25, 1.7),
       },
     },
     {
       BlinkCmpKindKeyword = {
-        fg = P.blue,
-        -- bg = vivid_blend_hsl(P.blue, P.normal.bg, 0.25, 1.7),
+        fg = palette.blue,
+        -- bg = vivid_blend_hsl(palette.blue, palette.normal.bg, 0.25, 1.7),
       },
     },
     {
       BlinkCmpKindSnippet = {
-        fg = P.pale_orange,
-        -- bg = vivid_blend_hsl(P.pale_orange, P.normal.bg, 0.25, 1.7),
+        fg = palette.pale_orange,
+        -- bg = vivid_blend_hsl(palette.pale_orange, palette.normal.bg, 0.25, 1.7),
       },
     },
     {
       BlinkCmpKindColor = {
-        fg = P.green,
-        -- bg = vivid_blend_hsl(P.green, P.normal.bg, 0.25, 1.7),
+        fg = palette.green,
+        -- bg = vivid_blend_hsl(palette.green, palette.normal.bg, 0.25, 1.7),
       },
     },
     {
       BlinkCmpKindFile = {
-        fg = P.pale_blue,
-        -- bg = vivid_blend_hsl(P.pale_blue, P.normal.bg, 0.25, 1.7),
+        fg = palette.pale_blue,
+        -- bg = vivid_blend_hsl(palette.pale_blue, palette.normal.bg, 0.25, 1.7),
       },
     },
     {
       BlinkCmpKindReference = {
-        fg = P.pale_red,
-        -- bg = vivid_blend_hsl(P.pale_red, P.normal.bg, 0.25, 1.7),
+        fg = palette.pale_red,
+        -- bg = vivid_blend_hsl(palette.pale_red, palette.normal.bg, 0.25, 1.7),
       },
     },
     {
       BlinkCmpKindFolder = {
-        fg = P.pale_blue,
-        -- bg = vivid_blend_hsl(P.pale_blue, P.normal.bg, 0.25, 1.7),
+        fg = palette.pale_blue,
+        -- bg = vivid_blend_hsl(palette.pale_blue, palette.normal.bg, 0.25, 1.7),
       },
     },
     {
       BlinkCmpKindEnumMember = {
-        fg = P.accent,
-        -- bg = vivid_blend_hsl(P.accent, P.normal.bg, 0.25, 1.7),
+        fg = palette.accent,
+        -- bg = vivid_blend_hsl(palette.accent, palette.normal.bg, 0.25, 1.7),
       },
     },
     {
       BlinkCmpKindConstant = {
-        fg = P.green,
-        -- bg = vivid_blend_hsl(P.green, P.normal.bg, 0.25, 1.7),
+        fg = palette.green,
+        -- bg = vivid_blend_hsl(palette.green, palette.normal.bg, 0.25, 1.7),
       },
     },
     {
       BlinkCmpKindStruct = {
-        fg = P.accent,
-        -- bg = vivid_blend_hsl(P.accent, P.normal.bg, 0.25, 1.7),
+        fg = palette.accent,
+        -- bg = vivid_blend_hsl(palette.accent, palette.normal.bg, 0.25, 1.7),
       },
     },
     {
       BlinkCmpKindEvent = {
-        fg = P.light_yellow,
-        -- bg = vivid_blend_hsl(P.light_yellow, P.normal.bg, 0.25, 1.7),
+        fg = palette.light_yellow,
+        -- bg = vivid_blend_hsl(palette.light_yellow, palette.normal.bg, 0.25, 1.7),
       },
     },
     {
       BlinkCmpKindOperator = {
-        fg = P.pale_red,
-        -- bg = vivid_blend_hsl(P.pale_red, P.normal.bg, 0.25, 1.7),
+        fg = palette.pale_red,
+        -- bg = vivid_blend_hsl(palette.pale_red, palette.normal.bg, 0.25, 1.7),
       },
     },
     {
-      BlinkCmpKindTypeParameter = {
-        fg = P.accent,
-        -- bg = vivid_blend_hsl(P.accent, P.normal.bg, 0.25, 1.7),
-      },
-    },
-    {
-      BlinkCmpKindCopilot = {
-        fg = P.light_gray,
-        -- bg = vivid_blend_hsl(P.light_gray, P.normal.bg, 0.25, 1.7),
+      BlinkCmpKindTypepalettearameter = {
+        fg = palette.accent,
+        -- bg = vivid_blend_hsl(palette.accent, palette.normal.bg, 0.25, 1.7),
       },
     },
   })
 end
 
-local fn, api = vim.fn, vim.api
-local original_color
-
-local function exec_kitty(cmd, on_error, on_stdout)
-  fn.jobstart(cmd, {
-    on_stderr = function(_, d)
-      if #d > 1 then on_error() end
-    end,
-    on_stdout = on_stdout,
-  })
-end
-
-local function get_kitty_background()
-  if not original_color then
-    exec_kitty(
-      { 'kitty', '@', 'get-colors' },
-      function() api.nvim_err_writeln('Error getting background. Ensure kitty remote control is on.') end,
-      function(_, d)
-        for _, result in ipairs(d) do
-          if result:match('^background') then
-            original_color = vim.split(result, '%s+')[2]
-            break
-          end
-        end
-      end
-    )
-  end
-end
-
-local function update_background(color, sync)
-  local command = fmt('kitty @ set-colors background="%s"', color)
-  if sync then
-    fn.system(command)
-  else
-    exec_kitty(command, function() api.nvim_err_writeln('Error changing background. Ensure kitty remote control is on.') end)
-  end
-end
-
-ky.augroup('kyza/highlights', {
+augroup('kyza/highlights', {
   event = 'ColorScheme',
   command = function()
     general_overrides()
     set_sidebar_highlight()
-    if vim.g.background == 'light' then update_background(original_color, true) end
-    if not vim.g.neovide then get_kitty_background() end
-    local ok, icons = pcall(require, 'nvim-web-devicons')
-    if not ok then return false, icons.refresh() end
   end,
 }, {
   event = 'FileType',

@@ -1,4 +1,4 @@
-ky.ui.icons = {
+return {
   mini = {
     default = {
       directory = { glyph = '󰉋', hl = 'Directory' },
@@ -11,7 +11,6 @@ ky.ui.icons = {
       config = { glyph = '󱁿', hl = 'MiniIconsYellow' },
       ['.avante_chat_history'] = { glyph = '', hl = 'MiniIconsGrey' },
 
-      -- Notes
       ['Journal'] = { glyph = '󰗚', hl = 'MiniIconsYellow' },
       ['Trash'] = { glyph = '', hl = 'MiniIconsGrey' },
     },
@@ -35,7 +34,7 @@ ky.ui.icons = {
 
     filetype = {
       bash = { glyph = '', hl = 'MiniIconsGreen' },
-      markdown = { glyph = '󰈚', hl = 'MiniIconsBlue' },
+      markdown = { glyph = '󱞏', hl = 'MiniIconsGrey' },
       csv = { glyph = '', hl = 'MiniIconsGreen' },
       pdf = { glyph = '', hl = 'MiniIconsGreen' },
       sh = { glyph = '', hl = 'MiniIconsGreen' },
@@ -84,7 +83,6 @@ ky.ui.icons = {
     Event = '  ',
     Operator = ' 󰆕 ',
     TypeParameter = '  ',
-    Copilot = '  ',
   },
 
   -- Diagnostics icons
@@ -96,23 +94,21 @@ ky.ui.icons = {
   },
 
   -- Neotree specific icons
-  neo_tree = {
-    git = {
-      add = '',
-      modified = '',
-      deleted = '',
-      staged = '',
-      rename = '',
-    },
-    folders = {
-      closed = '',
-      open = '',
-      empty = '󰉖',
-      empty_open = '󰷏',
-    },
-    indent_marker = '│',
-    last_indent_marker = '└',
+  folders = {
+    closed = '',
+    open = '',
+    empty = '󰉖',
+    empty_open = '󰷏',
   },
+  git = {
+    add = '',
+    deleted = '',
+    modified = '',
+    staged = '',
+    rename = '',
+  },
+  indent_marker = '│',
+  last_indent_marker = '└',
 
   separators = {
     left_thin_block = '▏',
@@ -124,12 +120,6 @@ ky.ui.icons = {
     warn = ' ',
     info = ' ',
     hint = ' ',
-  },
-
-  git = {
-    add = ' ', --    
-    mod = ' ', --  
-    remove = ' ', --    
   },
 
   documents = {
@@ -151,11 +141,10 @@ ky.ui.icons = {
     ellipsis = '…',
     up = '⇡',
     down = '⇣',
-    -- line = '', -- 'ℓ'
-    line = 'Ξ', -- 'ℓ'
+    line = 'Ξ',
     indent = 'Ξ',
     tab = '⇥',
-    bug = '', --  '󰠭'
+    bug = '',
     question = '',
     clock = '',
     lock = '',
@@ -177,7 +166,7 @@ ky.ui.icons = {
     fire = '',
     note = '󰎞',
     bookmark = '',
-    pencil = '', -- '󰏫',
+    pencil = '',
     tools = '',
     arrow_right = '',
     caret_right = '',

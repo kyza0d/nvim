@@ -1,5 +1,6 @@
 local servers = {
   jedi_language_server = {},
+  rust_analyzer = {},
   lua_ls = {
     settings = {
       Lua = {

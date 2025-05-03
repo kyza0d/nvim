@@ -1,11 +1,11 @@
 local modules = {}
 
-local colors, hl, decorations = require('statusline.palette'), ky.hl, ky.ui.decorations
+local hl, decorations = ky.hl, ky.ui.decorations
 local api, fn, fmt = vim.api, vim.fn, string.format
 local sep, falsy = package.config:sub(1, 1), ky.falsy
 
 modules.diagnostic_info = function(context)
-  local diagnostics, severities, lsp_icons = vim.diagnostic.get(context.bufnum), vim.diagnostic.severity, ky.ui.icons.lsp
+  local diagnostics, severities, lsp_icons = vim.diagnostic.get(context.bufnum), vim.diagnostic.severity, icons.lsp
   local result = {
     error = { count = 0, icon = lsp_icons.error },
     warn = { count = 0, icon = lsp_icons.warn },
@@ -47,17 +47,17 @@ modules.mode_highlight = function(mode)
   local command_regex = vim.regex([[\(c\|cv\|ce\)]])
   local replace_regex = vim.regex([[\(Rc\|R\|Rv\|Rx\)]])
   if mode == 'i' then
-    return colors.hls.mode_insert
+    return palette.hls.mode_insert
   elseif visual_regex and visual_regex:match_str(mode) then
-    return colors.hls.mode_visual
+    return palette.hls.mode_visual
   elseif select_regex and select_regex:match_str(mode) then
-    return colors.hls.mode_select
+    return palette.hls.mode_select
   elseif replace_regex and replace_regex:match_str(mode) then
-    return colors.hls.mode_replace
+    return palette.hls.mode_replace
   elseif command_regex and command_regex:match_str(mode) then
-    return colors.hls.mode_command
+    return palette.hls.mode_command
   else
-    return colors.hls.mode_normal
+    return palette.hls.mode_normal
   end
 end
 
@@ -79,6 +79,13 @@ modules.stl_lsp_clients = function(ctx)
   table.sort(clients, function(a, b) return a.name < b.name end)
 
   return vim.tbl_map(function(client) return { name = client.name, priority = 4 } end, clients)
+end
+
+modules.win_move = function()
+  local winmove = require('winmove')
+  local mode = winmove.current_mode()
+  if mode then return fmt('[%s]', mode) end
+  return ''
 end
 
 modules.is_git_repo = function(win_id)
@@ -161,13 +168,13 @@ modules.unique_files = {
       return fmt('Quickfix(%d)', #qf)
     end,
     icon = '   ',
-    hl = colors.hls.dir_parent,
-    icon_hl = colors.hls.dir_parent,
+    hl = palette.hls.dir_parent,
+    icon_hl = palette.hls.dir_parent,
   },
   ['trouble'] = {
     name = 'Trouble',
-    hl = colors.hls.panel_st,
-    icon_hl = colors.hls.panel_st_icon,
+    hl = palette.hls.panel_st,
+    icon_hl = palette.hls.panel_st_icon,
   },
   ['norg'] = {
     name = function(_, buf)
@@ -177,26 +184,32 @@ modules.unique_files = {
       return string.format('%s %s Neorg (%d lines)', mode, file_name, line_count)
     end,
     icon = '   ',
-    hl = colors.hls.statusline,
-    icon_hl = colors.hls.indicator,
+    hl = palette.hls.statusline,
+    icon_hl = palette.hls.indicator,
   },
   ['Avante'] = {
     name = function() return '' end,
     icon = '',
-    hl = colors.hls.panel_st,
-    icon_hl = colors.hls.panel_st_icon,
+    hl = palette.hls.panel_st,
+    icon_hl = palette.hls.panel_st_icon,
   },
   ['AvanteInput'] = {
     name = function() return '' end,
     icon = '',
-    hl = colors.hls.panel_st,
-    icon_hl = colors.hls.panel_st_icon,
+    hl = palette.hls.panel_st,
+    icon_hl = palette.hls.panel_st_icon,
   },
   ['AvanteSelectedFiles'] = {
     name = function() return '' end,
     icon = '',
-    hl = colors.hls.panel_st,
-    icon_hl = colors.hls.panel_st_icon,
+    hl = palette.hls.panel_st,
+    icon_hl = palette.hls.panel_st_icon,
+  },
+  ['codecompanion'] = {
+    name = function() return 'codecompanion' end,
+    icon = '   ',
+    hl = palette.hls.statusline,
+    icon_hl = palette.hls.statusline_icon,
   },
   ['neo-tree'] = {
     name = function(fname, _)
@@ -204,8 +217,8 @@ modules.unique_files = {
       return fmt('Neo Tree(%s)', parts[2])
     end,
     icon = ' 󰙅  ',
-    hl = colors.hls.neotree,
-    icon_hl = colors.hls.neotree_icon,
+    hl = palette.hls.neotree,
+    icon_hl = palette.hls.neotree_icon,
   },
   ['toggleterm'] = {
     name = function(_, buf)
@@ -213,8 +226,8 @@ modules.unique_files = {
       return fmt('Terminal(%s)[%s]', shell, api.nvim_buf_get_var(buf, 'toggle_number'))
     end,
     icon = '   ',
-    hl = colors.hls.terminal,
-    icon_hl = colors.hls.terminal_icon,
+    hl = palette.hls.terminal,
+    icon_hl = palette.hls.terminal_icon,
   },
 }
 
@@ -247,34 +260,28 @@ modules.filename = function(ctx)
   }
 end
 
-local function get_ft_icon_hl_name(hl) return hl .. colors.hls.statusline end
+local function get_ft_icon_hl_name(hl) return hl .. palette.hls.statusline end
 
 local function filetype(ctx)
   local buf = ctx.bufnum
   local icon, hl_group = get_buffer_icon(buf, { default = true })
   if hl_group then
     local fg = hl.get(hl_group, 'fg')
-    local bg = hl.get(colors.hls.statusline, 'bg')
+    local bg = hl.get(palette.hls.statusline, 'bg')
     if fg and bg then
       local hl_name = get_ft_icon_hl_name(hl_group)
       hl.set(hl_name, { fg = fg, bg = bg })
       return icon, hl_name
     end
   end
-  return icon, colors.hls.dimmed
-end
-
----@param hl string
----@return fun(id: number): string
-local function with_win_id(hl)
-  return function(id) return hl .. id end
+  return icon, palette.hls.dimmed
 end
 
 modules.stl_file = function(ctx, minimal)
   local ft_icon, ft_hl = filetype(ctx)
-  local directory_hl = colors.hls.dir_path
-  local parent_hl = colors.hls.dir_parent
-  local filename_hl = colors.hls.dir_file
+  local directory_hl = palette.hls.dir_path
+  local parent_hl = palette.hls.dir_parent
+  local filename_hl = palette.hls.dir_file
 
   local file_icon = { {}, before = '', after = ' ', priority = 0 }
   local dir_opts = { {}, before = '', after = '', priority = 1 }
@@ -303,7 +310,7 @@ local set_filetype_icon_highlights, reset_filetype_icon_highlights = (function()
     local _, color = get_buffer_icon(buf)
 
     if not color then return end
-    local fg, bg = hl.get(color, 'fg'), hl.get(colors.hls.statusline, 'bg')
+    local fg, bg = hl.get(color, 'fg'), hl.get(palette.hls.statusline, 'bg')
 
     if not bg and not fg then return end
     local name = get_ft_icon_hl_name(color)
@@ -312,20 +319,20 @@ local set_filetype_icon_highlights, reset_filetype_icon_highlights = (function()
     hl.set(name, { fg = fg, bg = bg })
   end, function()
     for _, data in pairs(hl_cache) do
-      hl.set(data.name, { fg = data.hl, bg = hl.get(colors.hls.statusline, 'bg') })
+      hl.set(data.name, { fg = data.hl, bg = hl.get(palette.hls.statusline, 'bg') })
     end
   end
 end)()
 
 modules.setup = function()
-  ky.augroup(
+  augroup(
     'CustomStatusline',
     { event = 'FileType', command = function(args) set_filetype_icon_highlights(args.buf, args.match) end },
     { event = 'BufReadPre', once = true, command = modules.git_updates },
     {
-      event = 'ColorScheme',
+      event = 'colorscheme',
       command = function()
-        colors.setup()
+        palette.setup()
         reset_filetype_icon_highlights()
       end,
     },

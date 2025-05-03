@@ -1,9 +1,13 @@
 return {
   {
+    'dstein64/vim-startuptime',
+    cmd = 'StartupTime',
+  },
+  {
     'olimorris/persisted.nvim',
     lazy = false,
     init = function()
-      ky.augroup('PersistedEvents', {
+      augroup('PersistedEvents', {
         event = 'User',
         pattern = 'PersistedSavePre',
         command = function() vim.cmd('%argdelete') end,
@@ -16,10 +20,5 @@ return {
       allowed_dirs = { '/home/kyza/Projects' },
       ignored_dirs = { fn.stdpath('data') },
     },
-  },
-  {
-    'NStefan002/speedtyper.nvim',
-    branch = 'v2',
-    lazy = false,
   },
 }

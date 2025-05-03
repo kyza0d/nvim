@@ -1,8 +1,3 @@
----@diagnostic disable: missing-fields
-
-local icons = ky.ui.icons.neo_tree
-
-local highlight, P = ky.hl, ky.ui.palette
 local uv = vim.loop
 
 local neotree = {
@@ -10,7 +5,7 @@ local neotree = {
   fg = { from = 'Normal', alter = -0.2 },
 }
 
-highlight.plugin('NeoTree', {
+hl.plugin('NeoTree', {
   theme = {
     ['*'] = {
       { ProjectRoot = { bg = neotree.bg, bold = true } },
@@ -30,9 +25,9 @@ highlight.plugin('NeoTree', {
       { NeoTreeTabSeparatorInactive = { inherit = 'NeoTreeTabInactive', fg = { from = 'Normal', attr = 'bg' } } },
       { NeoTreeDirectoryName = { fg = { from = 'Normal', alter = -0.20 } } },
       { NeoTreeDirectoryIcon = { fg = { from = 'Normal', alter = -0.20 } } },
-      { NeoTreeGitAdded = { fg = P.green } },
-      { NeoTreeGitModified = { fg = P.light_yellow } },
-      { NeoTreeGitDeleted = { fg = P.pale_red } },
+      { NeoTreeGitAdded = { fg = palette.green } },
+      { NeoTreeGitModified = { fg = palette.light_yellow } },
+      { NeoTreeGitDeleted = { fg = palette.pale_red } },
     },
   },
 })
@@ -91,10 +86,10 @@ require('neo-tree').setup({
   },
 
   event_handlers = {
-    { event = 'neo_tree_buffer_enter', handler = function() highlight.set('Cursor', { blend = 100 }) end },
-    { event = 'neo_tree_popup_buffer_enter', handler = function() highlight.set('Cursor', { blend = 0 }) end },
-    { event = 'neo_tree_buffer_leave', handler = function() highlight.set('Cursor', { blend = 0 }) end },
-    { event = 'neo_tree_window_after_close', handler = function() highlight.set('Cursor', { blend = 0 }) end },
+    { event = 'neo_tree_buffer_enter', handler = function() hl.set('Cursor', { blend = 100 }) end },
+    { event = 'neo_tree_popup_buffer_enter', handler = function() hl.set('Cursor', { blend = 0 }) end },
+    { event = 'neo_tree_buffer_leave', handler = function() hl.set('Cursor', { blend = 0 }) end },
+    { event = 'neo_tree_window_after_close', handler = function() hl.set('Cursor', { blend = 0 }) end },
   },
 
   commands = {
@@ -158,7 +153,7 @@ require('neo-tree').setup({
         end
 
         return {
-          text = icon .. '  ',
+          text = icon,
           highlight = hl,
         }
       end,

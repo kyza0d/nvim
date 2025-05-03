@@ -1,22 +1,83 @@
-local hl = ky.hl
-
----@diagnostic disable: missing-fields
 return {
+  {
+    'EdenEast/nightfox.nvim',
+  },
+  {
+    'MeanderingProgrammer/render-markdown.nvim',
+    lazy = false,
+    dependencies = {
+      'nvim-treesitter/nvim-treesitter',
+      'echasnovski/mini.nvim',
+    },
+    opts = {
+      disable_frontmatter = true,
+      callout = {
+        thought = {
+          raw = '[!Thoughts]',
+          rendered = ' Thoughts',
+          highlight = 'RenderMarkdownH1',
+        },
+        tasks = {
+          raw = '[!Tasks]',
+          rendered = ' Tasks',
+          highlight = 'RenderMarkdownH2',
+        },
+        goals = {
+          raw = '[!Goals]',
+          rendered = ' Goals',
+          highlight = 'RenderMarkdownH3',
+        },
+      },
+      heading = {
+        width = 'block',
+        position = 'inline',
+        border_virtual = true,
+        border_prefix = true,
+        icons = { '', '', '', '', '', '' },
+      },
+      checkbox = {
+        unchecked = {
+          icon = ' ',
+        },
+        checked = {
+          icon = ' ',
+        },
+        custom = {
+          ongoing = {
+            raw = '[~]',
+            rendered = '󰄉 ',
+            highlight = 'Keyword',
+            scope_highlight = nil,
+          },
+          canceled = {
+            raw = '[-]',
+            rendered = ' ',
+            highlight = 'DiagnosticError',
+            scope_highlight = nil,
+          },
+        },
+      },
+      bullet = {
+        icons = {
+          '•',
+          '•',
+          '•',
+          '•',
+        },
+      },
+    },
+  },
   {
     'echasnovski/mini.icons',
     config = function(_)
-      require('mini.icons').setup(ky.ui.icons.mini)
+      require('mini.icons').setup(icons.mini)
       require('mini.icons').mock_nvim_web_devicons()
     end,
   },
-  {
-    'svermeulen/text-to-colorscheme',
-    lazy = false,
-    opts = require('config.text-to-colorscheme'),
-  },
+  { 'saecki/live-rename.nvim' },
   {
     'lukas-reineke/indent-blankline.nvim',
-    enabled = not vim.g.neovide,
+    enabled = false,
     main = 'ibl',
     event = 'UIEnter',
     init = function()
@@ -49,29 +110,60 @@ return {
   },
   {
     'rcarriga/nvim-notify',
-    event = 'VeryLazy',
     init = function() vim.notify = require('notify') end,
     config = function()
-      local notify = require('notify')
-      notify.setup({
-        top_down = false,
+      local stages_util = require('notify.stages.util')
+      local direction = stages_util.DIRECTION.BOTTOM_UP
+
+      require('notify').setup({
+        top_down = true,
         render = 'minimal',
+        on_open = function(win)
+          vim.api.nvim_win_set_config(win, {
+            border = 'none',
+          })
+        end,
+        stages = {
+          function(state)
+            local next_height = state.message.height
+            local next_row = stages_util.available_slot(state.open_windows, next_height, direction)
+
+            if not next_row then return nil end
+            if vim.tbl_isempty(state.open_windows) then next_row = next_row end
+
+            return {
+              relative = 'editor',
+              anchor = 'NE',
+              width = state.message.width,
+              height = state.message.height,
+              col = vim.opt.columns:get(),
+              row = next_row,
+              border = 'rounded',
+              style = 'minimal',
+            }
+          end,
+          function()
+            return {
+              col = vim.opt.columns:get(),
+              time = true,
+            }
+          end,
+        },
       })
     end,
   },
   {
-    'kevinhwang91/nvim-bqf',
-    opts = {
-      preview = {
-        border = 'none',
-        winblend = 0,
-      },
-    },
-    ft = 'qf',
-  },
-  {
     'Bekaboo/dropbar.nvim',
     opts = {
+      icons = {
+        enable = false,
+        ui = {
+          bar = {
+            separator = '  ',
+            extends = '…',
+          },
+        },
+      },
       sources = {
         path = {
           relative_to = function(_, win)
@@ -98,6 +190,23 @@ return {
     },
   },
   {
+    'luukvbaal/statuscol.nvim',
+    config = function()
+      local builtin = require('statuscol.builtin')
+      require('statuscol').setup({
+        relculright = true,
+        ft_ignore = { 'neo-tree' },
+        segments = {
+          -- padding
+          { text = { '%s' }, click = 'v:lua.ScSa' },
+          -- { text = { '%=', ' ', '%=' }, click = 'v:lua.ScSa' },
+          { text = { builtin.foldfunc }, click = 'v:lua.ScFa' },
+          { text = { builtin.lnumfunc, ' ' }, click = 'v:lua.ScLa' },
+        },
+      })
+    end,
+  },
+  {
     '3rd/image.nvim',
     enabled = not vim.g.neovide,
     opts = {
@@ -106,57 +215,9 @@ return {
     },
   },
   {
-    -- 'NStefan002/screenkey.nvim',
-    dir = '~/Clones/screenkey.nvim/',
-    enabled = false,
-    version = '*',
-
-    config = function()
-      require('screenkey').setup({
-        win_opts = {
-          row = vim.o.lines - vim.o.cmdheight - 1,
-          col = vim.o.columns - 1,
-          relative = 'editor',
-          anchor = 'SE',
-          width = 40,
-          height = 1,
-          border = 'none',
-          title = '',
-          title_pos = 'center',
-          style = 'minimal',
-          focusable = false,
-          noautocmd = true,
-        },
-        highlights = {
-          Float = { bg = 'NONE', fg = 'NONE' },
-          ScreenKey = { bg = 'NONE', fg = { from = 'Comment' } },
-        },
-      })
-    end,
-    lazy = false,
-  },
-  {
     '0xAdk/full_visual_line.nvim',
     enabled = true,
     keys = 'V',
     opts = {},
-  },
-  {
-    'tris203/precognition.nvim',
-    enabled = false,
-    opts = {
-      hints = {
-        Caret = { text = '^', prio = 2, highlight = 'Special' },
-        Dollar = { text = '$', prio = 1 },
-        MatchingPair = { text = '%', prio = 5 },
-        Zero = { text = '0', prio = 1 },
-        w = { text = 'w', prio = 10 },
-        b = { text = 'b', prio = 9 },
-        e = { text = 'e', prio = 8 },
-        W = { text = 'W', prio = 7 },
-        B = { text = 'B', prio = 6 },
-        E = { text = 'E', prio = 5 },
-      },
-    },
   },
 }

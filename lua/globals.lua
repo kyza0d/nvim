@@ -4,19 +4,86 @@ local namespace = {
       enable = true,
     },
   },
-  helpers = require('utils.helpers'),
 }
 
 _G.ky = ky or namespace
+_G.ui = ky.ui
+_G.hl = require('utils.highlight')
+_G.helpers = require('utils.helpers')
+
+_G.join = function(...)
+  local args = { ... }
+  return table.concat(args)
+end
 
 _G.create_augroup = vim.api.nvim_create_augroup
 _G.create_autocmd = vim.api.nvim_create_autocmd
 _G.clear_autocmds = vim.api.nvim_clear_autocmds
 
+function _G.augroup(name, ...)
+  local commands = { ... }
+  assert(name ~= 'User', 'The name of an augroup CANNOT be User')
+  assert(#commands > 0, fmt('You must specify at least one autocommand for %s', name))
+  local id = api.nvim_create_augroup(name, { clear = true })
+  for _, autocmd in ipairs(commands) do
+    api.nvim_create_autocmd(autocmd.event, {
+      group = name,
+      pattern = autocmd.pattern,
+      desc = autocmd.desc,
+      callback = type(autocmd.command) == 'function' and autocmd.command or nil,
+      command = type(autocmd.command) ~= 'function' and autocmd.command or nil,
+      once = autocmd.once,
+      nested = autocmd.nested,
+      buffer = autocmd.buffer,
+    })
+  end
+  return id
+end
+
 _G.opt = vim.opt
 _G.api = vim.api
 _G.fn = vim.fn
 _G.fmt = string.format
+_G.notify = vim.notify
+
+_G.icons = require('editor.ui.icons')
+_G.colors = require('editor.ui.colors')
+_G.palette = require('editor.ui.palette')
+
+function _G.reqcall(require_path)
+  return setmetatable({}, {
+    __index = function(_, k)
+      return function(...) return require(require_path)[k](...) end
+    end,
+  })
+end
+
+_G.editor = {
+  minimal = false,
+  zen_mode = true,
+  statusline = {},
+  terminals = {
+    toggle = function()
+      local terminal = require('toggleterm.terminal').Terminal:new({ hidden = true })
+      terminal:toggle()
+    end,
+    lazygit_toggle = function()
+      local Terminal = require('toggleterm.terminal').Terminal
+      local lazygit = Terminal:new({ cmd = 'lazygit', hidden = true })
+      lazygit:toggle()
+    end,
+    yazi_toggle = function()
+      local Terminal = require('toggleterm.terminal').Terminal
+      local yazi = Terminal:new({ cmd = 'yazi', hidden = true })
+      yazi:toggle()
+    end,
+    btm_toggle = function()
+      local Terminal = require('toggleterm.terminal').Terminal
+      local btm = Terminal:new({ cmd = 'btm -b', hidden = true })
+      btm:toggle()
+    end,
+  },
+}
 
 _G.concat = function(...)
   local args = { ... }
@@ -121,33 +188,6 @@ _G.keymap = function(modes, mapping, command, options)
   end
 end
 
-_G.editor = {
-  minimal = false,
-  zen_mode = true,
-  statusline = {},
-  terminals = {
-    toggle = function()
-      local terminal = require('toggleterm.terminal').Terminal:new({ hidden = true })
-      terminal:toggle()
-    end,
-    lazygit_toggle = function()
-      local Terminal = require('toggleterm.terminal').Terminal
-      local lazygit = Terminal:new({ cmd = 'lazygit', hidden = true })
-      lazygit:toggle()
-    end,
-    yazi_toggle = function()
-      local Terminal = require('toggleterm.terminal').Terminal
-      local yazi = Terminal:new({ cmd = 'yazi', hidden = true })
-      yazi:toggle()
-    end,
-    btm_toggle = function()
-      local Terminal = require('toggleterm.terminal').Terminal
-      local btm = Terminal:new({ cmd = 'btm -b', hidden = true })
-      btm:toggle()
-    end,
-  },
-}
-
 _G.fn_match = function(filename, command)
   if string.find(tostring(vim.fn.expand('%')), filename) then vim.cmd(command) end
 end
@@ -195,37 +235,25 @@ function ky.reqidx(require_path)
   })
 end
 
-ky.list = { qf = {}, loc = {} }
-
-function ky.augroup(name, ...)
-  local commands = { ... }
-  assert(name ~= 'User', 'The name of an augroup CANNOT be User')
-  assert(#commands > 0, fmt('You must specify at least one autocommand for %s', name))
-  local id = api.nvim_create_augroup(name, { clear = true })
-  for _, autocmd in ipairs(commands) do
-    api.nvim_create_autocmd(autocmd.event, {
-      group = name,
-      pattern = autocmd.pattern,
-      desc = autocmd.desc,
-      callback = type(autocmd.command) == 'function' and autocmd.command or nil,
-      command = type(autocmd.command) ~= 'function' and autocmd.command or nil,
-      once = autocmd.once,
-      nested = autocmd.nested,
-      buffer = autocmd.buffer,
-    })
-  end
-  return id
-end
-
-function ky.reqcall(require_path)
-  return setmetatable({}, {
-    __index = function(_, k)
-      return function(...) return require(require_path)[k](...) end
-    end,
-  })
-end
-
 function ky.command(name, rhs, opts)
   opts = opts or {}
   api.nvim_create_user_command(name, rhs, opts)
+end
+
+_G.settings = function(config)
+  for key, entry in pairs(config) do
+    if type(key) == 'table' then
+      for _, ft in ipairs(key) do
+        local opts = entry.opts
+        vim.api.nvim_create_autocmd('FileType', {
+          pattern = ft,
+          callback = function()
+            for option, value in pairs(opts) do
+              vim.opt_local[option] = value
+            end
+          end,
+        })
+      end
+    end
+  end
 end

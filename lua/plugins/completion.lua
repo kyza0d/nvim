@@ -1,28 +1,19 @@
-local reqcall = ky.reqcall
-local icons = ky.ui.icons
-local completion_icons = icons.completion
-local helpers = ky.helpers
-
 return {
   {
     'saghen/blink.cmp',
     version = '*',
     dependencies = {
-      'rafamadriz/friendly-snippets',
       'MahanRahmati/blink-nerdfont.nvim',
-      {
-        'fang2hou/blink-copilot',
-        opts = {
-          kind_icon = completion_icons.Copilot,
-        },
-      },
     },
     opts = {
-      keymap = { preset = 'enter' },
+      keymap = {
+        preset = 'default',
+        ['<CR>'] = { 'accept', 'fallback' },
+      },
       appearance = {
         nerd_font_variant = 'mono',
         use_nvim_cmp_as_default = true,
-        kind_icons = completion_icons,
+        kind_icons = icons.completion,
       },
       cmdline = {
         keymap = {
@@ -30,37 +21,14 @@ return {
         },
       },
       sources = {
-        default = {
-          'lsp',
-          'copilot',
-          'path',
-          'snippets',
-          'buffer',
-          'nerdfont',
-        },
+        default = { 'lsp', 'path', 'snippets', 'buffer', 'nerdfont' },
         per_filetype = {
           codecompanion = { 'codecompanion' },
         },
         providers = {
-          path = {
-            name = 'path',
-            score_offset = 600,
-          },
-          copilot = {
-            name = 'copilot',
-            module = 'blink-copilot',
-            max_items = 1,
-            score_offset = 250,
-            async = true,
-          },
-          lsp = {
-            name = 'lsp',
-            score_offset = 200,
-          },
-          snippets = {
-            name = 'snippets',
-            score_offset = 150,
-          },
+          path = { name = 'path', score_offset = 600 },
+          lsp = { name = 'lsp', score_offset = 200 },
+          snippets = { name = 'snippets', score_offset = 150 },
           nerdfont = {
             module = 'blink-nerdfont',
             name = 'Nerd Fonts',
@@ -82,7 +50,7 @@ return {
           },
         },
         documentation = {
-          auto_show = true,
+          auto_show = false,
           auto_show_delay_ms = 500,
         },
         list = {
@@ -117,53 +85,8 @@ return {
     end,
   },
   {
-    'zbirenbaum/copilot.lua',
-    event = 'InsertEnter',
-    config = function()
-      require('copilot').setup({
-        suggestion = { enabled = false },
-        panel = { enabled = false },
-        filetypes = {
-          markdown = true,
-          help = true,
-        },
-      })
-    end,
-  },
-  {
-    'olimorris/codecompanion.nvim',
-    init = function()
-      helpers.on_load('codecompanion.nvim', function()
-        local wk = reqcall('which-key')
-        wk.add({
-          {
-            icon = '󰱽',
-            '<leader>c',
-            group = 'Code Companion',
-            nowait = false,
-            remap = false,
-          },
-          {
-            icon = '󰱽',
-            '<leader>cc',
-            '<cmd>CodeCompanionChat Toggle<CR>',
-            desc = 'Code Companion Actions',
-            nowait = false,
-            remap = false,
-          },
-        })
-      end)
-    end,
-    opts = {},
-    dependencies = {
-      'nvim-lua/plenary.nvim',
-      'nvim-treesitter/nvim-treesitter',
-    },
-  },
-  {
     'chrisgrieser/nvim-scissors',
     event = 'BufEnter',
-    dependencies = 'nvim-telescope/telescope.nvim',
     opts = {
       snippetDir = vim.fn.stdpath('config') .. '/snippets',
     },

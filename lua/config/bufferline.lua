@@ -1,11 +1,8 @@
----@diagnostic disable: missing-fields
 local root = vim.fn.getcwd()
 
 local workspace = root:sub(root:find('[^/]*$'))
 local bufferline_groups = require('bufferline.groups')
 local groups = require('bufferline.groups')
-
-local P, highlight = ky.ui.palette, ky.hl
 
 local bufferline = require('bufferline')
 
@@ -14,9 +11,9 @@ bufferline.setup({
     close_icon = 'x',
     close_command = 'Bdelete! %d',
     show_buffer_close_icons = false,
-    show_close_icon = true,
-    show_buffer_icons = true,
-    style_preset = bufferline.style_preset.default, -- or bufferline.style_preset.minimal,
+    show_close_icon = false,
+    show_buffer_icons = false,
+    style_preset = bufferline.style_preset.default,
     left_trunc_marker = '',
     right_trunc_marker = '',
     tab_size = 0,
@@ -44,21 +41,16 @@ bufferline.setup({
 
     right_mouse_command = 'Bdelete! %d',
     left_mouse_command = 'buffer %d',
-    indicator = { style = 'icon' },
+    indicator = {
+      style = vim.g.neovide and 'none' or 'underline',
+    },
     separator_style = { '', '' },
     modified_icon = '',
     offsets = {
       {
-        filetype = 'trouble',
-        text = 'Trouble',
-        text_align = 'left',
-        highlight = 'ProjectRoot',
-        padding = 1,
-      },
-      {
         filetype = 'neo-tree',
         text_align = 'left',
-        highlight = 'ProjectRoot',
+        hl = 'ProjectRoot',
         text = string.format('  %s', workspace),
         padding = 1,
       },
@@ -66,53 +58,53 @@ bufferline.setup({
   },
 
   highlights = function()
-    local normal_bg = highlight.get('Normal', 'bg')
-    local normal_fg = highlight.get('Normal', 'fg')
+    local normal_bg = hl.get('Normal', 'bg')
+    local normal_fg = hl.get('Normal', 'fg')
 
-    local tab_bg = highlight.tint(normal_bg, 0.45)
-    local tab_bg_inactive = highlight.tint(normal_bg, -0.1)
-    local fill = highlight.tint(normal_bg, -0.3)
+    local tab_bg = hl.tint(normal_bg, 0.45)
+    local tab_bg_inactive = hl.tint(normal_bg, -0.1)
+    local fill = hl.tint(normal_bg, -0.3)
 
-    local tab_fg = highlight.tint(normal_fg, 0.1)
-    local tab_fg_inactive = highlight.tint(normal_fg, -0.35)
+    local tab_fg = hl.tint(normal_fg, 0.1)
+    local tab_fg_inactive = hl.tint(normal_fg, -0.35)
 
     return {
-      -- BUFFERS
+      -- Buffers
       background = { bg = tab_bg_inactive },
-      buffer_visible = { fg = tab_fg_inactive, bg = tab_bg_inactive, sp = P.blue },
-      buffer_selected = { fg = tab_fg, bg = tab_bg, sp = P.blue, italic = false },
+      buffer_visible = { fg = tab_fg_inactive, bg = tab_bg_inactive, sp = palette.blue },
+      buffer_selected = { fg = tab_fg, bg = tab_bg, sp = palette.blue, italic = false },
       hint = { fg = tab_fg },
 
-      -- TABS
-      tab = { fg = tab_fg_inactive, bg = tab_bg_inactive, sp = P.blue },
-      tab_selected = { fg = tab_fg, bg = tab_bg, bold = true, italic = false, sp = P.blue },
-      tab_separator = { fg = tab_fg, bg = tab_bg_inactive, sp = P.blue },
-      tab_separator_selected = { fg = tab_fg, bg = tab_bg, sp = P.blue },
-      tab_close = { fg = tab_fg, bg = tab_bg_inactive, sp = P.blue },
-      indicator_selected = { fg = P.blue, bg = tab_bg, sp = P.blue },
-      indicator_visible = { fg = tab_fg_inactive, bg = tab_bg_inactive, sp = P.blue },
+      -- Tabs
+      tab = { fg = tab_fg_inactive, bg = tab_bg_inactive, sp = palette.blue },
+      tab_selected = { fg = tab_fg, bg = tab_bg, bold = true, italic = false, sp = palette.blue },
+      tab_separator = { fg = tab_fg, bg = tab_bg_inactive, sp = palette.blue },
+      tab_separator_selected = { fg = tab_fg, bg = tab_bg, sp = palette.blue },
+      tab_close = { fg = tab_fg, bg = tab_bg_inactive, sp = palette.blue },
+      indicator_selected = { fg = palette.blue, bg = tab_bg, sp = palette.blue },
+      indicator_visible = { fg = tab_fg_inactive, bg = tab_bg_inactive, sp = palette.blue },
 
-      -- BUFFER PICK
-      pick_selected = { fg = P.blue, bg = tab_bg, sp = P.blue, italic = true, bold = false },
-      pick_visible = { fg = P.blue, bg = tab_bg_inactive, sp = P.blue, italic = true, bold = false },
-      pick = { fg = P.blue, bg = tab_bg_inactive, sp = P.blue, italic = true, bold = false },
+      -- Buffer pick
+      pick_selected = { fg = palette.blue, bg = tab_bg, sp = palette.blue, italic = true, bold = false },
+      pick_visible = { fg = palette.blue, bg = tab_bg_inactive, sp = palette.blue, italic = true, bold = false },
+      pick = { fg = palette.blue, bg = tab_bg_inactive, sp = palette.blue, italic = true, bold = false },
 
-      -- MODIFIED
-      modified = { fg = P.magenta, bg = tab_bg_inactive },
-      modified_selected = { fg = tab_fg, bg = tab_bg, sp = P.blue },
+      -- Modified
+      modified = { fg = palette.magenta, bg = tab_bg_inactive },
+      modified_selected = { fg = tab_fg, bg = tab_bg, sp = palette.blue },
 
-      -- DUPLICATE
-      duplicate_selected = { fg = tab_fg, bg = tab_bg, sp = P.blue },
-      duplicate_visible = { fg = tab_fg_inactive, bg = tab_bg_inactive, sp = P.blue },
-      duplicate = { fg = tab_fg_inactive, bg = tab_bg_inactive, sp = P.blue },
+      -- Duplicate
+      duplicate_selected = { fg = tab_fg, bg = tab_bg, sp = palette.blue },
+      duplicate_visible = { fg = tab_fg_inactive, bg = tab_bg_inactive, sp = palette.blue },
+      duplicate = { fg = tab_fg_inactive, bg = tab_bg_inactive, sp = palette.blue },
 
-      -- SEPARATORS
+      -- Separators
       separator = { fg = tab_fg, bg = tab_bg_inactive },
       separator_visible = { fg = tab_fg, bg = tab_bg_inactive },
       separator_selected = { fg = tab_fg, bg = tab_bg },
       offset_separator = { fg = tab_fg, bg = tab_bg },
 
-      -- CLOSE BUTTONS
+      -- Close buttons
       close_button = { fg = tab_fg_inactive, bg = tab_bg_inactive },
       close_button_visible = { fg = tab_fg_inactive, bg = tab_bg_inactive },
       close_button_selected = { fg = tab_fg, bg = tab_bg },
@@ -131,7 +123,7 @@ bufferline.setup({
         fg = tab_fg,
         bg = tab_bg,
         underline = false,
-        sp = P.blue,
+        sp = palette.blue,
       },
 
       fill = { bg = fill },
