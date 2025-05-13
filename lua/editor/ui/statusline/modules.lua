@@ -173,43 +173,21 @@ modules.unique_files = {
   },
   ['trouble'] = {
     name = 'Trouble',
-    hl = palette.hls.panel_st,
-    icon_hl = palette.hls.panel_st_icon,
-  },
-  ['norg'] = {
-    name = function(_, buf)
-      local mode = modules.stl_mode()
-      local file_name = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(buf), ':t')
-      local line_count = vim.api.nvim_buf_line_count(buf)
-      return string.format('%s %s Neorg (%d lines)', mode, file_name, line_count)
-    end,
-    icon = '   ',
-    hl = palette.hls.statusline,
-    icon_hl = palette.hls.indicator,
-  },
-  ['Avante'] = {
-    name = function() return '' end,
-    icon = '',
-    hl = palette.hls.panel_st,
-    icon_hl = palette.hls.panel_st_icon,
-  },
-  ['AvanteInput'] = {
-    name = function() return '' end,
-    icon = '',
-    hl = palette.hls.panel_st,
-    icon_hl = palette.hls.panel_st_icon,
-  },
-  ['AvanteSelectedFiles'] = {
-    name = function() return '' end,
-    icon = '',
-    hl = palette.hls.panel_st,
-    icon_hl = palette.hls.panel_st_icon,
+    icon = ' 󰒡 ',
+    hl = palette.hls.neotree,
+    icon_hl = palette.hls.neotree_icon,
   },
   ['codecompanion'] = {
     name = function() return 'codecompanion' end,
     icon = '   ',
     hl = palette.hls.statusline,
     icon_hl = palette.hls.statusline_icon,
+  },
+  ['fzf'] = {
+    name = function(fname, _) return fmt('fzf-lua', fname) end,
+    icon = ' 󰩊 ',
+    hl = palette.hls.neotree,
+    icon_hl = palette.hls.neotree_icon,
   },
   ['neo-tree'] = {
     name = function(fname, _)

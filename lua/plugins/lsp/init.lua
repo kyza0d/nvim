@@ -23,24 +23,6 @@ return {
     },
     dependencies = {
       'mason.nvim',
-      {
-        'neovim/nvim-lspconfig',
-        dependencies = {
-          {
-            'folke/neodev.nvim',
-            ft = 'lua',
-            opts = {},
-          },
-          {
-            'folke/neoconf.nvim',
-            cmd = { 'Neoconf' },
-            opts = {
-              local_settings = '.nvim.json',
-              global_settings = 'nvim.json',
-            },
-          },
-        },
-      },
     },
   },
   {

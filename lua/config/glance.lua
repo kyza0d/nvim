@@ -5,6 +5,8 @@ local actions = glance.actions
 glance.setup({
   theme = { enable = true, mode = 'darken' },
   height = 20,
+  -- detached = function(winid) return vim.api.nvim_win_get_width(winid) < 100 end,
+  detached = true,
   list = {
     position = 'right',
     width = 0.40,

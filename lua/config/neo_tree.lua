@@ -1,30 +1,38 @@
-local uv = vim.loop
-
 local neotree = {
-  bg = { from = 'Normal', alter = -0.12 },
-  fg = { from = 'Normal', alter = -0.2 },
+  bg = { from = 'Background', alter = 0.85 },
+  fg = { from = 'Background', alter = 0.85 },
 }
 
 hl.plugin('NeoTree', {
   theme = {
     ['*'] = {
       { ProjectRoot = { bg = neotree.bg, bold = true } },
-      { NeoTreeStatusLine = { bg = neotree.bg, fg = neotree.fg } },
-      { NeoTreeStatusLineNC = { bg = neotree.bg, fg = neotree.fg } },
+
       { NeoTreeNormal = { bg = neotree.bg, fg = neotree.fg } },
       { NeoTreeNormalNC = { bg = neotree.bg, fg = neotree.fg } },
+
+      { NeoTreeStatusLine = { bg = neotree.bg, fg = neotree.fg } },
+      { NeoTreeStatusLineNC = { bg = neotree.bg, fg = neotree.fg } },
+
       { NeoTreeWinSeparator = { bg = neotree.bg, fg = { from = 'WinSeparator' } } },
+
       { NeoTreeDotFile = { fg = { from = 'Comment', alter = -0.4 } } },
       { NeoTreeMessage = { fg = { from = 'Comment', alter = -0.4 } } },
       { NeoTreeEndOfBuffer = { bg = neotree.bg } },
+
       { NeoTreeCursorLine = { bg = { from = 'NeoTreeNormal', alter = 0.60 } } },
+
       { NeoTreeRootName = { underline = true } },
+
       { NeoTreeTabActive = { bg = { from = 'Normal' }, bold = true } },
       { NeoTreeTabInactive = { bg = { from = 'Normal', alter = 0.15 }, fg = { from = 'Comment' } } },
+
       { NeoTreeTabSeparatorActive = { inherit = 'Normal', fg = { from = 'Comment' } } },
       { NeoTreeTabSeparatorInactive = { inherit = 'NeoTreeTabInactive', fg = { from = 'Normal', attr = 'bg' } } },
+
       { NeoTreeDirectoryName = { fg = { from = 'Normal', alter = -0.20 } } },
       { NeoTreeDirectoryIcon = { fg = { from = 'Normal', alter = -0.20 } } },
+
       { NeoTreeGitAdded = { fg = palette.green } },
       { NeoTreeGitModified = { fg = palette.light_yellow } },
       { NeoTreeGitDeleted = { fg = palette.pale_red } },
@@ -93,16 +101,16 @@ require('neo-tree').setup({
   },
 
   commands = {
-    filesystem = function() vim.api.nvim_cmd({ cmd = 'Neotree', args = { 'current', 'source=filesystem' } }, {}) end,
-    buffers = function() vim.api.nvim_cmd({ cmd = 'Neotree', args = { 'current', 'source=buffers' } }, {}) end,
-    git_status = function() vim.api.nvim_cmd({ cmd = 'Neotree', args = { 'current', 'source=git_status' } }, {}) end,
-    diagnostics = function() vim.api.nvim_cmd({ cmd = 'Neotree', args = { 'current', 'source=diagnostics' } }, {}) end,
+    filesystem = function() api.nvim_cmd({ cmd = 'Neotree', args = { 'current', 'source=filesystem' } }, {}) end,
+    buffers = function() api.nvim_cmd({ cmd = 'Neotree', args = { 'current', 'source=buffers' } }, {}) end,
+    git_status = function() api.nvim_cmd({ cmd = 'Neotree', args = { 'current', 'source=git_status' } }, {}) end,
+    diagnostics = function() api.nvim_cmd({ cmd = 'Neotree', args = { 'current', 'source=diagnostics' } }, {}) end,
     open_in_explorer = function()
       -- Open current directory in nemo in the background
       local cmd = 'sh'
-      local args = { '-c', string.format('nohup nemo "%s" </dev/null >/dev/null 2>&1 &', vim.fn.expand('%:p:h')) }
+      local args = { '-c', string.format('nohup nemo "%s" </dev/null >/dev/null 2>&1 &', fn.expand('%:p:h')) }
 
-      uv.spawn(cmd, {
+      vim.loop.spawn(cmd, {
         args = args,
         detached = true,
       }, function(code)

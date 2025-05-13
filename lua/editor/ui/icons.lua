@@ -108,7 +108,7 @@ return {
     rename = '',
   },
   indent_marker = '│',
-  last_indent_marker = '└',
+  last_indent_marker = '│',
 
   separators = {
     left_thin_block = '▏',

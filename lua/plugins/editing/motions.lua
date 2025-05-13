@@ -10,18 +10,19 @@ return {
   },
   {
     'folke/flash.nvim',
-    event = 'VeryLazy',
-    init = function()
-      hl.plugin('Flash', {
-        theme = {
-          FlashLabel = { fg = palette.magenta, bold = true },
-        },
-      })
-    end,
     opts = {
       modes = { char = { highlight = { backdrop = false } } },
       prompt = { enabled = false },
-      highlight = { backdrop = false },
+      highlight = {
+        backdrop = false,
+        matches = false,
+        groups = {
+          match = 'Search',
+          current = 'CurSearch',
+          backdrop = 'Search',
+          label = 'Search',
+        },
+      },
     },
   },
 }

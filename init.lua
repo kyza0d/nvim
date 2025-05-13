@@ -4,8 +4,6 @@
 
 require('globals')
 
-_G.palette = require('editor.ui.palette')
-
 require('editor.keymaps')
 require('editor.options')
 require('editor.autocmds')
@@ -32,10 +30,16 @@ if not vim.loop.fs_stat(lazypath) then
 end
 
 vim.opt.rtp:prepend(lazypath)
-if vim.env.NVIM then return require('lazy').setup({ { 'willothy/flatten.nvim', config = true } }) end
+if vim.env.NVIM then return require('lazy').setup({ {
+  'willothy/flatten.nvim',
+  config = true,
+} }) end
 
 require('lazy').setup({
+  'nvim-lua/plenary.nvim',
+  'neovim/nvim-lspconfig',
   { import = 'plugins' },
+  { import = 'plugins.editing' },
 }, {
   change_detection = { notify = false },
   performance = {
@@ -57,7 +61,10 @@ require('lazy').setup({
 })
 
 opt.background = 'dark'
+
 ky.pcall('theme failed to load because', vim.cmd.colorscheme, 'carbonfox')
+-- ky.pcall('theme failed to load because', vim.cmd.colorscheme, 'text-to-colorscheme')
+
 require('editor.ui.statusline').init()
 
 --- Based off of several configs 🫡

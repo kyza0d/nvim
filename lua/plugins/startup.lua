@@ -4,7 +4,30 @@ return {
     cmd = 'StartupTime',
   },
   {
+    'NStefan002/screenkey.nvim',
+    enabled = false,
+    lazy = false,
+    version = '*',
+    init = function()
+      local group = create_augroup('screenkey', {
+        clear = true,
+      })
+
+      create_autocmd('UIEnter', {
+        command = 'Screenkey',
+        group = group,
+      })
+    end,
+    opts = {
+      win_opts = {
+        height = 1,
+        border = 'none',
+      },
+    },
+  },
+  {
     'olimorris/persisted.nvim',
+    enabled = false,
     lazy = false,
     init = function()
       augroup('PersistedEvents', {

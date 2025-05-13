@@ -119,7 +119,7 @@ function M.render()
     r1 = section:new()
   else
     l1 = section:new(
-      { { { not vim.neovide and icons.misc.vertical_bar or '', mode_hl } }, priority = 0 },
+      { { { icons.misc.vertical_bar, mode_hl } }, priority = 0 },
       { { { modules.win_move() } }, priority = 0 },
       {
         {
@@ -137,12 +137,6 @@ function M.render()
         },
         cond = vim.v.hlsearch > 0,
         priority = 3,
-      },
-      {
-        { { helpers.get_tmux_session(), hls.title }, { ' ', hls.dimmed } },
-        cond = vim.env.TMUX ~= nil,
-        before = ' ',
-        priority = 8,
       },
       {
         { { fmt('recording: @%s', vim.fn.reg_recording()), hls.recording } },

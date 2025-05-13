@@ -1,5 +1,30 @@
 local M = {}
 
+M.join = function(...)
+  local args = { ... }
+  return table.concat(args)
+end
+
+function M.augroup(name, ...)
+  local commands = { ... }
+  assert(name ~= 'User', 'The name of an augroup CANNOT be User')
+  assert(#commands > 0, fmt('You must specify at least one autocommand for %s', name))
+  local id = api.nvim_create_augroup(name, { clear = true })
+  for _, autocmd in ipairs(commands) do
+    api.nvim_create_autocmd(autocmd.event, {
+      group = name,
+      pattern = autocmd.pattern,
+      desc = autocmd.desc,
+      callback = type(autocmd.command) == 'function' and autocmd.command or nil,
+      command = type(autocmd.command) ~= 'function' and autocmd.command or nil,
+      once = autocmd.once,
+      nested = autocmd.nested,
+      buffer = autocmd.buffer,
+    })
+  end
+  return id
+end
+
 M.visual_selection = function()
   vim.cmd('noau normal! "vy"')
   local text = vim.fn.getreg('v')
@@ -10,32 +35,6 @@ M.visual_selection = function()
     return text
   else
     return ''
-  end
-end
-
-M.get_tmux_session = function()
-  if vim.env.TMUX then
-    local session = vim.fn.system('tmux display-message -p "#{session_name}" 2>/dev/null')
-    if vim.v.shell_error ~= 0 then return '' end
-    return session:gsub('\n', '')
-  end
-  return ''
-end
-
-M.on_load = function(name, fn)
-  local Config = require('lazy.core.config')
-  if Config.plugins[name] and Config.plugins[name]._.loaded then
-    fn(name)
-  else
-    vim.api.nvim_create_autocmd('User', {
-      pattern = 'LazyLoad',
-      callback = function(event)
-        if event.data == name then
-          fn(name)
-          return true
-        end
-      end,
-    })
   end
 end
 

@@ -1,5 +1,3 @@
-local opt, hl = vim.opt_local, ky.hl
-
 opt.wrap = true
 opt.conceallevel = 2
 opt.concealcursor = 'nc'
@@ -15,8 +13,6 @@ opt.spelllang = 'en_us'
 keymap('i', '<C-t>', '<c-o>:norm <C-t>$<cr>', { noremap = false, buffer = true })
 keymap('i', '<C-c>', '<C-g>u<Esc>[s1z=`]a<C-g>u', { buffer = true })
 keymap('i', '<C-l>', '<cmd>ObsidianSearch<cr>', { noremap = false, buffer = true })
-
-keymap('n', '<C-a>', 'zg', { buffer = true })
 
 hl.all({
   -- Headers

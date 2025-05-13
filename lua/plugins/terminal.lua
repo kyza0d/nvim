@@ -7,7 +7,7 @@ return {
       persist_size = false,
       persist_mode = true,
       direction = 'horizontal',
-      size = function() return vim.o.lines * 0.6 end,
+      size = function() return vim.o.lines * 0.5 end,
       float_opts = {
         border = 'none',
         winblend = 0,
@@ -15,11 +15,11 @@ return {
         width = function() return vim.o.columns end,
       },
       highlights = {
-        NormalFloat = { link = 'Term' },
-        FloatBorder = { link = 'TermBorder' },
+        Normal = { link = 'PanelBackground' },
+        NormalFloat = { link = 'PanelBackground' },
       },
       winbar = {
-        enabled = true,
+        enabled = false,
         name_formatter = function(term) return term.name end,
       },
     },

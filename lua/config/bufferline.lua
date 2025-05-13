@@ -58,8 +58,8 @@ bufferline.setup({
   },
 
   highlights = function()
-    local normal_bg = hl.get('Normal', 'bg')
-    local normal_fg = hl.get('Normal', 'fg')
+    local normal_bg = hl.get('Background', 'bg')
+    local normal_fg = hl.get('Background', 'fg')
 
     local tab_bg = hl.tint(normal_bg, 0.45)
     local tab_bg_inactive = hl.tint(normal_bg, -0.1)

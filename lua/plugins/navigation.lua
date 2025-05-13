@@ -13,11 +13,6 @@ return {
           separator = '',
           group = '',
         },
-        win = {
-          width = 35,
-          col = vim.o.columns - 35,
-          border = 'none',
-        },
         show_help = false,
         show_keys = false,
       })
@@ -26,21 +21,27 @@ return {
   {
     'ibhagwan/fzf-lua',
     init = function()
+      keymap('v', '<C-Space>', function()
+        reqcall('fzf-lua').live_grep({
+          search = helpers.visual_selection(),
+        })
+      end)
+
       reqcall('which-key').add({
         { icon = '', group = 'Find', '<leader>f' },
-        { icon = ' ', desc = 'Files', '<C-space>', function() fzf_lua.files() end },
-        { icon = ' ', desc = 'Live Grep', '<c-g>', function() fzf_lua.live_grep() end },
+        { icon = ' ', desc = 'Files', '<C-f>', function() fzf_lua.files() end },
+        { icon = ' ', desc = 'Live Grep', '<C-Space>', function() fzf_lua.live_grep() end },
         { icon = ' ', desc = 'Git Files', '<leader>ff', function() fzf_lua.git_files() end },
         { icon = ' ', desc = 'Highlights', '<leader>fh', function() fzf_lua.highlights() end },
-        { icon = ' ', desc = 'Fzf Menu', '<leader>fa', '<Cmd>FzfLua<CR>' },
+        { icon = ' ', desc = 'Fzf Menu', '<leader>fa', '<cmd>FzfLua<cr>' },
         { icon = ' ', desc = 'Buffer Grep', '<leader>fb', function() fzf_lua.grep_curbuf() end },
         { icon = ' ', desc = 'Notes', '<leader>fn', function() file_picker('/home/kyza/Notes') end },
-        { icon = ' ', desc = 'Projects (Grep CurBuf)', '<leader>fp', function() fzf_lua.grep_curbuf() end },
         { icon = ' ', desc = 'Help Tags', '<leader>f?', function() fzf_lua.help_tags() end },
         { icon = ' ', desc = 'Old Files', '<cr>r', function() fzf_lua.oldfiles() end },
 
         { icon = ' ', group = 'Dotfiles', '<leader>fd' },
         { icon = ' ', desc = 'Hypr Config', '<leader>fdh', function() file_picker('/home/kyza/.config/hypr') end },
+        { icon = '󱙝 ', desc = 'Ghostty Config', '<leader>fdg', ':e /home/kyza/.config/ghostty/config<cr>' },
         { icon = ' ', desc = 'Nvim Config', '<leader>fdn', function() file_picker('/home/kyza/.config/nvim') end },
         { icon = ' ', desc = 'Kitty Config', '<leader>fdk', ':e /home/kyza/.config/kitty/kitty.conf<cr>' },
         { icon = '', desc = 'Zsh Config', '<leader>fdz', ':e /home/kyza/.zshrc<cr>' },
@@ -51,15 +52,19 @@ return {
 
         { icon = ' ', desc = 'Workspace Symbols', '<leader>fs', fzf_lua.lsp_workspace_symbols },
       })
-
-      keymap('v', '<c-g>', function() reqcall('fzf-lua').live_grep({ search = helpers.visual_selection() }) end, { desc = 'Live Grep Visual Selection' })
     end,
-    config = function() require('config.fzf-lua') end,
+    config = function() require('config.fzf_lua') end,
+  },
+  {
+    'kevinhwang91/nvim-ufo',
+    event = 'BufRead',
+    dependencies = { 'kevinhwang91/promise-async' },
+    config = function() require('ufo').setup({}) end,
   },
   {
     'nvim-neo-tree/neo-tree.nvim',
     keys = { { '<M-e>', '<cmd>Neotree toggle<cr>', mode = 'n' } },
-    config = function() require('config.neo-tree') end,
+    config = function() require('config.neo_tree') end,
     dependencies = {
       'mrbjarksen/neo-tree-diagnostics.nvim',
       'MunifTanjim/nui.nvim',
@@ -69,27 +74,29 @@ return {
     'folke/trouble.nvim',
     init = function()
       reqcall('which-key').add({
-        { icon = ' ', '<cr>d', '<cmd>Trouble diagnostics toggle filter.buf=0 focus=true<cr>', desc = 'Document Diagnostics' },
-        { icon = ' ', '<cr>s', '<cmd>Trouble symbols toggle focus=true<cr>', desc = 'Document Symbols' },
+        { icon = ' ', '<cr>d', '<cmd>Trouble diagnostics toggle filter.buf=0 focus=true<cr>' },
+        { icon = ' ', '<cr>s', '<cmd>Trouble symbols toggle focus=true<cr>' },
         { icon = '󰐻 ', group = 'LSP', '<leader>l' },
-        { icon = '󰱽 ', '<leader>ld', '<cmd>Trouble diagnostics toggle focus=true<cr>', desc = 'Workspace Diagnostics' },
-        { icon = ' ', '<leader>lr', '<cmd>Trouble lsp_references toggle focus=true<cr>', desc = 'LSP References' },
+        { icon = '󰱽 ', '<leader>ld', '<cmd>Trouble diagnostics toggle focus=true<cr>' },
+        { icon = ' ', '<leader>lr', '<cmd>Trouble lsp_references toggle focus=true<cr>' },
+        { icon = ' ', 'gr', '<cmd>Trouble lsp_references toggle focus=true<cr>' },
       })
     end,
     config = function(_, opts)
+      require('trouble').setup(opts)
       hl.plugin('Trouble', {
         theme = {
           ['*'] = {
+            { TroubleNormal = { link = 'Background' } },
             { TroubleFile = { fg = { from = 'Function' }, bg = 'none' } },
             { TroubleSignOther = { fg = { from = 'Special' }, bg = 'none' } },
             { TroubleInformation = { fg = { from = 'Special' }, bg = 'none' } },
           },
         },
       })
-      require('trouble').setup(opts)
     end,
     opts = {
-      auto_preview = false,
+      auto_preview = true,
       indent_guides = false,
     },
     cmd = 'Trouble',
@@ -182,23 +189,5 @@ return {
         { icon = '', '<leader>wx', desc = 'Split Horizontally', '<cmd>split<cr>', mode = 'n' },
       })
     end,
-  },
-  {
-    'kevinhwang91/nvim-ufo',
-    event = 'BufRead',
-    dependencies = { 'kevinhwang91/promise-async' },
-    config = function() require('ufo').setup({}) end,
-  },
-  {
-    'chrishrb/gx.nvim',
-    keys = {
-      { 'gx', '<cmd>Browse<cr>', mode = { 'n', 'x' } },
-    },
-    dependencies = {
-      'nvim-lua/plenary.nvim',
-    },
-    cmd = { 'Browse' },
-    init = function() vim.g.netrw_nogx = 1 end,
-    config = true,
   },
 }

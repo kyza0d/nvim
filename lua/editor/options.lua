@@ -4,7 +4,7 @@ opt.showmode = false
 
 opt.pumheight = 10
 
-opt.cursorline = false
+opt.cursorline = true
 opt.scrolloff = 8
 opt.mousescroll = 'ver:3,hor:0'
 opt.guicursor = {
@@ -14,7 +14,6 @@ opt.guicursor = {
 }
 
 opt.termguicolors = true
-opt.conceallevel = 2
 opt.signcolumn = 'yes'
 opt.emoji = true
 
@@ -63,7 +62,7 @@ opt.shell = '/usr/bin/zsh'
 opt.title = true
 
 settings({
-  [{ 'kitty' }] = {
+  [{ 'kitty', 'config' }] = {
     opts = {
       commentstring = '# %s',
       number = false,

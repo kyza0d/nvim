@@ -40,8 +40,13 @@ return {
       completion = {
         menu = {
           auto_show = true,
+          scrollbar = false,
           draw = {
-            padding = { 0, 1 },
+            padding = { 1, 1 },
+            columns = {
+              { 'label', gap = 1 },
+              -- { "kind_icon", "kind" }
+            },
           },
         },
         accept = {
@@ -63,6 +68,14 @@ return {
     opts_extend = {
       'sources.default',
     },
+  },
+  {
+    'vidocqh/auto-indent.nvim',
+    event = 'BufReadPre',
+  },
+  {
+    'windwp/nvim-ts-autotag',
+    event = 'InsertEnter',
   },
   {
     'windwp/nvim-autopairs',
@@ -92,13 +105,7 @@ return {
     },
     config = function()
       reqcall('which-key').add({
-        {
-          icon = '',
-          '<leader>s',
-          group = 'Snippets',
-          nowait = false,
-          remap = false,
-        },
+        { icon = '', '<leader>s', group = 'Snippets', nowait = false, remap = false },
         {
           icon = '',
           '<leader>sa',

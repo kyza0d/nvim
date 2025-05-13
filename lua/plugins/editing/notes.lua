@@ -24,9 +24,6 @@ return {
       })
     end,
     tag = '*',
-    requires = {
-      'nvim-lua/plenary.nvim',
-    },
     config = function()
       require('obsidian').setup({
         workspaces = {
@@ -86,10 +83,7 @@ return {
     end,
   },
   {
-    dir = '~/Projects/Plugins/vocal.nvim',
-    dependencies = {
-      'nvim-lua/plenary.nvim',
-    },
+    dir = '~/Projects/vocal.nvim',
     opts = {
       recording_dir = os.getenv('HOME') .. '/recordings',
       local_model = {

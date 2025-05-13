@@ -1,4 +1,15 @@
-local namespace = {
+_G.opt = vim.opt
+_G.api = vim.api
+_G.fn = vim.fn
+_G.lsp = vim.lsp
+_G.fmt = string.format
+_G.notify = vim.notify
+
+_G.create_augroup = api.nvim_create_augroup
+_G.create_autocmd = api.nvim_create_autocmd
+_G.clear_autocmds = api.nvim_clear_autocmds
+
+_G.ky = {
   ui = {
     statuscolumn = {
       enable = true,
@@ -6,49 +17,19 @@ local namespace = {
   },
 }
 
-_G.ky = ky or namespace
 _G.ui = ky.ui
+
 _G.hl = require('utils.highlight')
 _G.helpers = require('utils.helpers')
+_G.palette = require('editor.ui.palette')
 
-_G.join = function(...)
-  local args = { ... }
-  return table.concat(args)
-end
-
-_G.create_augroup = vim.api.nvim_create_augroup
-_G.create_autocmd = vim.api.nvim_create_autocmd
-_G.clear_autocmds = vim.api.nvim_clear_autocmds
-
-function _G.augroup(name, ...)
-  local commands = { ... }
-  assert(name ~= 'User', 'The name of an augroup CANNOT be User')
-  assert(#commands > 0, fmt('You must specify at least one autocommand for %s', name))
-  local id = api.nvim_create_augroup(name, { clear = true })
-  for _, autocmd in ipairs(commands) do
-    api.nvim_create_autocmd(autocmd.event, {
-      group = name,
-      pattern = autocmd.pattern,
-      desc = autocmd.desc,
-      callback = type(autocmd.command) == 'function' and autocmd.command or nil,
-      command = type(autocmd.command) ~= 'function' and autocmd.command or nil,
-      once = autocmd.once,
-      nested = autocmd.nested,
-      buffer = autocmd.buffer,
-    })
-  end
-  return id
-end
-
-_G.opt = vim.opt
-_G.api = vim.api
-_G.fn = vim.fn
-_G.fmt = string.format
-_G.notify = vim.notify
+_G.augroup = helpers.augroup
 
 _G.icons = require('editor.ui.icons')
 _G.colors = require('editor.ui.colors')
 _G.palette = require('editor.ui.palette')
+
+_G.join = helpers.join
 
 function _G.reqcall(require_path)
   return setmetatable({}, {
@@ -59,9 +40,6 @@ function _G.reqcall(require_path)
 end
 
 _G.editor = {
-  minimal = false,
-  zen_mode = true,
-  statusline = {},
   terminals = {
     toggle = function()
       local terminal = require('toggleterm.terminal').Terminal:new({ hidden = true })
@@ -144,10 +122,10 @@ _G.keymap = function(modes, mapping, command, options)
 
   -- Handle function commands and callbacks appropriately
   local is_func = type(command) == 'function'
-  local set_func = is_func and vim.keymap.set or vim.api.nvim_set_keymap
+  local set_func = is_func and vim.keymap.set or api.nvim_set_keymap
 
   -- Convert command to string if using nvim_set_keymap (can't handle functions)
-  if not is_func and set_func == vim.api.nvim_set_keymap then command = tostring(command) end
+  if not is_func and set_func == api.nvim_set_keymap then command = tostring(command) end
 
   -- Wrap command with callback if provided
   local final_command = command
@@ -170,15 +148,15 @@ _G.keymap = function(modes, mapping, command, options)
 
     if type(modes) == 'table' then
       for _, mode in pairs(modes) do
-        vim.api.nvim_buf_set_keymap(bufnr, mode, mapping, command, options)
+        api.nvim_buf_set_keymap(bufnr, mode, mapping, command, options)
       end
     else
-      vim.api.nvim_buf_set_keymap(bufnr, modes, mapping, command, options)
+      api.nvim_buf_set_keymap(bufnr, modes, mapping, command, options)
     end
     return
   end
 
-  -- Regular non-buffer specific keymaps
+  -- Regular
   if type(modes) == 'table' then
     for _, mode in pairs(modes) do
       set_func(mode, mapping, final_command, options)

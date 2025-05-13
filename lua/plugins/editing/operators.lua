@@ -6,9 +6,8 @@ return {
   {
     'gbprod/substitute.nvim',
     keys = {
-      { '<C-s>', function() require('substitute').operator() end, desc = 'Substitute', mode = 'n' },
-      { '<C-s>', function() require('substitute').visual() end, desc = 'Substitute', mode = 'v' },
-      -- { '<C-x>', function() require('substitute.exchange').operator() end, desc = 'Substitute', mode = 'n' },
+      { 's', function() require('substitute').operator() end, desc = 'Substitute', mode = 'n' },
+      { 's', function() require('substitute').visual() end, desc = 'Substitute', mode = 'v' },
       { '<C-x>', function() require('substitute.exchange').visual() end, desc = 'Substitute', mode = 'v' },
     },
     event = {
@@ -26,7 +25,6 @@ return {
       keymap('x', '<C-c>', '"+y') -- Yank
     end,
     keys = {
-      { '<leader>p', '<cmd>YankyRingHistory<cr>', mode = { 'n', 'x' } },
       { 'y', '<Plug>(YankyYank)', mode = { 'n', 'x' } },
       { 'p', '<Plug>(YankyPutAfter)', mode = { 'n', 'x' } },
       { 'P', '<Plug>(YankyPutBefore)', mode = { 'n', 'x' } },
@@ -34,7 +32,7 @@ return {
       { 'gP', '<Plug>(YankyPutBeforeFilter)' },
     },
     dependencies = {
-      { 'kkharji/sqlite.lua' },
+      'kkharji/sqlite.lua',
     },
     opts = {
       ring = { storage = 'sqlite' },
@@ -86,10 +84,10 @@ return {
     'echasnovski/mini.move',
     event = 'BufReadPre',
     init = function()
-      keymap('x', '<S-h>', function() require('mini.move').move_selection('left') end)
-      keymap('x', '<S-l>', function() require('mini.move').move_selection('right') end)
-      keymap('x', '<S-j>', function() require('mini.move').move_selection('down') end)
-      keymap('x', '<S-k>', function() require('mini.move').move_selection('up') end)
+      keymap('x', '<C-S-h>', function() require('mini.move').move_selection('left') end)
+      keymap('x', '<C-S-l>', function() require('mini.move').move_selection('right') end)
+      keymap('x', '<C-S-j>', function() require('mini.move').move_selection('down') end)
+      keymap('x', '<C-S-k>', function() require('mini.move').move_selection('up') end)
     end,
   },
   {
@@ -98,8 +96,8 @@ return {
     opts = {
       move_cursor = true,
       keymaps = {
-        normal = 's',
-        visual = 's',
+        normal = '<C-s>',
+        visual = '<C-s>',
       },
     },
     version = '*',
@@ -125,6 +123,15 @@ return {
     end,
   },
   {
+    'chrishrb/gx.nvim',
+    keys = {
+      { 'gx', '<cmd>Browse<cr>', mode = { 'n', 'x' } },
+    },
+    cmd = { 'Browse' },
+    init = function() vim.g.netrw_nogx = 1 end,
+    config = true,
+  },
+  {
     'Wansmer/treesj',
     keys = {
       {
@@ -136,9 +143,6 @@ return {
     },
     opts = {
       use_default_keymaps = false,
-    },
-    dependencies = {
-      'nvim-treesitter/nvim-treesitter',
     },
   },
 }

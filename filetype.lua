@@ -7,7 +7,7 @@ vim.filetype.add({
   filename = {
     ['NEOGIT_COMMIT_EDITMSG'] = 'NeogitCommitMessage',
     ['kitty.conf'] = 'kitty',
-    ['sxhkdrc'] = 'sxhkdrc',
+    ['config'] = 'config',
   },
   pattern = {
     ['.*%.rasi'] = 'rasi',

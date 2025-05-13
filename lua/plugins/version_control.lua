@@ -1,20 +1,39 @@
 return {
   {
     'NeogitOrg/neogit',
-    dependencies = {
-      'nvim-lua/plenary.nvim',
-      'ibhagwan/fzf-lua',
-    },
     init = function()
       reqcall('which-key').add({
+        { '<leader><leader>', '<cmd>Neogit<cr>', desc = 'Neogit', icon = '󰊢 ' },
         { '<leader>g', group = 'Git', icon = ' ' },
-        { '<leader>gg', '<cmd>Neogit<cr>', desc = 'Neogit', icon = '󰊢 ' },
         { '<leader>gc', '<cmd>Neogit commit<cr>', desc = 'Commit', icon = ' ' },
         { '<leader>gp', '<cmd>Neogit push<cr>', desc = 'Push', icon = '󰏕 ' },
         { '<leader>gl', '<cmd>Neogit pull<cr>', desc = 'Pull', icon = '󰏔 ' },
         { '<leader>gL', '<cmd>Neogit log<cr>', desc = 'Log', icon = '󰋚 ' },
       })
     end,
+    dependencies = {
+      {
+        'sindrets/diffview.nvim',
+        config = function()
+          require('diffview').setup({
+            file_panel = {
+              listing_style = 'list',
+            },
+            keymaps = {
+              file_panel = {
+                ['j'] = require('diffview.config').actions.select_next_entry,
+                ['k'] = require('diffview.config').actions.select_prev_entry,
+                ['q'] = '<cmd>DiffviewClose<CR>',
+              },
+              view = {
+                ['q'] = '<cmd>DiffviewClose<CR>',
+              },
+            },
+          })
+        end,
+      },
+      'ibhagwan/fzf-lua',
+    },
     opts = {
       disable_signs = false,
       disable_hint = true,
@@ -23,21 +42,18 @@ return {
       disable_insert_on_commit = false,
       signs = {
         section = { '', '󰘕' },
-        item = { '▸', '' },
-        hunk = { '󰐕', '󰍴' },
+        item = { '󰅂 ', ' ' },
+        hunk = { '▎', '▎' },
       },
       integrations = {
         fzf_lua = true,
+        diffview = true,
       },
     },
   },
   {
     'lewis6991/gitsigns.nvim',
     event = { 'BufReadPre', 'BufNewFile' },
-    keys = {
-      { ']g', '<cmd>Gitsigns next_hunk<cr>', desc = 'Next hunk' },
-      { '[g', '<cmd>Gitsigns prev_hunk<cr>', desc = 'Prev hunk' },
-    },
     init = function()
       reqcall('which-key').add({
         { icon = ' ', desc = 'Git', '<cr>g' },
@@ -54,6 +70,10 @@ return {
         { GitSignsChange = { fg = palette.light_yellow, bg = 'none' } },
       })
     end,
+    keys = {
+      { ']g', '<cmd>Gitsigns next_hunk<cr>', desc = 'Next hunk' },
+      { '[g', '<cmd>Gitsigns prev_hunk<cr>', desc = 'Prev hunk' },
+    },
     opts = {
       current_line_blame = false,
       current_line_blame_formatter = '󰚼 <author>, <summary>',

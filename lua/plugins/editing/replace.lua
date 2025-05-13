@@ -1,13 +1,5 @@
 return {
   {
-    'vidocqh/auto-indent.nvim',
-    event = 'BufReadPre',
-  },
-  {
-    'windwp/nvim-ts-autotag',
-    event = 'InsertEnter',
-  },
-  {
     'MagicDuck/grug-far.nvim',
     event = 'BufReadPost',
     cmd = 'GrugFar',
